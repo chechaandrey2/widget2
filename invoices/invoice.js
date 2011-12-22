@@ -1,5 +1,6 @@
 window.Invoices = {};
 window.Invoices.TEMPLATE = {};
+window.Invoices.L10N = {};
 
 // override Backbone.sync
 /*
@@ -74,6 +75,7 @@ $(document).ready(function() {
     window.CSS = [];
     window.TPL = [];
     window.JS = [];
+    window.L10N = [];
     
     // -globalmenu-
     window.TPL.push("invoices/app/globalmenu/template.globalmenu.tpl");
@@ -91,6 +93,8 @@ $(document).ready(function() {
     window.TPL.push("invoices/app/clients/template.clients.tpl");
     window.TPL.push('invoices/app/clients/template.clients_add_group.tpl');
     window.TPL.push('invoices/app/clients/template.clients_item_group.tpl');
+    window.TPL.push('invoices/app/clients/template.clients_del_group.tpl');
+    window.L10N.push('invoices/app/clients/l10n.en.json');
     window.JS.push("invoices/app/clients/model.clients_group.js");
     window.JS.push("invoices/app/clients/collection.clients_group.js");
     window.JS.push('invoices/app/clients/view.clients.js');
@@ -116,29 +120,40 @@ $(document).ready(function() {
         },
         end: function() {
             
-            // include JS
-            $.include({
-                urls: window.JS,
-                async: false,
-                callback: function(url) { console.log(url); },
+            // require L10N
+            $.require({
+                urls: window.L10N,
+                callback: function(data, url) {
+                    window.Invoices.L10N[url] = data;
+                    console.log(url);
+                },
                 end: function() {
-                
-                    // wait load iFrame
-                    // Backbone.sync local
-                    document.getElementById("invoices_iframe").onload = function() {
-                        
-                        window.Invoices.Router = new window.Invoices.ROUTER();
-                        
-                        Backbone.history.start();
-                    }
-                    // Backbone.sync local
                     
-                    // or
-                    /*
-                     * window.Invoices.Router = new window.Invoices.ROUTER();
-                     *
-                     * Backbone.history.start();
-                     */
+                    // include JS
+                    $.include({
+                        urls: window.JS,
+                        async: false,
+                        callback: function(url) { console.log(url); },
+                        end: function() {
+                        
+                            // wait load iFrame
+                            // Backbone.sync local
+                            document.getElementById("invoices_iframe").onload = function() {
+                                
+                                window.Invoices.Router = new window.Invoices.ROUTER();
+                                
+                                Backbone.history.start();
+                            }
+                            // Backbone.sync local
+                            
+                            /*
+                             * window.Invoices.Router = new window.Invoices.ROUTER();
+                             *
+                             * Backbone.history.start();
+                             */
+                            
+                        }
+                    });
                     
                 }
             });

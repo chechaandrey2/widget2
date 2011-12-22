@@ -14,9 +14,17 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
     statsTemplate: {
         'clients': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients.tpl']),
         'clients_add_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_add_group.tpl']),
+        'clients_del_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_del_group.tpl']),
         'clients_item_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_item_group.tpl'])
     },
+    l10nHash: {
+        'en':JSON.parse(window.Invoices.L10N['invoices/app/clients/l10n.en.json'])
+    },
     render: function(group) {
+        // test l10n
+        this.l10nLang = 'en';
+        console.log(this.l10n('Привет мир'));
+        // test l10n
     
         if(group === undefined) {
             console.log('main group');
@@ -26,7 +34,29 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
             
         }
         
-        // dialog
+        this.dialog_add();
+        
+        this.dialog_del();
+        
+        return this;
+        
+    },
+    events: {
+        'click #invoices_clients_add_group': 'group_add',
+        'dblclick #invoices_clients_tabs-list [data-name="edit"]': 'group_edit',
+        'click #invoices_clients_tabs-list [name="delete"]': 'group_del'
+    },
+    group_add: function(e) {
+        $('#invoices_clients_dialog').dialog("open");
+    },
+    group_edit: function(e) {
+        console.log(e.target);
+        
+    },
+    group_del: function(e) {
+        $('#invoices_clients_dialog_del').dialog("open");
+    },
+    dialog_add: function() {
         this.el.append(this.statsTemplate['clients_add_group']());
         var collection = this.collection;
         $('#invoices_clients_dialog', this.el).dialog({
@@ -34,8 +64,7 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
             resizable: false,
 			modal: true,
 			buttons: {
-				Add: function() {					
-					// add group
+				Add: function() {
 					var title = $('#invoices_clients_dialog [name="group_name"]').val();
 					if(title.length < 1) {
 					    console.warn('group name - empty');
@@ -52,23 +81,33 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
 				}
 			}
         });
-        // dialog
-        
-        return this;
-        
     },
-    events: {
-        'click #invoices_clients_add_group': 'group_add',
-        'click #invoices_clients_tabs-list [name="edit"]': 'group_edit',
-        'click #invoices_clients_tabs-list [name="delete"]': 'group_del'
-    },
-    group_add: function(e) {
-        $('#invoices_clients_dialog').dialog("open");
-    },
-    group_edit: function(e) {
-        console.log(e.target);
-    },
-    group_del: function(e) {
-        console.log(e.target);
+    dialog_del: function() {
+        this.el.append(this.statsTemplate['clients_del_group']());
+        var collection = this.collection;
+        $('#invoices_clients_dialog_del', this.el).dialog({
+            autoOpen:false,
+            resizable: false,
+			modal: true,
+			buttons: {
+				Remove: function() {
+				    /*
+					var title = $('#invoices_clients_dialog [name="group_name"]').val();
+					if(title.length < 1) {
+					    console.warn('group name - empty');
+					    return;
+					}
+					collection.create({
+					    title: title
+					});
+					*/
+					
+					$(this).dialog("close");
+				},
+				Cancel: function() {
+					$(this).dialog("close");
+				}
+			}
+        });
     }
 });
