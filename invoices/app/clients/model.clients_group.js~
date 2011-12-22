@@ -1,0 +1,12 @@
+window.Invoices.ModelClientsGroup = Backbone.Model.extend({
+    defaults: {
+        gr_id: 0,
+        title: 'new group'
+    },
+    url: {
+        'read': null,
+        'create': 'new_group_brs',
+        'update': 'edit_group_brs',
+        'delete': 'del_group_brs'
+    }
+});

@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <script type="text/javascript" src="invoices/lib/json2.js"></script>
+        <script type="text/javascript" src="invoices/lib/jquery.js"></script>
+        <script type="text/javascript" src="invoices/lib/underscore.js"></script>
+        <script type="text/javascript" src="invoices/lib/backbone.js"></script>
+        <script type="text/javascript" src="invoices/lib/jquery.require.js"></script>
+        <script type="text/javascript" src="invoices/lib/jquery.ui.min.js"></script>
+        <script type="text/javascript" src="invoices/invoice.js"></script>
+    </head>
+    <body>
+        <div id="invoices_globalmenu"></div>
+        <div id="invoices_iteminvoice"></div>
+        <div id="invoices_clients"></div>
+        <!-- transport -->
+        <iframe src="https://pulyaev.test.liqpay.com/?do=invoices" id="invoices_iframe"></iframe>
+        <!--
+        <div>
+            <input id="send_message" value="send message" type="button" />
+            <script type="text/javascript">
+                document.getElementById("iframe").onload = function() {
+                    console.log('ONLOAD');
+                }
+                window.addEventListener("message", function(e) {
+                    window.DATA = JSON.parse(e.data);
+                }, false);
+                
+                $('#send_message').bind('click', function(e) {
+                    console.log('click');
+                    document.getElementById("iframe").contentWindow.postMessage(JSON.stringify({subname:'merch_data'}), '*');
+                });
+            </script>
+        </div>
+        -->
+        <!-- transport -->
+    </body>
+</html>

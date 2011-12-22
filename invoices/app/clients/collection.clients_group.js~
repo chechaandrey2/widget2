@@ -1,0 +1,9 @@
+window.Invoices.CollectionClientsGroups = Backbone.Collection.extend({
+    model: window.Invoices.ModelClientsGroup,
+    initialize: function() {
+        
+    },
+    url: {
+        'readsyncArg': 'data_group_brs'
+    }
+});
