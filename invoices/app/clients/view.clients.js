@@ -50,8 +50,29 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
         $('#invoices_clients_dialog').dialog("open");
     },
     group_edit: function(e) {
-        console.log(e.target);
-        
+        var value = $(e.target).html();
+        var helper = function(el, val, currVal) {
+            if(val != currVal) {
+                // set
+                // save
+                // render?
+                console.log('edit');
+            }
+        }
+        $(e.target).replaceWith(
+            $('<input type="text" />')
+                .attr('data-id', $(e.target).attr('data-id'))
+                .attr('name', $(e.target).attr('data-name'))
+                .val(value)
+                .focus()
+                .bind('blur', function(e) {
+                    helper(e.target, value,  $(e.target).val());
+                })
+                .bind('keypress', function(e) {
+                    if(e.which != 13) return;
+                    helper(e.target, value,  $(e.target).val());
+                })
+        );
     },
     group_del: function(e) {
         $('#invoices_clients_dialog_del').dialog("open");
