@@ -5,32 +5,30 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
         
         this.collection.bind('add', this.eventAdd, this);
         
-        this.collection.fetch({add: true});
-        
     },
     eventAdd: function(model) {
-        
+        $('#invoices_clients_tabs-list #invoices_clients_new_group', this.el)
+            .before(this.statsTemplate['clients_item_group'](model.toJSON()));
     },
     el: $('#invoices_clients'),
     statsTemplate: {
         'clients': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients.tpl']),
-        'clients_add_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_add_group.tpl'])
+        'clients_add_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_add_group.tpl']),
+        'clients_item_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_item_group.tpl'])
     },
     render: function(group) {
     
         if(group === undefined) {
             console.log('main group');
-            this.el.html(this.statsTemplate['clients']({groups: []}));
-            
+            this.el.html(this.statsTemplate['clients']());
+            this.collection.fetch({add: true});
         } else {
             
         }
-    
-        $('#invoices_clients_tabs', this.el).tabs();
         
         // dialog
         this.el.append(this.statsTemplate['clients_add_group']());
-        var self = this;
+        var collection = this.collection;
         $('#invoices_clients_dialog', this.el).dialog({
             autoOpen:false,
             resizable: false,
@@ -43,7 +41,7 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
 					    console.warn('group name - empty');
 					    return;
 					}
-					self.collection.create({
+					collection.create({
 					    title: title
 					});
 					
@@ -60,9 +58,17 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
         
     },
     events: {
-        'click #invoices_clients_add_group': 'group_add'
+        'click #invoices_clients_add_group': 'group_add',
+        'click #invoices_clients_tabs-list [name="edit"]': 'group_edit',
+        'click #invoices_clients_tabs-list [name="delete"]': 'group_del'
     },
     group_add: function(e) {
         $('#invoices_clients_dialog').dialog("open");
+    },
+    group_edit: function(e) {
+        console.log(e.target);
+    },
+    group_del: function(e) {
+        console.log(e.target);
     }
 });

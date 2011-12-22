@@ -1,0 +1,1 @@
+<li data-id="<%= gr_id %>"><span><%= title %></span><% if(gr_id != 1) { %><input type="button" value="e" name="edit" data-id="<%= gr_id %>" /><input type="button" value="x" name="delete" data-id="<%= gr_id %>" /><% } %></li>

@@ -40,8 +40,14 @@ Backbone.sync = function(method, model, options) {
         'options': options
     };
     
+    var arg = model.toJSON();
+    if(!(arg instanceof Array)) window.bridgeObjects[id0]['data']['data'] = arg;
+    
     if(model.syncArg[method] && (model.syncArg[method]+'').length > 0) {
+        console.warn(window.bridgeObjects[id0]['data']);
         window.bridge.postMessage(JSON.stringify({id: id0, data: window.bridgeObjects[id0]['data']}), '*');
+    } else {
+        console.error('Backbone.sync ERROR');
     }
 }
 
@@ -59,8 +65,10 @@ window.addEventListener("message", function(e) {
 // Backbone.sync local
 
 $(document).ready(function() {
-
+    
+    // Backbone.sync local
     window.bridge = document.getElementById("invoices_iframe").contentWindow;
+    // Backbone.sync local
 
     // --PATHS--
     window.CSS = [];
@@ -82,6 +90,7 @@ $(document).ready(function() {
     // -clients-
     window.TPL.push("invoices/app/clients/template.clients.tpl");
     window.TPL.push('invoices/app/clients/template.clients_add_group.tpl');
+    window.TPL.push('invoices/app/clients/template.clients_item_group.tpl');
     window.JS.push("invoices/app/clients/model.clients_group.js");
     window.JS.push("invoices/app/clients/collection.clients_group.js");
     window.JS.push('invoices/app/clients/view.clients.js');
@@ -115,12 +124,14 @@ $(document).ready(function() {
                 end: function() {
                 
                     // wait load iFrame
+                    // Backbone.sync local
                     document.getElementById("invoices_iframe").onload = function() {
                         
                         window.Invoices.Router = new window.Invoices.ROUTER();
                         
                         Backbone.history.start();
                     }
+                    // Backbone.sync local
                     
                     // or
                     /*
