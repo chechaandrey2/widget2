@@ -45,7 +45,7 @@ Backbone.sync = function(method, model, options) {
     if(!(arg instanceof Array)) window.bridgeObjects[id0]['data']['data'] = arg;
     
     if(model.syncArg[method] && (model.syncArg[method]+'').length > 0) {
-        console.warn(window.bridgeObjects[id0]['data']);
+        console.log('Backbone.sync SEND: %o', window.bridgeObjects[id0]['data']);
         window.bridge.postMessage(JSON.stringify({id: id0, data: window.bridgeObjects[id0]['data']}), '*');
     } else {
         console.error('Backbone.sync ERROR');
@@ -94,7 +94,7 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/clients/template.clients_add_group.tpl');
     window.TPL.push('invoices/app/clients/template.clients_item_group.tpl');
     window.TPL.push('invoices/app/clients/template.clients_del_group.tpl');
-    window.L10N.push('invoices/app/clients/l10n.en.json');
+    window.L10N.push('invoices/app/clients/l10n.ru.json');
     window.JS.push("invoices/app/clients/model.clients_group.js");
     window.JS.push("invoices/app/clients/collection.clients_group.js");
     window.JS.push('invoices/app/clients/view.clients.js');

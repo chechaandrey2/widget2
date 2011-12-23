@@ -1,5 +1,5 @@
 Backbone.View.prototype.l10n = function(str) {
-    if(this.l10nLang == 'ru') return str;
+    if(this.l10nLang == 'en') return str;
     if(this.l10nHash && this.l10nHash[this.l10nLang]) {
         return this.l10nHash[this.l10nLang][str]?this.l10nHash[this.l10nLang][str]:str;
     } else {
@@ -10,7 +10,7 @@ Backbone.View.prototype.l10n = function(str) {
 /*
  * en, ua
  */
-Backbone.View.prototype.l10nLang = 'ru';
+Backbone.View.prototype.l10nLang = 'en';
 
 /*
  * {en:hash, ua: hash}
