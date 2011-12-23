@@ -1,0 +1,8 @@
+<tr data-new="new">
+    <th></th>
+    <th><input type="text" name="new_name" value="" /></th>
+    <th><input type="text" name="new_phone" value="" /></th>
+    <th><input type="text" name="new_email" value="" /></th>
+    <th></th>
+    <th></th>
+</tr>

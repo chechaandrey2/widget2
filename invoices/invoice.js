@@ -94,10 +94,19 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/clients/template.clients_add_group.tpl');
     window.TPL.push('invoices/app/clients/template.clients_item_group.tpl');
     window.TPL.push('invoices/app/clients/template.clients_del_group.tpl');
+    window.TPL.push('invoices/app/clients/template.clients_table.tpl');
     window.L10N.push('invoices/app/clients/l10n.ru.json');
     window.JS.push("invoices/app/clients/model.clients_group.js");
     window.JS.push("invoices/app/clients/collection.clients_group.js");
+    window.JS.push("invoices/app/clients/collection.clients_contacts.js");
     window.JS.push('invoices/app/clients/view.clients.js');
+    
+    // -clientsContacts-
+    window.TPL.push('invoices/app/clients/template.clientsContacts.tpl');
+    window.TPL.push('');
+    window.JS.push('');
+    window.JS.push('');
+    window.JS.push('');
     
     // --ROUTER--
     JS.push("invoices/app/router.js");

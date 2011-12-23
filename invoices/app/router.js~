@@ -2,7 +2,7 @@ window.Invoices.ROUTER = Backbone.Router.extend({
     initialize: function() {
         // #
         this.route(/^(iteminvoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
-        this.route(/^(iteminvoice\/([a-z0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
+        this.route(/^(iteminvoice\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
         this.route(/^(invoice\/).*$/i, 'invoice', this.invoice);
         this.route(/^(invoice\/([a-z0-9]+)\/).*$/i, 'invoice', this.invoice);
         this.route(/^(clients\/).*$/i, 'clients', this.clients);
@@ -34,12 +34,16 @@ window.Invoices.ROUTER = Backbone.Router.extend({
         $('#invoices_iteminvoice').hide();
         $('#invoices_clients').hide();
         
+        group = group==undefined?1:parseInt(group);
+        
         if(!this.isObject(this._views['clients'])) {
 		    this._views['clients'] = new window.Invoices.VIEWCLIENTS({
 		        router: this, 
-		        collection0: new window.Invoices.CollectionClientsGroups()
+		        collection: new window.Invoices.CollectionClientsGroups()
 		    });
-		    this._views['clients'].render();
+		    this._views['clients'].render(group);
+		} else {
+		    this._views['clients'].render(group);
 		}
 		
 		$('#invoices_clients').show();

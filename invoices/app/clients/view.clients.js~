@@ -7,12 +7,25 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
         this.collection.bind('remove', this.eventRemove, this);
         this.collection.bind('change', this.eventChange, this);
         
+        var self = this;
+        
+        // group list
+        this.el.html(this.statsTemplate['clients']());
+        this.collection.fetch({add: true, success: function() {
+            self.helperSelected(1);
+        }});
+        
+        this.helperDialogAdd();
+        
+        this.helperDialogDel();
+        
     },
+    _contacts: {},// {id: CollectionContacts}
     eventAdd: function(model) {
         $('#invoices_clients_tabs-list #invoices_clients_new_group', this.el)
             .before(this.statsTemplate['clients_item_group'](model.toJSON()));
         $('#invoices_clients_tabs').append(
-            $('<div>content-'+model.get('gr_id')+'</div>')
+            $('<div></div>')
                 .attr('data-id', 'content-'+model.get('gr_id'))
                 .hide()
         );
@@ -30,7 +43,8 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
         'clients': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients.tpl']),
         'clients_add_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_add_group.tpl']),
         'clients_del_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_del_group.tpl']),
-        'clients_item_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_item_group.tpl'])
+        'clients_item_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_item_group.tpl']),
+        'clients_contacts': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_table.tpl'])
     },
     l10nHash: {
         'ru':JSON.parse(window.Invoices.L10N['invoices/app/clients/l10n.ru.json'])
@@ -41,21 +55,14 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
         console.log(this.l10n('Hello world'));
         // test l10n
         
-        var self = this;
-        
-        if(group === undefined) {
-            console.log('main group');
-            this.el.html(this.statsTemplate['clients']());
-            this.collection.fetch({add: true, success: function() {
-                self.helperSelected(1);
-            }});
+        // contact list
+        if(this._contacts[group]) {
+            self.helperSelected(group);
         } else {
+            this._contacts[group] = new window.Invoices.CollectionClientsContacts();
+            $('[data-id="content-'+group+'"]', this.el).html(this.statsTemplate['clients_contacts']({id: group}));
             
         }
-        
-        this.helperDialogAdd();
-        
-        this.helperDialogDel();
         
         return this;
         
@@ -63,8 +70,8 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
     events: {
         'click #invoices_clients_add_group': 'eventGroupAdd',
         'dblclick #invoices_clients_tabs-list [data-name="edit"]': 'eventGroupEdit',
-        'click #invoices_clients_tabs-list [name="delete"]': 'eventGroupDel',
-        'click #invoices_clients_tabs-list [data-id^="item-"]':'eventGroupSelected'
+        'click #invoices_clients_tabs-list [name="delete"]': 'eventGroupDel'
+        //'click #invoices_clients_tabs-list [data-id^="item-"]':'eventGroupSelected'
     },
     eventGroupSelected: function(e) {
         this.helperSelected($(e.target).attr('data-id'));
@@ -74,7 +81,7 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
     },
     eventGroupEdit: function(e) {
         if($(e.target).attr('data-id') == 1) return
-        var value = $(e.target).html();
+        var value = $(e.target).text();
         var collection = this.collection;
         var helper = function(el) {
             // optimize
@@ -147,7 +154,7 @@ window.Invoices.VIEWCLIENTS = Backbone.View.extend({
 				    self.helperGroupDelModel.destroy({success: function() {
 				        $(dialog).dialog('close');
 				        // move to General & remove contacts current group at "del_force"
-				        self.helperSelected(1);
+				        //self.helperSelected(1);
 				    }});
                     
                     self.helperGroupDelModel = undefined;
