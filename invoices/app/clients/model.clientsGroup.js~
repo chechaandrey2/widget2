@@ -10,7 +10,6 @@ window.Invoices.ModelClientsGroup = Backbone.Model.extend({
         'delete': 'del_group_brs'
     },
     validate: function(attrs) {
-        attrs = attrs || {};
         if(!(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return 'Attribute "title" - incorrect';
     }
 });

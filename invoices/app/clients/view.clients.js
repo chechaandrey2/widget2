@@ -29,6 +29,7 @@ window.Invoices.ViewClients = Backbone.View.extend({
     statsTemplate: {
         'clients': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients.tpl']),
         'clientsItemGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsItemGroup.tpl']),
+        'clientsItemGroupEdit': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsItemGroupEdit.tpl']),
         'clientsAddGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsAddGroup.tpl']),
         'clientsDelGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsDelGroup.tpl'])
     },
@@ -74,7 +75,9 @@ window.Invoices.ViewClients = Backbone.View.extend({
     events: {
         'click #invoicesClientsAddGroup': 'eventGroupAdd',
         'click #invoicesClientsTabsList [name="edit"]': 'eventGroupEdit',
-        'click #invoicesClientsTabsList [name="delete"]': 'eventGroupDel'
+        'click #invoicesClientsTabsList [name="delete"]': 'eventGroupDel',
+        'blur #invoicesClientsTabsList [name^="name-edit-"]':'eventGroupEditBlur',
+        'presskey #invoicesClientsTabsList [name^="name-edit-"]':'eventGroupEditEnter'
     },
     eventGroupAdd: function(e) {
         $('#invoicesClientsDialogAdd [name="groupName"]').val('');
@@ -82,38 +85,24 @@ window.Invoices.ViewClients = Backbone.View.extend({
     },
     eventGroupEdit: function(e) {
         if($(e.target).attr('data-id') == 1) return;// General NOT EDITOR
-        var id = $(e.target).attr('data-id');
-        var link = $('#invoicesClientsTabs [data-id="item-'+id+'"] [data-name="name-'+id+'"]', this.el).get(0);
-        var value = $(link).text();
-        var collection = this.collection;
-        var helper = function(el) {
-            // optimize
-            el.disabled = true;
-            
-            var model = collection.get('gr_id', $(el).attr('data-id'));
-            model.id = model.get('gr_id');
-            
-            model.set({'title': $(el).val()}, {silent:true, error: function(model, e) {console.error(e)}});
-            
-            model.save();
-        }
+        var model = this.collection.get('gr_id', $(e.target).attr('data-id'));
+        $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
+            .replaceWith(this.statsTemplate['clientsItemGroupEdit'](model.toJSON()));
+    },
+    eventGroupEditBlur: function(e) {console.log(e.target);
+        // optimize
+        e.target.disabled = true;
         
-        $('#invoicesClientsTabs [data-id="item-'+id+'"]').html(
-            $('<input type="text" />')
-                .attr('data-id', id)
-                .attr('name', 'edit-'+$(link).attr('data-name'))
-                .val(value)
-                .bind('blur', function(e) {                    
-                    helper(e.target);
-                })
-                .bind('keypress', function(e) {
-                    if(e.which != 13) return;
-                    helper(e.target);
-                })
-        );
+        var model = this.collection.get('gr_id', $(e.target).attr('data-id'));
+        model.id = model.get('gr_id');
         
-        $('#invoicesClientsTabs [name="edit-'+$(link).attr('data-name')+'"]', this.el).focus();
+        model.set({'title': $(e.target).val()}, {silent:true, error: function(model, e) {console.error(e)}});
         
+        model.save();
+    },
+    eventGroupEditEnter: function(e) {
+        if(e.which != 13) return;
+        this.eventGroupEditBlur.call(this,e);
     },
     eventGroupDel: function(e) {
         this.helperGroupDelModel = this.collection.get('gr_id', $(e.target).attr('data-id'));

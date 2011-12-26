@@ -53,7 +53,7 @@ Backbone.sync = function(method, model, options) {
     if(!(arg instanceof Array)) window.bridgeObjects[id0]['data']['data'] = arg;
     
     if(model.syncArg[method] && (model.syncArg[method]+'').length > 0) {
-        console.log('Backbone.sync SEND: %o', window.bridgeObjects[id0]['data']);
+        console.log('Backbone.sync SEND: %o', JSON.stringify(window.bridgeObjects[id0]['data']));
         window.bridge.postMessage(JSON.stringify({id: id0, data: window.bridgeObjects[id0]['data']}), '*');
     } else {
         console.error('Backbone.sync ERROR');
@@ -100,6 +100,7 @@ $(document).ready(function() {
     // -clients-
     window.TPL.push("invoices/app/clients/template.clients.tpl");
     window.TPL.push('invoices/app/clients/template.clientsItemGroup.tpl');
+    window.TPL.push('invoices/app/clients/template.clientsItemGroupEdit.tpl');
     window.TPL.push('invoices/app/clients/template.clientsAddGroup.tpl');
     window.TPL.push('invoices/app/clients/template.clientsDelGroup.tpl');
     window.L10N.push('invoices/app/clients/l10n.ru.json');
@@ -120,6 +121,7 @@ $(document).ready(function() {
     // -clientsContacts-
     window.TPL.push('invoices/app/clientsContacts/template.clientsContacts.tpl');
     window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItem.tpl');
+    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItemEdit.tpl');
     window.JS.push('invoices/app/clientsContacts/model.clientsContacts.js');
     window.JS.push('invoices/app/clientsContacts/collection.clientsContacts.js');
     window.JS.push('invoices/app/clientsContacts/view.clientsContacts.js');
