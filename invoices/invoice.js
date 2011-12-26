@@ -101,6 +101,7 @@ $(document).ready(function() {
     window.TPL.push("invoices/app/clients/template.clients.tpl");
     window.TPL.push('invoices/app/clients/template.clientsItemGroup.tpl');
     window.TPL.push('invoices/app/clients/template.clientsAddGroup.tpl');
+    window.TPL.push('invoices/app/clients/template.clientsDelGroup.tpl');
     window.L10N.push('invoices/app/clients/l10n.ru.json');
     window.JS.push("invoices/app/clients/model.clientsGroup.js");
     window.JS.push("invoices/app/clients/collection.clientsGroup.js");
@@ -108,7 +109,7 @@ $(document).ready(function() {
     //
     //
     //
-    //window.TPL.push('invoices/app/clients/template.clients_del_group.tpl');
+    //
     //window.TPL.push('invoices/app/clients/template.clients_table.tpl');
     //
     //

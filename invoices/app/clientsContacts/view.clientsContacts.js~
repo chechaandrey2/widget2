@@ -24,15 +24,10 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
     render: function(group) {
         
         this.el.html(this.statsTemplate['clientsContacts']());
-        this.collection.fetch({data: {gr_id: group}, add: true, success: function() {
-            console.warn('END FETCH 1');
-        }});
+        this.collection.fetch({data: {gr_id: group}, add: true});
         
     },
     events: {
         
-    },
-    helperSelected: function(id) {
-        $()
     }
 });

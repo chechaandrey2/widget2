@@ -7,20 +7,7 @@ window.Invoices.ViewClients = Backbone.View.extend({
         this.collection.bind('remove', this.eventRemove, this);
         this.collection.bind('change', this.eventChange, this);
         
-        //var self = this;
-        
-        // group list
-        //this.el.html(this.statsTemplate['clients']());
-        //this.collection.fetch({add: true, success: function() {
-        //    self.helperSelected(1);
-        //}});
-        
-        //this.helperDialogAdd();
-        
-        //this.helperDialogDel();
-        
     },
-    //_contacts: {},// {id: CollectionContacts}
     isObject: function(arg) {
         return (arg && typeof arg == 'object');
     },
@@ -30,23 +17,20 @@ window.Invoices.ViewClients = Backbone.View.extend({
             .before(this.statsTemplate['clientsItemGroup'](model.toJSON()));
     },
     eventRemove: function(model) {
-        //$('#invoices_clients_tabs-list > [data-id="item-'+model.get('gr_id')+'"]').remove();
-        //$('#invoices_clients_tabs [data-id="content-'+model.get('gr_id')+'"]').remove();
+        $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]', this.el).remove();
+        delete this._views[model.get('gr_id')];
+        $('#invoicesClientsTabs [id="invoicesClientsItem-'+model.get('gr_id')+'"]', this.el).remove();
     },
     eventChange: function(model) {
-        //$('#invoices_clients_tabs-list > [data-id="item-'+model.get('gr_id')+'"]')
-        //    .replaceWith(this.statsTemplate['clients_item_group'](model.toJSON()));
+        $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
+            .replaceWith(this.statsTemplate['clientsItemGroup'](model.toJSON()));
     },
     el: $('#invoicesClients'),
     statsTemplate: {
         'clients': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients.tpl']),
         'clientsItemGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsItemGroup.tpl']),
         'clientsAddGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsAddGroup.tpl']),
-        
-        //
-        //'clients_del_group': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_del_group.tpl']),
-        //
-        //'clients_contacts': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients_table.tpl'])
+        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsDelGroup.tpl'])
     },
     l10nHash: {
         'ru':JSON.parse(window.Invoices.L10N['invoices/app/clients/l10n.ru.json'])
@@ -57,21 +41,12 @@ window.Invoices.ViewClients = Backbone.View.extend({
         console.log(this.l10n('Hello world'));
         // test l10n
         
-        // contact list
-        //if(this._contacts[group]) {
-        //    self.helperSelected(group);
-        //} else {
-        //    this._contacts[group] = new window.Invoices.CollectionClientsContacts();
-        //    $('[data-id="content-'+group+'"]', this.el).html(this.statsTemplate['clients_contacts']({id: group}));
-        //    
-        //}
-        
         this.el.html(this.statsTemplate['clients']());
-        this.collection.fetch({add: true, success: function() {
-            console.warn('END FETCH');
-        }});
+        this.collection.fetch({add: true});
         
         this.helperDialogAdd();
+        
+        this.helperDialogDel();
         
         return this;
         
@@ -91,29 +66,30 @@ window.Invoices.ViewClients = Backbone.View.extend({
         } else {
             //this._views[group].render(group);
         }
+        
         // selected
         this.helperSelected(group);
+        
     },
     events: {
         'click #invoicesClientsAddGroup': 'eventGroupAdd',
-        //'dblclick #invoices_clients_tabs-list [data-name="edit"]': 'eventGroupEdit',
-        //'click #invoices_clients_tabs-list [name="delete"]': 'eventGroupDel'
-        //'click #invoices_clients_tabs-list [data-id^="item-"]':'eventGroupSelected'
-    },/*
-    eventGroupSelected: function(e) {
-        this.helperSelected($(e.target).attr('data-id'));
-    },*/
+        'click #invoicesClientsTabsList [name="edit"]': 'eventGroupEdit',
+        'click #invoicesClientsTabsList [name="delete"]': 'eventGroupDel'
+    },
     eventGroupAdd: function(e) {
+        $('#invoicesClientsDialogAdd [name="groupName"]').val('');
         $('#invoicesClientsDialogAdd').dialog("open");
-    },/*
+    },
     eventGroupEdit: function(e) {
-        if($(e.target).attr('data-id') == 1) return
-        var value = $(e.target).text();
+        if($(e.target).attr('data-id') == 1) return;// General NOT EDITOR
+        var id = $(e.target).attr('data-id');
+        var link = $('#invoicesClientsTabs [data-id="item-'+id+'"] [data-name="name-'+id+'"]', this.el).get(0);
+        var value = $(link).text();
         var collection = this.collection;
         var helper = function(el) {
             // optimize
             el.disabled = true;
-        
+            
             var model = collection.get('gr_id', $(el).attr('data-id'));
             model.id = model.get('gr_id');
             
@@ -121,10 +97,11 @@ window.Invoices.ViewClients = Backbone.View.extend({
             
             model.save();
         }
-        $(e.target).replaceWith(
+        
+        $('#invoicesClientsTabs [data-id="item-'+id+'"]').html(
             $('<input type="text" />')
-                .attr('data-id', $(e.target).attr('data-id'))
-                .attr('name', $(e.target).attr('data-name'))
+                .attr('data-id', id)
+                .attr('name', 'edit-'+$(link).attr('data-name'))
                 .val(value)
                 .bind('blur', function(e) {                    
                     helper(e.target);
@@ -134,12 +111,15 @@ window.Invoices.ViewClients = Backbone.View.extend({
                     helper(e.target);
                 })
         );
-        $('[name="'+$(e.target).attr('data-name')+'"]', e.target.parentNode).focus();
+        
+        $('#invoicesClientsTabs [name="edit-'+$(link).attr('data-name')+'"]', this.el).focus();
+        
     },
     eventGroupDel: function(e) {
         this.helperGroupDelModel = this.collection.get('gr_id', $(e.target).attr('data-id'));
-        $('#invoices_clients_dialog_del').dialog("open");
-    },*/
+        $('#invoicesClientsDialogDel [name="groupDelForce"]').get(0).checked = false;
+        $('#invoicesClientsDialogDel').dialog("open");
+    },
     helperDialogAdd: function() {
         this.el.append(this.statsTemplate['clientsAddGroup']());
         var collection = this.collection;
@@ -162,26 +142,28 @@ window.Invoices.ViewClients = Backbone.View.extend({
 				}
 			}
         });
-    },/*
+    },
     helperDialogDel: function() {
-        this.el.append(this.statsTemplate['clients_del_group']());
+        this.el.append(this.statsTemplate['clientsDelGroup']());
         var collection = this.collection;
         var self = this;
-        $('#invoices_clients_dialog_del', this.el).dialog({
+        $('#invoicesClientsDialogDel', this.el).dialog({
             autoOpen:false,
             resizable: false,
 			modal: true,
 			buttons: {
 				Remove: function() {
-				    var del_force = $('#invoices_clients_dialog_del [name="group_del_force"]:checked').size();
+				    var del_force = $('#invoicesClientsDialogDel [name="groupDelForce"]:checked').size();
 				    var dialog = this;
 				    
 				    self.helperGroupDelModel.id = self.helperGroupDelModel.get('gr_id');// hack
 				    self.helperGroupDelModel.set({'buyers': del_force});
-				    self.helperGroupDelModel.destroy({success: function() {
+				    self.helperGroupDelModel.destroy({success: function(model) {
 				        $(dialog).dialog('close');
 				        // move to General & remove contacts current group at "del_force"
-				        //self.helperSelected(1);
+				        if(self.helperSelectedNumber == model.id) {
+				            self.router.navigate('clients/1/', true);				            
+				        }
 				    }});
                     
                     self.helperGroupDelModel = undefined;
@@ -192,13 +174,15 @@ window.Invoices.ViewClients = Backbone.View.extend({
 			}
         });
     },
-    helperGroupDelModel: undefined,*/
+    helperGroupDelModel: undefined,
     helperSelected: function(id) {
         $('#invoicesClientsTabs #invoicesClientsTabsList', this.el).children().each(function() {
             if($(this).attr('data-id') != 'item-'+id) $(this).removeAttr('data-selected');
         });
         $('#invoicesClientsTabs [id^="invoicesClientsItem-"]', this.el).hide();
         $('#invoicesClientsTabs #invoicesClientsTabsList [data-id="item-'+id+'"]', this.el).attr('data-selected', 'selected');
-        $('#invoicesClientsTabs [id="invoicesClientsItem-'+id+'"]', this.el).show();        
-    }
+        $('#invoicesClientsTabs [id="invoicesClientsItem-'+id+'"]', this.el).show();
+        this.helperSelectedNumber = id;
+    },
+    helperSelectedNumber: 0
 });
