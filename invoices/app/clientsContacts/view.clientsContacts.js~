@@ -22,7 +22,7 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContacts.tpl']),
         'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItem.tpl']),
         'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItemEdit.tpl']),
-        'clientsContactsDelGroup': _.template(window.Invoices.TEMPLATE[''])
+        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsDel.tpl'])
     },
     render: function(group) {
         
@@ -45,19 +45,19 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
     },
     eventNewClientContactsEnter: function(e) {
         if(e.which != 13) return;
-        this.newClientContacts.call(this, e);
+        this.eventNewClientContacts.call(this, e);
     },
     eventNewClientContacts: function(e) {
         var id = this.helperGroup;
         var res = this.collection.create({
-            name: $('#invoicesClientsContactsNew [name="new_name"]').val(),
+            name: $('#invoicesClientsContactsNew [name="new_name"]', this.el).val(),
             phone_main: $('#invoicesClientsContactsNew [name="new_phone"]').val(),
             email: $('#invoicesClientsContactsNew [name="new_email"]').val(),
             gr_id: id
 		}, {
 		    error: function(model, e) {console.log('model: %o; e: %o;', model, e)},
 		    success: function(model) {
-		        $('#invoicesClientsContactsNew [name^="new_"]').each(function() {
+		        $('#invoicesClientsContactsNew [name^="new_"]', this.el).each(function() {
 		            $(this).val('');
 		        });
 		    }
@@ -65,8 +65,8 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
     },
     helperGroup: 0,
     eventDeleteItem: function(e) {
-        this.helperGroupDelModel = this.collection.get('b_uid', $(e.target).attr('data-id'));
-        $('#invoicesClientsContactsDialogDel').dialog("open");
+        this.helperItemDelModel = this.collection.get('b_uid', $(e.target).attr('data-id'));
+        $('#invoicesClientsContactsDialogDel-'+this.helperGroup).dialog("open");
     },
     eventEditItem: function(e) {
         var model = this.collection.get('b_uid', $(e.target).attr('data-id'));
@@ -87,8 +87,29 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         model.set(arg, {error: function(model, e) {console.error(e)}});
     },
     helperDialogDel: function() {
-        this.el.append(this.statsTemplate['clientsContactsDelGroup']());
+        this.el.append(this.statsTemplate['clientsContactsDel']({id: this.helperGroup}));
         var collection = this.collection;
         var self = this;
-    }
+        $('#invoicesClientsContactsDialogDel-'+this.helperGroup, this.el).dialog({
+            autoOpen:false,
+            resizable: false,
+			modal: true,
+			buttons: {
+				Remove: function() {
+				    var dialog = this;
+				    
+				    self.helperItemDelModel.id = self.helperItemDelModel.get('b_uid');// hack
+				    self.helperItemDelModel.destroy({success: function(model) {
+				        $(dialog).dialog('close');
+				    }});
+                    
+                    self.helperItemDelModel = undefined;
+				},
+				Cancel: function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+    },
+    helperItemDelModel: undefined
 });

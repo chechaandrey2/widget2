@@ -107,21 +107,12 @@ $(document).ready(function() {
     window.JS.push("invoices/app/clients/model.clientsGroup.js");
     window.JS.push("invoices/app/clients/collection.clientsGroup.js");
     window.JS.push('invoices/app/clients/view.clients.js');
-    //
-    //
-    //
-    //
-    //window.TPL.push('invoices/app/clients/template.clients_table.tpl');
-    //
-    //
-    //
-    //window.JS.push("invoices/app/clients/collection.clients_contacts.js");
-    //
     
     // -clientsContacts-
     window.TPL.push('invoices/app/clientsContacts/template.clientsContacts.tpl');
     window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItem.tpl');
-    'invoices/app/clientsContacts/template.clientsContactsItemEdit.tpl');
+    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItemEdit.tpl');
+    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsDel.tpl');
     window.JS.push('invoices/app/clientsContacts/model.clientsContacts.js');
     window.JS.push('invoices/app/clientsContacts/collection.clientsContacts.js');
     window.JS.push('invoices/app/clientsContacts/view.clientsContacts.js');
