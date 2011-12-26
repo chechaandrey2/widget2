@@ -18,17 +18,21 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         
     },
     statsTemplate: {
-        'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsContacts.tpl']),
-        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsContactsItem.tpl'])
+        'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContacts.tpl']),
+        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItem.tpl'])
     },
     render: function(group) {
         
         this.el.html(this.statsTemplate['clientsContacts']());
-        
-        this.collection.fetch({data: {gr_id: group}, add: true});
+        this.collection.fetch({data: {gr_id: group}, add: true, success: function() {
+            console.warn('END FETCH 1');
+        }});
         
     },
     events: {
         
+    },
+    helperSelected: function(id) {
+        $()
     }
 });

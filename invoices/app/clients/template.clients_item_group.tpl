@@ -1,1 +1,0 @@
-<span data-id="item-<%= gr_id %>"><span data-name="edit"><a href="#clients/<%= gr_id %>/"><%= title %></a></span><% if(gr_id != 1) { %><input type="button" value="x" name="delete" data-id="<%= gr_id %>" /><% } %></span>

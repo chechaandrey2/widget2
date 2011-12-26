@@ -3,7 +3,7 @@ window.Invoices.CollectionClientsGroups = Backbone.Collection.extend({
     initialize: function() {
         
     },
-    url: {
-        'readsyncArg': 'data_group_brs'
+    syncArg: {
+        'read': 'data_group_brs'
     }
 });

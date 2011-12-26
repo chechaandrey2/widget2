@@ -12,9 +12,9 @@
         <script type="text/javascript" src="invoices/invoice.js"></script>
     </head>
     <body>
-        <div id="invoices_globalmenu"></div>
-        <div id="invoices_iteminvoice"></div>
-        <div id="invoices_clients"></div>
+        <div id="invoicesGlobalmenu"></div>
+        <div id="invoicesItemInvoice"></div>
+        <div id="invoicesClients"></div>
         <!-- transport -->
         <iframe src="https://pulyaev.test.liqpay.com/?do=invoices" id="invoices_iframe" style="visibility: hidden; position: absolute; top: -500px; left: -500px;"></iframe>
         <!--

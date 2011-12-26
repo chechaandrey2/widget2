@@ -1,12 +1,12 @@
-window.Invoices.VIEWGLOBALMENU = Backbone.View.extend({
+window.Invoices.ViewGlobalMenu = Backbone.View.extend({
     initialize: function(opt) {
     
         this.router = opt.router;
         
     },
-    el: $('#invoices_globalmenu'),
+    el: $('#invoicesGlobalMenu'),
     statsTemplate: {
-        'globalmenu': _.template(window.Invoices.TEMPLATE['invoices/app/globalmenu/template.globalmenu.tpl'])
+        'globalmenu': _.template(window.Invoices.TEMPLATE['invoices/app/globalmenu/template.globalMenu.tpl'])
     },
     render: function() {
         

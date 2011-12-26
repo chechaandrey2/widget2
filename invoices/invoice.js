@@ -41,7 +41,15 @@ Backbone.sync = function(method, model, options) {
         'options': options
     };
     
-    var arg = model.toJSON();
+    var arg = model.toJSON() || {};
+    if(arg instanceof Array) arg = {};
+    
+    // options.data
+    options.data = options.data || {};
+    for(var i in options.data) {
+        arg[i] = options.data[i];
+    }
+    
     if(!(arg instanceof Array)) window.bridgeObjects[id0]['data']['data'] = arg;
     
     if(model.syncArg[method] && (model.syncArg[method]+'').length > 0) {
@@ -78,10 +86,10 @@ $(document).ready(function() {
     window.L10N = [];
     
     // -globalmenu-
-    window.TPL.push("invoices/app/globalmenu/template.globalmenu.tpl");
-    window.JS.push("invoices/app/globalmenu/model.globalmenuitem.js");
-    window.JS.push("invoices/app/globalmenu/collection.globalmenu.js");
-    window.JS.push('invoices/app/globalmenu/view.globalmenu.js');
+    window.TPL.push("invoices/app/globalmenu/template.globalMenu.tpl");
+    window.JS.push("invoices/app/globalmenu/model.globalMenuItem.js");
+    window.JS.push("invoices/app/globalmenu/collection.globalMenu.js");
+    window.JS.push('invoices/app/globalmenu/view.globalMenu.js');
     
     // -iteminvoice-
     window.TPL.push("invoices/app/iteminvoice/template.iteminvoice.tpl");
@@ -91,22 +99,29 @@ $(document).ready(function() {
     
     // -clients-
     window.TPL.push("invoices/app/clients/template.clients.tpl");
-    window.TPL.push('invoices/app/clients/template.clients_add_group.tpl');
-    window.TPL.push('invoices/app/clients/template.clients_item_group.tpl');
-    window.TPL.push('invoices/app/clients/template.clients_del_group.tpl');
-    window.TPL.push('invoices/app/clients/template.clients_table.tpl');
+    window.TPL.push('invoices/app/clients/template.clientsItemGroup.tpl');
+    window.TPL.push('invoices/app/clients/template.clientsAddGroup.tpl');
     window.L10N.push('invoices/app/clients/l10n.ru.json');
-    window.JS.push("invoices/app/clients/model.clients_group.js");
-    window.JS.push("invoices/app/clients/collection.clients_group.js");
-    window.JS.push("invoices/app/clients/collection.clients_contacts.js");
+    window.JS.push("invoices/app/clients/model.clientsGroup.js");
+    window.JS.push("invoices/app/clients/collection.clientsGroup.js");
     window.JS.push('invoices/app/clients/view.clients.js');
+    //
+    //
+    //
+    //window.TPL.push('invoices/app/clients/template.clients_del_group.tpl');
+    //window.TPL.push('invoices/app/clients/template.clients_table.tpl');
+    //
+    //
+    //
+    //window.JS.push("invoices/app/clients/collection.clients_contacts.js");
+    //
     
     // -clientsContacts-
-    window.TPL.push('invoices/app/clients/template.clientsContacts.tpl');
-    window.TPL.push('');
-    window.JS.push('');
-    window.JS.push('');
-    window.JS.push('');
+    window.TPL.push('invoices/app/clientsContacts/template.clientsContacts.tpl');
+    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItem.tpl');
+    window.JS.push('invoices/app/clientsContacts/model.clientsContacts.js');
+    window.JS.push('invoices/app/clientsContacts/collection.clientsContacts.js');
+    window.JS.push('invoices/app/clientsContacts/view.clientsContacts.js');
     
     // --ROUTER--
     JS.push("invoices/app/router.js");
@@ -149,14 +164,14 @@ $(document).ready(function() {
                             // Backbone.sync local
                             document.getElementById("invoices_iframe").onload = function() {
                                 
-                                window.Invoices.Router = new window.Invoices.ROUTER();
+                                window.Invoices.router = new window.Invoices.Router();
                                 
                                 Backbone.history.start();
                             }
                             // Backbone.sync local
                             
                             /*
-                             * window.Invoices.Router = new window.Invoices.ROUTER();
+                             * window.Invoices.router = new window.Invoices.Router();
                              *
                              * Backbone.history.start();
                              */

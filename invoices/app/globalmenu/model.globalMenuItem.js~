@@ -1,4 +1,4 @@
-window.Invoices.MODELGLOBALMENU = Backbone.Model.extend({
+window.Invoices.ModelGlobalMenu = Backbone.Model.extend({
     defaults: {
         name: 'item',
         hash: 'item/'

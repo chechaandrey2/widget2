@@ -1,4 +1,4 @@
-window.Invoices.ROUTER = Backbone.Router.extend({
+window.Invoices.Router = Backbone.Router.extend({
     initialize: function() {
         // #
         this.route(/^(iteminvoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
@@ -23,7 +23,7 @@ window.Invoices.ROUTER = Backbone.Router.extend({
         this.renderGlobalMenu();
         
         $('#invoices_iteminvoice').hide();
-        $('#invoices_clients').hide();
+        $('#invoicesClients').hide();
         
     },
     clients: function(query, group) {
@@ -32,21 +32,22 @@ window.Invoices.ROUTER = Backbone.Router.extend({
         this.renderGlobalMenu();
         
         $('#invoices_iteminvoice').hide();
-        $('#invoices_clients').hide();
+        $('#invoicesClients').hide();
         
         group = group==undefined?1:parseInt(group);
         
         if(!this.isObject(this._views['clients'])) {
-		    this._views['clients'] = new window.Invoices.VIEWCLIENTS({
+		    this._views['clients'] = new window.Invoices.ViewClients({
 		        router: this, 
 		        collection: new window.Invoices.CollectionClientsGroups()
 		    });
-		    this._views['clients'].render(group);
+		    this._views['clients'].render();
+		    this._views['clients'].renderItem(group);
 		} else {
-		    this._views['clients'].render(group);
+		    this._views['clients'].renderItem(group);
 		}
 		
-		$('#invoices_clients').show();
+		$('#invoicesClients').show();
         
     },
     ps: function(query, group) {
@@ -55,7 +56,7 @@ window.Invoices.ROUTER = Backbone.Router.extend({
         this.renderGlobalMenu();
         
         $('#invoices_iteminvoice').hide();
-        $('#invoices_clients').hide();
+        $('#invoicesClients').hide();
         
     },
     iteminvoice: function(query, id) {
@@ -64,7 +65,7 @@ window.Invoices.ROUTER = Backbone.Router.extend({
         this.renderGlobalMenu();
         
         $('#invoices_iteminvoice').hide();
-        $('#invoices_clients').hide();
+        $('#invoicesClients').hide();
         
         if(!this.isObject(this._views['iteminvoice'])) {
 		    this._views['iteminvoice'] = new window.Invoices.VIEWITEMINVOICE({
@@ -78,8 +79,8 @@ window.Invoices.ROUTER = Backbone.Router.extend({
     },
     renderGlobalMenu: function() {
         if(!this.isObject(this._views['globalmenu'])) {
-		    this._views['globalmenu'] = new window.Invoices.VIEWGLOBALMENU({
-		        collection: new window.Invoices.COLLECTIONGLOBALMENU(), router: this
+		    this._views['globalmenu'] = new window.Invoices.ViewGlobalMenu({
+		        collection: new window.Invoices.CollectionGlobalMenu(), router: this
 		    });
 		    this._views['globalmenu'].render();
 		}
