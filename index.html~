@@ -41,7 +41,7 @@
         </div>
         -->
         <!-- transport -->
-        <input type="text" name="name" value="" pplaceholder="placeholder" />
+        <input type="text" name="name" value="" _placeholder="placeholder" />
         <script type="text/javascript">
             $('[name="name"]').placeholder({'class': 'pl'});
         </script>
