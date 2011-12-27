@@ -3,80 +3,104 @@ window.Invoices.TEMPLATE = {};
 window.Invoices.L10N = {};
 
 // override Backbone.sync
-/*
-Backbone.sync = function(method, model, success, error) {
-    var data = {subname: model.url(method), data: JSON.stringify(model.toJSON())}
-    $.ajax({
-        type: 'POST',
-        url: window.Invoices.APIURL,
-        success: function(data, textStatus, jqXHR) {
-            console.warn('AJAX DATA: %s;', data);
-            data = data || {};
-            success(data['data'] || {}, textStatus, jqXHR);
-        },
-        error: function(jXHR, textStatus, errorThrown) {
-            console.error('AJAX ERROR: %o, %o, %o', jXHR, textStatus, errorThrown);
-            error(jXHR, textStatus, errorThrown);
-        },
-        data: data
-    });
-}
-*/
+if(location.host == 'localhost:8000') {
+    
+    // Backbone.sync local
+    console.warn('LOCALHOST DEVELOPER: %o', true);
+    
+    // Backbone.sync
+    window.bridge;
+    window.bridgeObjects = {};
 
-// Backbone.sync local
-window.bridge;
-window.bridgeObjects = {};
-
-function _guid() {
-    var S4 = function() {
-        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-    }
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-};
-
-Backbone.sync = function(method, model, options) {
-    var id0 = _guid();
-    window.bridgeObjects[id0] = {
-        'data': {subname: model.syncArg[method]},
-        'options': options
+    function _guid() {
+        var S4 = function() {
+            return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+        }
+        return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
     };
-    
-    var arg = model.toJSON() || {};
-    if(arg instanceof Array) arg = {};
-    
-    // options.data
-    options.data = options.data || {};
-    for(var i in options.data) {
-        arg[i] = options.data[i];
-    }
-    
-    if(!(arg instanceof Array)) window.bridgeObjects[id0]['data']['data'] = arg;
-    
-    if(model.syncArg[method] && (model.syncArg[method]+'').length > 0) {
-        console.log('Backbone.sync SEND: %o', JSON.stringify(window.bridgeObjects[id0]['data']));
-        window.bridge.postMessage(JSON.stringify({id: id0, data: window.bridgeObjects[id0]['data']}), '*');
-    } else {
-        console.error('Backbone.sync ERROR');
-    }
-}
 
-window.addEventListener("message", function(e) {
-    var data = JSON.parse(e.data) || {};
-    var id = data['id'];
-    var res = JSON.parse(data['data']) || {};
-    if((res.status+'').toLowerCase() == 'ok') {
-        window.bridgeObjects[id]['options'].success(res.data);
-    } else {
-        window.bridgeObjects[id]['options'].error(res.data);
+    Backbone.sync = function(method, model, options) {
+        var id0 = _guid();
+        window.bridgeObjects[id0] = {
+            'data': {subname: model.syncArg[method]},
+            'options': options
+        };
+    
+        var arg = model.toJSON() || {};
+        if(arg instanceof Array) arg = {};
+    
+        // options.data
+        options.data = options.data || {};
+        for(var i in options.data) {
+            arg[i] = options.data[i];
+        }
+    
+        if(!(arg instanceof Array)) window.bridgeObjects[id0]['data']['data'] = arg;
+    
+        if(model.syncArg[method] && (model.syncArg[method]+'').length > 0) {
+            console.log('Backbone.sync SEND: %o', JSON.stringify(window.bridgeObjects[id0]['data']));
+            window.bridge.postMessage(JSON.stringify({id: id0, data: window.bridgeObjects[id0]['data']}), '*');
+        } else {
+            console.error('Backbone.sync ERROR');
+        }
     }
-    delete window.bridgeObjects[id];
-}, false);
-// Backbone.sync local
+
+    window.addEventListener("message", function(e) {
+        var data = JSON.parse(e.data) || {};
+        var id = data['id'];
+        var res = JSON.parse(data['data']) || {};
+        if((res.status+'').toLowerCase() == 'ok') {
+            window.bridgeObjects[id]['options'].success(res.data);
+        } else {
+            window.bridgeObjects[id]['options'].error(res.data);
+        }
+        delete window.bridgeObjects[id];
+    }, false);
+    // Backbone.sync
+    
+} else {
+    
+    // Backbone.sync
+    Backbone.sync = function(method, model, options) {
+        options = options || {};
+        model.syncArg = model.syncArg || {};
+        var data = {subname: model.syncArg[method], data: {}};
+        var data0 = model.toJSON(), data1 = options.data || {};
+        
+        if(!(data0 instanceof Array)) {
+            for(var i in data0) {
+                data.data[i] = data0[i];
+            }
+        }
+        
+        for(var j in data1) {
+            data.data[j] = data1[i];
+        }
+        
+        $.ajax({
+            url: 'https://pulyaev.test.liqpay.com/?do=invoices&act=ajax',
+            //dataType: 'json',
+            type: 'POST',
+            data: {json: JSON.stringify(data)},
+            success: function(data, textStatus, jqXHR) {
+                console.warn('AJAX RESPONSE: %o', data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Backbone.sync($.ajax) error: jqXHR: %o; textStatus: %o; errorThrown: %o;');
+            }
+        });
+        
+    }
+    // Backbone.sync
+    
+}
 
 $(document).ready(function() {
     
     // Backbone.sync local
-    window.bridge = document.getElementById("invoices_iframe").contentWindow;
+    if(location.host == 'localhost:8000') {
+        window.bridge = document.getElementById("invoices_iframe").contentWindow;
+    }
     // Backbone.sync local
 
     // --PATHS--
@@ -172,22 +196,21 @@ $(document).ready(function() {
                         async: false,
                         callback: function(url) { console.log(url); },
                         end: function() {
-                        
-                            // wait load iFrame
-                            // Backbone.sync local
-                            document.getElementById("invoices_iframe").onload = function() {
+                            
+                            if(location.host == 'localhost:8000') {
+                                // wait load iFrame
+                                // Backbone.sync local
+                                document.getElementById("invoices_iframe").onload = function() {
                                 
+                                    window.Invoices.router = new window.Invoices.Router();
+                                
+                                    Backbone.history.start();
+                                }
+                                // Backbone.sync local
+                            } else {
                                 window.Invoices.router = new window.Invoices.Router();
-                                
                                 Backbone.history.start();
                             }
-                            // Backbone.sync local
-                            
-                            /*
-                             * window.Invoices.router = new window.Invoices.Router();
-                             *
-                             * Backbone.history.start();
-                             */
                             
                         }
                     });
