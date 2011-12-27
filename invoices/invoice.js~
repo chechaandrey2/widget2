@@ -117,6 +117,16 @@ $(document).ready(function() {
     window.JS.push('invoices/app/clientsContacts/collection.clientsContacts.js');
     window.JS.push('invoices/app/clientsContacts/view.clientsContacts.js');
     
+    // -ps-
+    window.TPL.push("invoices/app/ps/template.ps.tpl");
+    window.TPL.push('invoices/app/ps/template.psItemGroup.tpl');
+    window.TPL.push('invoices/app/ps/template.psItemGroupEdit.tpl');
+    window.TPL.push('invoices/app/ps/template.psAddGroup.tpl');
+    window.TPL.push('invoices/app/ps/template.psDelGroup.tpl');
+    window.JS.push("invoices/app/ps/model.psGroup.js");
+    window.JS.push("invoices/app/ps/collection.psGroup.js");
+    window.JS.push('invoices/app/ps/view.ps.js');
+    
     // --ROUTER--
     JS.push("invoices/app/router.js");
     // --PATHS--

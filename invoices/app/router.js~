@@ -33,6 +33,7 @@ window.Invoices.Router = Backbone.Router.extend({
         
         $('#invoices_iteminvoice').hide();
         $('#invoicesClients').hide();
+        $('#invoicesPs').hide();
         
         group = group==undefined?1:parseInt(group);
         
@@ -42,6 +43,7 @@ window.Invoices.Router = Backbone.Router.extend({
 		        collection: new window.Invoices.CollectionClientsGroups()
 		    });
 		    this._views['clients'].render();
+		    this._views['clients'].renderItem(group);
 		} else {
 		    this._views['clients'].renderItem(group);
 		}
@@ -56,6 +58,22 @@ window.Invoices.Router = Backbone.Router.extend({
         
         $('#invoices_iteminvoice').hide();
         $('#invoicesClients').hide();
+        $('#invoicesPs').hide();
+        
+        group = group==undefined?1:parseInt(group);
+        
+        if(!this.isObject(this._views['clients'])) {
+		    this._views['clients'] = new window.Invoices.ViewPs({
+		        router: this, 
+		        collection: new window.Invoices.CollectionPsGroups()
+		    });
+		    this._views['clients'].render();
+		    this._views['clients'].renderItem(group);
+		} else {
+		    this._views['clients'].renderItem(group);
+		}
+        
+        $('#invoicesPs').show();
         
     },
     iteminvoice: function(query, id) {

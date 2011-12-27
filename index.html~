@@ -12,7 +12,7 @@
         <script type="text/javascript" src="invoices/invoice.js"></script>
     </head>
     <body>
-        <div id="invoicesGlobalmenu"></div>
+        <div id="invoicesGlobalMenu"></div>
         <div id="invoicesItemInvoice"></div>
         <div id="invoicesClients"></div>
         <!-- transport -->
