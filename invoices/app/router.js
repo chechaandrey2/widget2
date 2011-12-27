@@ -21,9 +21,10 @@ window.Invoices.Router = Backbone.Router.extend({
         console.log('QUERY1: %o; GROUP1: %o', query, group);
         
         this.renderGlobalMenu();
-        
+        /*
         $('#invoices_iteminvoice').hide();
         $('#invoicesClients').hide();
+        */
         
     },
     clients: function(query, group) {
@@ -80,7 +81,7 @@ window.Invoices.Router = Backbone.Router.extend({
         console.log('QUERY: %o; ID: %o', query, id);
         
         this.renderGlobalMenu();
-        
+        /*
         $('#invoices_iteminvoice').hide();
         $('#invoicesClients').hide();
         
@@ -92,6 +93,7 @@ window.Invoices.Router = Backbone.Router.extend({
 		}
 		
 		$('#invoices_iteminvoice').show();
+		*/
         
     },
     renderGlobalMenu: function() {

@@ -89,7 +89,7 @@ if(location.host == 'localhost:8000') {
                 data = data || {};
                 data.data = data.data || {};
                 if(typeof(options.success) == 'function') options.success.call(this, data.data);
-                console.warn('Backbone.sync RESPONCE: %o', data);
+                console.warn('Backbone.sync SEND: %o', data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Backbone.sync($.ajax) error: jqXHR: %o; textStatus: %o; errorThrown: %o;');
