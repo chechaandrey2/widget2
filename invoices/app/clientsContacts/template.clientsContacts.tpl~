@@ -1,6 +1,6 @@
 <table>
     <thead>
-        <tr><th>#</th><th>name</th><th>phone</th><th>email</th><th>address</th><th>comments</th><th colspan="2">actions</th></tr>
+        <tr><th>#</th><th>title</th><th>unit</th><th>price/unit</th><th>desc</th><th colspan="2">actions</th></tr>
     </thead>
     <tbody id="invoicesClientsTbody"></tbody>
     <thead>
@@ -11,7 +11,7 @@
             <th><input type="text" name="new_email" value="" /></th>
             <th></th>
             <th></th>
-            <th colspan="2">s</th>
+            <th colspan="2"></th>
         </tr>
     </thead>
 </table>

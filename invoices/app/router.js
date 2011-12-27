@@ -62,15 +62,15 @@ window.Invoices.Router = Backbone.Router.extend({
         
         group = group==undefined?1:parseInt(group);
         
-        if(!this.isObject(this._views['clients'])) {
-		    this._views['clients'] = new window.Invoices.ViewPs({
+        if(!this.isObject(this._views['ps'])) {
+		    this._views['ps'] = new window.Invoices.ViewPs({
 		        router: this, 
 		        collection: new window.Invoices.CollectionPsGroups()
 		    });
-		    this._views['clients'].render();
-		    this._views['clients'].renderItem(group);
+		    this._views['ps'].render();
+		    this._views['ps'].renderItem(group);
 		} else {
-		    this._views['clients'].renderItem(group);
+		    this._views['ps'].renderItem(group);
 		}
         
         $('#invoicesPs').show();

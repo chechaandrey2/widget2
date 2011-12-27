@@ -12,10 +12,10 @@ window.Invoices.viewPsTables = Backbone.View.extend({
         $('#invoicesPsTbody', this.el).append(this.statsTemplate['psTablesItem'](model.toJSON()));
     },
     eventRemove: function(model) {
-        $('#invoicesPsTbody > [data-id="'+model.get('b_uid')+'"]', this.el).remove();
+        $('#invoicesPsTbody > [data-id="'+model.get('gds_uid')+'"]', this.el).remove();
     },
     eventChange: function(model) {
-        $('#invoicesPsTbody > [data-id="'+model.get('b_uid')+'"]')
+        $('#invoicesPsTbody > [data-id="'+model.get('gds_uid')+'"]')
             .replaceWith(this.statsTemplate['psTablesItem'](model.toJSON()));
     },
     statsTemplate: {
@@ -36,28 +36,26 @@ window.Invoices.viewPsTables = Backbone.View.extend({
         return this;
     },
     events: {
-        'blur #invoicesClientsContactsNew [name^="new_"]':'eventNewClientContacts',
-        'keypress #invoicesClientsContactsNew [name^="new_"]':'eventNewClientContactsEnter',
+        'blur #invoicesPsTablesNew [name^="new_"]':'eventNewPsTables',
+        'keypress #invoicesPsTablesNew [name^="new_"]':'eventNewPsTablesEnter',
         'click [name="save"]':'eventSaveItem',
         'click [name="del"]':'eventDeleteItem',
         'click [name="edit"]':'eventEditItem',
         'blur [data-label="edit"]':'eventSaveItemModel'
     },
-    eventNewClientContactsEnter: function(e) {
+    eventNewPsTablesEnter: function(e) {
         if(e.which != 13) return;
-        this.eventNewClientContacts.call(this, e);
+        this.eventNewPsTables.call(this, e);
     },
-    eventNewClientContacts: function(e) {
+    eventNewPsTables: function(e) {
         var id = this.helperGroup;
         var res = this.collection.create({
-            name: $('#invoicesClientsContactsNew [name="new_name"]', this.el).val(),
-            phone_main: $('#invoicesClientsContactsNew [name="new_phone"]', this.el).val(),
-            email: $('#invoicesClientsContactsNew [name="new_email"]', this.el).val(),
+            title: $('#invoicesPsTablesNew [name="new_title"]', this.el).val(),
             gr_id: id
 		}, {
 		    error: function(model, e) {console.log('model: %o; e: %o;', model, e)},
 		    success: function(model) {
-		        $('#invoicesClientsContactsNew [name^="new_"]', this.el).each(function() {
+		        $('#invoicesPsTablesNew [name^="new_"]', this.el).each(function() {
 		            $(this).val('');
 		        });
 		    }
@@ -65,32 +63,32 @@ window.Invoices.viewPsTables = Backbone.View.extend({
     },
     helperGroup: 0,
     eventDeleteItem: function(e) {
-        this.helperItemDelModel = this.collection.get('b_uid', $(e.target).attr('data-id'));
-        $('#invoicesClientsContactsDialogDel-'+this.helperGroup).dialog("open");
+        this.helperItemDelModel = this.collection.get('gds_uid', $(e.target).attr('data-id'));
+        $('#invoicesPsTablesDialogDel-'+this.helperGroup).dialog("open");
     },
     eventEditItem: function(e) {
-        var model = this.collection.get('b_uid', $(e.target).attr('data-id'));
-        $('[data-id="'+model.get('b_uid')+'"]', this.el)
-            .replaceWith(this.statsTemplate['clientsContactsItemEdit'](model.toJSON()));
+        var model = this.collection.get('gds_uid', $(e.target).attr('data-id'));
+        $('[data-id="'+model.get('gds_uid')+'"]', this.el)
+            .replaceWith(this.statsTemplate['psTablesItemEdit'](model.toJSON()));
     },
     eventSaveItem: function(e) {
-        var model = this.collection.get('b_uid', $(e.target).attr('data-id'));
-        model.id = model.get('b_uid');
+        var model = this.collection.get('gds_uid', $(e.target).attr('data-id'));
+        model.id = model.get('gds_uid');
         model.save(null, {error: function(model, res) {
             console.log('ERROR: %o; %o', model, res);
         }});
     },
     eventSaveItemModel: function(e) {
-        var model = this.collection.get('b_uid', $(e.target).attr('data-id'));
+        var model = this.collection.get('gds_uid', $(e.target).attr('data-id'));
         var arg = model.attributes;
         arg[$(e.target).attr('name')] = $(e.target).val();
         model.set(arg, {error: function(model, e) {console.error(e)}});
     },
     helperDialogDel: function() {
-        this.el.append(this.statsTemplate['clientsContactsDel']({id: this.helperGroup}));
+        this.el.append(this.statsTemplate['psTablesDel']({id: this.helperGroup}));
         var collection = this.collection;
         var self = this;
-        $('#invoicesClientsContactsDialogDel-'+this.helperGroup, this.el).dialog({
+        $('#invoicesPsTablesDialogDel-'+this.helperGroup, this.el).dialog({
             autoOpen:false,
             resizable: false,
 			modal: true,
@@ -98,7 +96,7 @@ window.Invoices.viewPsTables = Backbone.View.extend({
 				Remove: function() {
 				    var dialog = this;
 				    
-				    self.helperItemDelModel.id = self.helperItemDelModel.get('b_uid');// hack
+				    self.helperItemDelModel.id = self.helperItemDelModel.get('gds_uid');// hack
 				    self.helperItemDelModel.destroy({success: function(model) {
 				        $(dialog).dialog('close');
 				    }});

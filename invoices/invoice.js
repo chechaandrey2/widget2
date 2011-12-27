@@ -127,6 +127,15 @@ $(document).ready(function() {
     window.JS.push("invoices/app/ps/collection.psGroup.js");
     window.JS.push('invoices/app/ps/view.ps.js');
     
+    // -psTables-
+    window.TPL.push('invoices/app/psTables/template.psTables.tpl');
+    window.TPL.push('invoices/app/psTables/template.psTablesItem.tpl');
+    window.TPL.push('invoices/app/psTables/template.psTablesItemEdit.tpl');
+    window.TPL.push('invoices/app/psTables/template.psTablesDel.tpl');
+    window.JS.push('invoices/app/psTables/model.psTable.js');
+    window.JS.push('invoices/app/psTables/collection.psTables.js');
+    window.JS.push('invoices/app/psTables/view.psTables.js');
+    
     // --ROUTER--
     JS.push("invoices/app/router.js");
     // --PATHS--

@@ -123,9 +123,18 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/ps/template.psItemGroupEdit.tpl');
     window.TPL.push('invoices/app/ps/template.psAddGroup.tpl');
     window.TPL.push('invoices/app/ps/template.psDelGroup.tpl');
-    window.JS.push("invoices/app/ps/model.psGroup.js");
+    window.JS.push("invoices/app/ps/model.psGroupItem.js");
     window.JS.push("invoices/app/ps/collection.psGroup.js");
     window.JS.push('invoices/app/ps/view.ps.js');
+    
+    // -psTables-
+    window.TPL.push('invoices/app/psTables/template.psTables.tpl');
+    window.TPL.push('invoices/app/psTables/template.psTablesItem.tpl');
+    window.TPL.push('invoices/app/psTables/template.psTablesItemEdit.tpl');
+    window.TPL.push('invoices/app/psTables/template.psTablesDel.tpl');
+    window.JS.push('invoices/app/psTables/model.psTable.js');
+    window.JS.push('invoices/app/psTables/collection.clientsContacts.js');
+    window.JS.push('invoices/app/psTables/view.clientsContacts.js');
     
     // --ROUTER--
     JS.push("invoices/app/router.js");

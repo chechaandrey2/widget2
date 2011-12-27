@@ -45,16 +45,16 @@ window.Invoices.ViewPs = Backbone.View.extend({
         return this;
         
     },
-    renderItem: function(group) {consolw.warn('PS GROUP: %o', group);
+    renderItem: function(group) {console.warn('PS GROUP: %o', group);
         
         if(!$('#invoicesPsTabs > #invoicesPsItem-'+group).size()) 
             $('#invoicesPsTabs').append($('<div></div>').attr('id', 'invoicesPsItem-'+group));
-        /*
+        
         if(!this.isObject(this._views[group])) {            
-            this._views[group] = new window.Invoices.viewPsContacts({
+            this._views[group] = new window.Invoices.viewPsTables({
                 router: this.router,
                 el: $('#invoicesPsItem-'+group),
-                collection: new window.Invoices.CollectionPsContacts()
+                collection: new window.Invoices.CollectionPsTables()
             });
             this._views[group].render(group);
         } else {
@@ -64,7 +64,7 @@ window.Invoices.ViewPs = Backbone.View.extend({
         
         // selected
         this.helperSelected(group);
-        */
+        
     },
     events: {
         'click #invoicesPsAddGroup': 'eventGroupAdd',
