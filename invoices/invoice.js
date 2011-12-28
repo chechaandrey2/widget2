@@ -168,6 +168,12 @@ $(document).ready(function() {
     window.JS.push('invoices/app/psTables/collection.psTables.js');
     window.JS.push('invoices/app/psTables/view.psTables.js');
     
+    // -invoices-
+    window.TPL.push("invoices/app/invoices/template.invoices.tpl");
+    window.JS.push("invoices/app/invoices/model.invoices.js");
+    window.JS.push("invoices/app/invoices/collection.invoices.js");
+    window.JS.push('invoices/app/invoices/view.invoices.js');
+    
     // --ROUTER--
     JS.push("invoices/app/router.js");
     // --PATHS--

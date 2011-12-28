@@ -1,10 +1,10 @@
 window.Invoices.Router = Backbone.Router.extend({
     initialize: function() {
         // #
-        this.route(/^(iteminvoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
-        this.route(/^(iteminvoice\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
-        this.route(/^(invoice\/).*$/i, 'invoice', this.invoice);
-        this.route(/^(invoice\/([a-z0-9]+)\/).*$/i, 'invoice', this.invoice);
+        //this.route(/^(iteminvoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
+        //this.route(/^(iteminvoice\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
+        this.route(/^(invoices\/).*$/i, 'invoices', this.invoices);
+        this.route(/^(invoices\/([a-z0-9]+)\/).*$/i, 'invoices', this.invoices);
         this.route(/^(clients\/).*$/i, 'clients', this.clients);
         this.route(/^(clients\/([a-z0-9]+)\/).*$/i, 'clients', this.clients);
         this.route(/^(ps\/).*$/i, 'ps', this.ps);
@@ -17,24 +17,29 @@ window.Invoices.Router = Backbone.Router.extend({
         return (arg && typeof arg == 'object');
     },
     _views: {},// {name: View}
-    invoice: function(query, group) {
-        console.log('QUERY1: %o; GROUP1: %o', query, group);
+    invoices: function(query, status) {
+        console.log('QUERY: %o; STATUS: %o', query, status);
         
         this.renderGlobalMenu();
-        /*
-        $('#invoices_iteminvoice').hide();
+        
         $('#invoicesClients').hide();
-        */
+        $('#invoicesPs').hide();
+        $('#invoicesInvoices').hide();
+        
+        
+        
+        $('#invoicesInvoices').show();
         
     },
     clients: function(query, group) {
-        console.log('QUERY2: %o; GROUP2: %o', query, group);
+        console.log('QUERY: %o; GROUP: %o', query, group);
         
         this.renderGlobalMenu();
         
-        $('#invoices_iteminvoice').hide();
+        //$('#invoices_iteminvoice').hide();
         $('#invoicesClients').hide();
         $('#invoicesPs').hide();
+        $('#invoicesInvoices').hide();
         
         group = group==undefined?1:parseInt(group);
         
@@ -53,13 +58,13 @@ window.Invoices.Router = Backbone.Router.extend({
         
     },
     ps: function(query, group) {
-        console.log('QUERY2: %o; GROUP2: %o', query, group);
+        console.log('QUERY: %o; GROUP: %o', query, group);
         
         this.renderGlobalMenu();
         
-        $('#invoices_iteminvoice').hide();
         $('#invoicesClients').hide();
         $('#invoicesPs').hide();
+        $('#invoicesInvoices').hide();
         
         group = group==undefined?1:parseInt(group);
         
