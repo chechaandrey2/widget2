@@ -48,30 +48,10 @@ window.Invoices.viewPsTables = Backbone.View.extend({
         return this;
     },
     events: {
-        'blur #invoicesPsTablesNew [name^="new_"]':'eventNewPsTables',
-        'keypress #invoicesPsTablesNew [name^="new_"]':'eventNewPsTablesEnter',
         'click [name="save"]':'eventSaveItem',
         'click [name="del"]':'eventDeleteItem',
         'click [name="edit"]':'eventEditItem',
         'blur [data-label="edit"]':'eventSaveItemModel'
-    },
-    eventNewPsTablesEnter: function(e) {
-        if(e.which != 13) return;
-        this.eventNewPsTables.call(this, e);
-    },
-    eventNewPsTables: function(e) {
-        var id = this.helperGroup;
-        var res = this.collection.create({
-            title: $('#invoicesPsTablesNew [name="new_title"]', this.el).val(),
-            gr_id: id
-		}, {
-		    error: function(model, e) {console.log('model: %o; e: %o;', model, e)},
-		    success: function(model) {
-		        $('#invoicesPsTablesNew [name^="new_"]', this.el).each(function() {
-		            $(this).val('');
-		        });
-		    }
-		});		
     },
     helperGroup: 0,
     eventDeleteItem: function(e) {
@@ -85,16 +65,62 @@ window.Invoices.viewPsTables = Backbone.View.extend({
     },
     eventSaveItem: function(e) {
         var model = this.collection.get('gds_uid', $(e.target).attr('data-id'));
-        model.id = model.get('gds_uid');
-        model.save(null, {error: function(model, res) {
-            console.log('ERROR: %o; %o', model, res);
-        }});
+        if(model) {
+            model.id = model.get('gds_uid');
+            model.save(null, {error: function(model, res) {
+                console.log('ERROR: %o; %o', model, res);
+            }});
+        } else {
+            this.helperNewModel.call(this, e.target);
+        }
     },
     eventSaveItemModel: function(e) {
         var model = this.collection.get('gds_uid', $(e.target).attr('data-id'));
-        var arg = model.attributes;
-        arg[$(e.target).attr('name')] = $(e.target).val();
-        model.set(arg, {error: function(model, e) {console.error(e)}});
+        if(model) {
+            var arg = model.attributes;
+            arg[$(e.target).attr('name')] = $(e.target).val();
+            model.set(arg, {error: function(model, e) {console.error(e)}});
+        } else {
+            this.helperNewModel.call(this, e.target);
+        }
+    },
+    helperNewModel: function(el) {
+        var self = this;
+        var id = this.helperGroup;
+        var cel = this.helperSearchNewModel($(el));
+        
+        // lock
+        if(cel.attr('data-state') == 'saving') {
+            // call backbone error
+            return;
+        }
+        
+        cel.attr('data-state', 'saving');
+        
+        var res = this.collection.create({
+            title: $('[name="title"]', cel.get(0)).val(),
+            gr_id: id
+		}, {
+		    error: function(model, e) {console.log('model: %o; e: %o;', model, e)},
+		    success: function(model) {
+		        // remove appendChild model(Backbone collection add)
+		        self.collection.trigger('remove', model);
+		        // mod current element
+		        cel.removeAttr('data-new');
+		        cel.attr('data-id', model.get('gds_uid'));
+		        $('input, textarea', cel.get(0)).each(function() {
+		            if($(this).attr('data-id')) $(this).attr('data-id', model.get('gds_uid'));
+		        });
+		        $('input', cel.get(0)).removeAttr('disabled');
+		        // append new new
+		        $('#invoicesPsTbody', self.el).append(self.statsTemplate['psTablesItemNew']());
+		    }
+		});
+		
+		if(!res) cel.attr('data-state', 'new');
+    },
+    helperSearchNewModel: function(el) {
+        if(el.attr('data-state')) return el; else return this.helperSearchNewModel(el.parent());
     },
     helperDialogDel: function() {
         this.el.append(this.statsTemplate['psTablesDel']({id: this.helperGroup}));

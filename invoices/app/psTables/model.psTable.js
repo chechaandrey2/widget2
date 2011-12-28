@@ -15,6 +15,6 @@ window.Invoices.ModelPsTable = Backbone.Model.extend({
     },
     validate: function(attrs) {
         if(attrs.title !== undefined && !(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return 'Attribute "title" - incorrect';
-        if(attrs.price > 0 && !(/^\d+\.\d{2}$/i.test(attrs.price))) return 'Attribute "price" - incorrect';
+        //if(attrs.price > 0 && !(/^\d+\.\d{2}$/i.test(attrs.price))) return 'Attribute "price" - incorrect';
     }
 });
