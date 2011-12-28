@@ -142,6 +142,7 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/clientsContacts/template.clientsContacts.tpl');
     window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItem.tpl');
     window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItemEdit.tpl');
+    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItemNew.tpl');
     window.TPL.push('invoices/app/clientsContacts/template.clientsContactsDel.tpl');
     window.JS.push('invoices/app/clientsContacts/model.clientsContacts.js');
     window.JS.push('invoices/app/clientsContacts/collection.clientsContacts.js');

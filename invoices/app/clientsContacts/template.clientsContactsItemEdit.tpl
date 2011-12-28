@@ -1,5 +1,5 @@
 <tr data-id="<%= b_uid %>">
-    <td><img src="<%= img_url %>"  /></td>
+    <td><img src="<%= img_url %>" /></td>
     <td><input type="text" name="name" value="<%= name %>" data-label="edit" data-id="<%= b_uid %>" /></td>
     <td><input type="text" name="phone_main" value="<%= phone_main %>" data-label="edit" data-id="<%= b_uid %>" /></td>
     <td><input type="text" name="email" value="<%= email %>" data-label="edit" data-id="<%= b_uid %>" /></td>

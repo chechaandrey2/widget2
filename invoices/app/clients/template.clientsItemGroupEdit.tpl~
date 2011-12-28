@@ -1,1 +1,0 @@
-<span data-id="item-<%= gr_id %>"><input type="text" name="name-edit-<%= gr_id %>" value="<%= title %>" /></span>

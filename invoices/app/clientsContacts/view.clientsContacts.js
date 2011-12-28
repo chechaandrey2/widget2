@@ -22,12 +22,24 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContacts.tpl']),
         'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItem.tpl']),
         'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItemEdit.tpl']),
+        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItemNew.tpl']),
         'clientsContactsDel': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsDel.tpl'])
     },
     render: function(group) {
         
+        var self = this;
+        
         this.el.html(this.statsTemplate['clientsContacts']());
-        this.collection.fetch({data: {gr_id: group}, add: true});
+        this.collection.fetch({
+            data: {gr_id: group}, 
+            add: true,
+            success: function(collection, response) {
+                $('#invoicesClientsTbody', self.el).append(self.statsTemplate['clientsContactsItemNew']());
+            },
+            error: function(collection, response) {
+                console.log('collection: %o; response: %o;', collection, response)
+            }
+        });
         
         this.helperGroup = group;
         
@@ -36,32 +48,10 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         return this;
     },
     events: {
-        'blur #invoicesClientsContactsNew [name^="new_"]':'eventNewClientContacts',
-        'keypress #invoicesClientsContactsNew [name^="new_"]':'eventNewClientContactsEnter',
         'click [name="save"]':'eventSaveItem',
         'click [name="del"]':'eventDeleteItem',
         'click [name="edit"]':'eventEditItem',
         'blur [data-label="edit"]':'eventSaveItemModel'
-    },
-    eventNewClientContactsEnter: function(e) {
-        if(e.which != 13) return;
-        this.eventNewClientContacts.call(this, e);
-    },
-    eventNewClientContacts: function(e) {
-        var id = this.helperGroup;
-        var res = this.collection.create({
-            name: $('#invoicesClientsContactsNew [name="new_name"]', this.el).val(),
-            phone_main: $('#invoicesClientsContactsNew [name="new_phone"]', this.el).val(),
-            email: $('#invoicesClientsContactsNew [name="new_email"]', this.el).val(),
-            gr_id: id
-		}, {
-		    error: function(model, e) {console.log('model: %o; e: %o;', model, e)},
-		    success: function(model) {
-		        $('#invoicesClientsContactsNew [name^="new_"]', this.el).each(function() {
-		            $(this).val('');
-		        });
-		    }
-		});		
     },
     helperGroup: 0,
     eventDeleteItem: function(e) {
@@ -75,16 +65,64 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
     },
     eventSaveItem: function(e) {
         var model = this.collection.get('b_uid', $(e.target).attr('data-id'));
-        model.id = model.get('b_uid');
-        model.save(null, {error: function(model, res) {
-            console.log('ERROR: %o; %o', model, res);
-        }});
+        if(model) {
+            model.id = model.get('b_uid');
+            model.save(null, {error: function(model, res) {
+                console.log('ERROR: %o; %o', model, res);
+            }});
+        } else {
+            this.helperNewModel.call(this, e.target);
+        }
     },
     eventSaveItemModel: function(e) {
         var model = this.collection.get('b_uid', $(e.target).attr('data-id'));
-        var arg = model.attributes;
-        arg[$(e.target).attr('name')] = $(e.target).val();
-        model.set(arg, {error: function(model, e) {console.error(e)}});
+        if(model) {
+            var arg = model.attributes;
+            arg[$(e.target).attr('name')] = $(e.target).val();
+            model.set(arg, {error: function(model, e) {console.error(e)}});
+        } else {
+            this.helperNewModel.call(this, e.target);
+        }
+    },
+    helperNewModel: function(el) {
+        var self = this;
+        var id = this.helperGroup;
+        var cel = this.helperSearchNewModel($(el));
+        
+        // lock
+        if(cel.attr('data-state') == 'saving') {
+            // call backbone error
+            return;
+        }
+        
+        cel.attr('data-state', 'saving');
+        
+        var res = this.collection.create({
+            name: $('[name="name"]', cel.get(0)).val(),
+            phone_main: $('[name="phone_main"]', cel.get(0)).val(),
+            email: $('[name="email"]', cel.get(0)).val(),
+            gr_id: id
+		}, {
+		    error: function(model, e) {console.log('model: %o; e: %o;', model, e)},
+		    success: function(model) {
+		        // remove appendChild model(Backbone collection add)
+		        self.collection.trigger('remove', model);
+		        // mod current element
+		        cel.removeAttr('data-new');
+		        cel.attr('data-id', model.get('b_uid'));
+		        $('input, textarea', cel.get(0)).each(function() {
+		            if($(this).attr('data-id')) $(this).attr('data-id', model.get('b_uid'));
+		        });
+		        $('input', cel.get(0)).removeAttr('disabled');
+		        // append new new
+		        $('#invoicesClientsTbody', self.el).append(self.statsTemplate['clientsContactsItemNew']());
+		    }
+		});
+		
+		if(!res) cel.attr('data-state', 'new');
+    },
+    helperSearchNewModel: function(el) {
+        if(el.attr('data-state')) return el; else return this.helperSearchNewModel(el.parent());
     },
     helperDialogDel: function() {
         this.el.append(this.statsTemplate['clientsContactsDel']({id: this.helperGroup}));

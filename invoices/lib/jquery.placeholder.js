@@ -1,11 +1,11 @@
 (function($) {
     
-    var isInputSupported = false;//'placeholder' in document.createElement('input'),
-	    isTextareaSupported = false;//'placeholder' in document.createElement('textarea');
+    var isInputSupported = 'placeholder' in document.createElement('input'),
+	    isTextareaSupported = 'placeholder' in document.createElement('textarea');
     var defOptions = {
         'class': 'placeholder'
     }
-
+    
 	$.fn.extend({
 	    placeholder: function(options) {
 	        
@@ -25,6 +25,16 @@
 	        
 	        return this;
 	        
+	    },
+	    removePlaceholder: function(options) {
+	    
+	        var opt = $.extend({}, defOptions, options);
+	        
+	        this.each(function() {
+	            callbackFocus(this, opt['class']);
+	        });
+	        
+	        return this;
 	    }
 	});
 	
@@ -32,17 +42,23 @@
 	    if(isInputSupported && isTextareaSupported) {
 	        $(el).removeClass(className);
 	    } else {
-	        $(el).removeClass(className);
-	        $(el).val('');
+	        if($(el).hasClass(className)) {
+	            $(el).removeClass(className);
+	            $(el).val('');
+	        }
 	    }
 	}
 	
 	function callbackBlur(el, className) {
 	    if(isInputSupported && isTextareaSupported) {
-	        $(el).addClass(className);
+	        if(($(el).val()+'').length <= 0) {
+	            $(el).addClass(className);
+	        }
 	    } else {
-	        $(el).addClass(className);
-	        if($(this).val() == '') $(this).val($(this).attr('pplaceholder'));
+	        if(($(el).val()+'').length <= 0) {
+	            $(el).addClass(className);
+	            $(el).val($(el).attr('placeholder'));
+	        }
 	    }
 	}
 	
