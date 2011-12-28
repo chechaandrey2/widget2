@@ -162,6 +162,7 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/psTables/template.psTables.tpl');
     window.TPL.push('invoices/app/psTables/template.psTablesItem.tpl');
     window.TPL.push('invoices/app/psTables/template.psTablesItemEdit.tpl');
+    window.TPL.push('invoices/app/psTables/template.psTablesItemNew.tpl');
     window.TPL.push('invoices/app/psTables/template.psTablesDel.tpl');
     window.JS.push('invoices/app/psTables/model.psTable.js');
     window.JS.push('invoices/app/psTables/collection.psTables.js');

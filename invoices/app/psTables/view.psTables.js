@@ -22,12 +22,24 @@ window.Invoices.viewPsTables = Backbone.View.extend({
         'psTables': _.template(window.Invoices.TEMPLATE['invoices/app/psTables/template.psTables.tpl']),
         'psTablesItem': _.template(window.Invoices.TEMPLATE['invoices/app/psTables/template.psTablesItem.tpl']),
         'psTablesItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/psTables/template.psTablesItemEdit.tpl']),
+        'psTablesItemNew': _.template(window.Invoices.TEMPLATE['invoices/app/psTables/template.psTablesItemNew.tpl']),
         'psTablesDel': _.template(window.Invoices.TEMPLATE['invoices/app/psTables/template.psTablesDel.tpl'])
     },
     render: function(group) {
+    
+        var self = this;
         
         this.el.html(this.statsTemplate['psTables']());
-        this.collection.fetch({data: {gr_id: group}, add: true});
+        this.collection.fetch({
+            data: {gr_id: group}, 
+            add: true,
+            success: function(collection, response) {
+                $('#invoicesPsTbody', self.el).append(self.statsTemplate['psTablesItemNew']());
+            },
+            error: function(collection, response) {
+                console.log('collection: %o; response: %o;', collection, response)
+            }
+        });
         
         this.helperGroup = group;
         
