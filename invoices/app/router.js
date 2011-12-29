@@ -1,8 +1,8 @@
 window.Invoices.Router = Backbone.Router.extend({
     initialize: function() {
         // #
-        //this.route(/^(iteminvoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
-        //this.route(/^(iteminvoice\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
+        this.route(/^(iteminvoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
+        this.route(/^(iteminvoice\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
         this.route(/^(invoices\/).*$/i, 'invoices', this.invoices);
         this.route(/^(invoices\/([a-z0-9]+)\/).*$/i, 'invoices', this.invoices);
         this.route(/^(clients\/).*$/i, 'clients', this.clients);
@@ -26,7 +26,18 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesPs').hide();
         $('#invoicesInvoices').hide();
         
+        status = parseInt(status)>=0?parseInt(status):'-1';
         
+        if(!this.isObject(this._views['invoices'])) {
+		    this._views['invoices'] = new window.Invoices.ViewInvoices({
+		        router: this, 
+		        collection: new window.Invoices.CollectionInvoices()
+		    });
+		    this._views['invoices'].render();
+		    this._views['invoices'].renderItem(status);
+		} else {
+		    this._views['invoices'].renderItem(status);
+		}
         
         $('#invoicesInvoices').show();
         
@@ -36,7 +47,6 @@ window.Invoices.Router = Backbone.Router.extend({
         
         this.renderGlobalMenu();
         
-        //$('#invoices_iteminvoice').hide();
         $('#invoicesClients').hide();
         $('#invoicesPs').hide();
         $('#invoicesInvoices').hide();
@@ -86,6 +96,11 @@ window.Invoices.Router = Backbone.Router.extend({
         console.log('QUERY: %o; ID: %o', query, id);
         
         this.renderGlobalMenu();
+        
+        $('#invoicesClients').hide();
+        $('#invoicesPs').hide();
+        $('#invoicesInvoices').hide();
+        
         /*
         $('#invoices_iteminvoice').hide();
         $('#invoicesClients').hide();

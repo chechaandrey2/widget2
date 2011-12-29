@@ -174,6 +174,13 @@ $(document).ready(function() {
     window.JS.push("invoices/app/invoices/collection.invoices.js");
     window.JS.push('invoices/app/invoices/view.invoices.js');
     
+    // -invoicesTables-
+    window.TPL.push("invoices/app/invoicesTables/template.invoicesTables.tpl");
+    window.TPL.push("invoices/app/invoicesTables/template.invoicesTablesItem.tpl");
+    window.JS.push("invoices/app/invoicesTables/model.invoicesTable.js");
+    window.JS.push("invoices/app/invoicesTables/collection.invoicesTables.js");
+    window.JS.push('invoices/app/invoicesTables/view.invoicesTables.js');
+    
     // --ROUTER--
     JS.push("invoices/app/router.js");
     // --PATHS--
