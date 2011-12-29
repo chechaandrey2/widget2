@@ -177,6 +177,7 @@ $(document).ready(function() {
     // -invoicesTables-
     window.TPL.push("invoices/app/invoicesTables/template.invoicesTables.tpl");
     window.TPL.push("invoices/app/invoicesTables/template.invoicesTablesItem.tpl");
+    window.TPL.push('invoices/app/invoicesTables/template.invoicesTablesItemDel.tpl');
     window.JS.push("invoices/app/invoicesTables/model.invoicesTable.js");
     window.JS.push("invoices/app/invoicesTables/collection.invoicesTables.js");
     window.JS.push('invoices/app/invoicesTables/view.invoicesTables.js');

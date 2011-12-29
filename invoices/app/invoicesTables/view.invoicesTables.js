@@ -20,7 +20,8 @@ window.Invoices.ViewInvoicesTables = Backbone.View.extend({
     },
     statsTemplate: {
         'invoicesTables': _.template(window.Invoices.TEMPLATE['invoices/app/invoicesTables/template.invoicesTables.tpl']),
-        'invoicesTablesItem': _.template(window.Invoices.TEMPLATE['invoices/app/invoicesTables/template.invoicesTablesItem.tpl'])
+        'invoicesTablesItem': _.template(window.Invoices.TEMPLATE['invoices/app/invoicesTables/template.invoicesTablesItem.tpl']),
+        'invoicesTablesItemDel': _.template(window.Invoices.TEMPLATE['invoices/app/invoicesTables/template.invoicesTablesItemDel.tpl'])
     },
     render: function(st) {
         
@@ -34,10 +35,42 @@ window.Invoices.ViewInvoicesTables = Backbone.View.extend({
             }
         });
         
+        this.helperDialogDel();
+        
         return this;
         
     },
     events: {
-        
-    }
+        'click [name="remove"]': 'eventRemoveItem'
+    },
+    eventRemoveItem: function(e) {
+        this.helperItemDelModel = this.collection.get('inv_uid', $(e.target).attr('data-id'));
+        $('#invoicesInvoicesTablesDialogDel').dialog("open");
+    },
+    helperDialogDel: function() {
+        this.el.append(this.statsTemplate['invoicesTablesItemDel']());
+        var self = this;
+        $('#invoicesInvoicesTablesDialogDel', this.el).dialog({
+            autoOpen:false,
+            resizable: false,
+			modal: true,
+			buttons: {
+				Remove: function() {
+				    var dialog = this;
+				    
+				    self.helperItemDelModel.id = self.helperItemDelModel.get('inv_uid');// hack
+				    
+				    //self.helperItemDelModel.destroy({success: function(model) {
+				    //    $(dialog).dialog('close');
+				    //}});
+                    
+                    self.helperItemDelModel = undefined;
+				},
+				Cancel: function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+    },
+    helperItemDelModel: undefined
 });
