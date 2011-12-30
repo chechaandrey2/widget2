@@ -102,7 +102,7 @@ if(location.host == 'localhost:8000') {
                 console.warn('Backbone.sync RESPONCE: %o', data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Backbone.sync($.ajax) error: jqXHR: %o; textStatus: %o; errorThrown: %o;');
+                console.error('Backbone.sync($.ajax) error: jqXHR: %o; textStatus: %o; errorThrown: %o;', jqXHR, textStatus, errorThrown);
             }
         });
         
