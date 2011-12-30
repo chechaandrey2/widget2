@@ -27,13 +27,17 @@ window.Invoices.ViewInvoicesTables = Backbone.View.extend({
         
         this.el.html(this.statsTemplate['invoicesTables']());
         
+        var data = st===0?{}:{status: st};
+        
         this.collection.fetch({
-            //data: {status: st}, 
+            data: data, 
             add: true,
             error: function(collection, response) {
                 console.log('collection: %o; response: %o;', collection, response)
             }
         });
+        
+        this.helperStatus = st;
         
         this.helperDialogDel();
         
@@ -41,16 +45,35 @@ window.Invoices.ViewInvoicesTables = Backbone.View.extend({
         
     },
     events: {
-        'click [name="remove"]': 'eventRemoveItem'
+        'click [name="remove"]': 'eventRemoveItem',
+        'click [name="issued"]': 'eventUpdateItem'
     },
     eventRemoveItem: function(e) {
         this.helperItemDelModel = this.collection.get('inv_uid', $(e.target).attr('data-id'));
-        $('#invoicesInvoicesTablesDialogDel').dialog("open");
+        $('#invoicesInvoicesTablesDialogDel-'+this.helperStatus).dialog("open");
     },
-    helperDialogDel: function() {
-        this.el.append(this.statsTemplate['invoicesTablesItemDel']());
+    eventUpdateItem: function(e) {
+        
+        var model = this.collection.get('inv_uid', $(e.target).attr('data-id'));
+        
+        model.id = model.get('inv_uid');
+        
+        model.set({'issued_at': Math.ceil(new Date().getTime()/1000)}, {silent:true});
+        
+        model.save(null, {
+            success: function(model) {
+                console.log('SUCCESS');
+            },
+            error: function(model, e) {
+                console.log('ERROR');
+            }
+        });
+        
+    },
+    helperDialogDel: function(id) {
+        this.el.append(this.statsTemplate['invoicesTablesItemDel']({id: this.helperStatus}));
         var self = this;
-        $('#invoicesInvoicesTablesDialogDel', this.el).dialog({
+        $('#invoicesInvoicesTablesDialogDel-'+this.helperStatus, this.el).dialog({
             autoOpen:false,
             resizable: false,
 			modal: true,
@@ -60,9 +83,12 @@ window.Invoices.ViewInvoicesTables = Backbone.View.extend({
 				    
 				    self.helperItemDelModel.id = self.helperItemDelModel.get('inv_uid');// hack
 				    
-				    //self.helperItemDelModel.destroy({success: function(model) {
-				    //    $(dialog).dialog('close');
-				    //}});
+				    self.helperItemDelModel.destroy({success: function(model) {
+				        
+				        console.warn('Invoices move to archive');
+				        
+				        $(dialog).dialog('close');
+				    }});
                     
                     self.helperItemDelModel = undefined;
 				},
@@ -72,5 +98,6 @@ window.Invoices.ViewInvoicesTables = Backbone.View.extend({
 			}
 		});
     },
-    helperItemDelModel: undefined
+    helperItemDelModel: undefined,
+    helperStatus: 0
 });

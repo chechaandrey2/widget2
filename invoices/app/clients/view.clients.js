@@ -89,7 +89,7 @@ window.Invoices.ViewClients = Backbone.View.extend({
         $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
             .replaceWith(this.statsTemplate['clientsItemGroupEdit'](model.toJSON()));
     },
-    eventGroupEditBlur: function(e) {console.log(e.target);
+    eventGroupEditBlur: function(e) {
         // optimize
         e.target.disabled = true;
         

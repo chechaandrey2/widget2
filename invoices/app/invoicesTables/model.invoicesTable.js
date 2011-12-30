@@ -16,7 +16,7 @@ window.Invoices.ModelInvoicesTable = Backbone.Model.extend({
     syncArg: {
         'read': null,
         'create': null,
-        'update': 'issued',
-        'delete': 'closed'
+        'update': 'issue_invoice',
+        'delete': 'archive_invoice'
     }
 });

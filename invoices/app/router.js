@@ -26,8 +26,6 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesPs').hide();
         $('#invoicesInvoices').hide();
         
-        status = parseInt(status)>=0?parseInt(status):'-1';
-        
         if(!this.isObject(this._views['invoices'])) {
 		    this._views['invoices'] = new window.Invoices.ViewInvoices({
 		        router: this, 

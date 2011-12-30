@@ -49,11 +49,15 @@ if(location.host == 'localhost:8000') {
         var data = JSON.parse(e.data) || {};
         var id = data['id'];
         var res = JSON.parse(data['data']) || {};
-        if((res.status+'').toLowerCase() == 'ok') {
-            window.bridgeObjects[id]['options'].success(res.data);
+        res.data = res.data || [];
+        
+        if(!(res.data instanceof Object) || !(res.data instanceof Array) || res.data.error > 0) {
+            //window.bridgeObjects[id]['options'].error(res.data);
+            console.error('Backbone.sync ERROR: Response: %o;', res.data);
         } else {
-            window.bridgeObjects[id]['options'].error(res.data);
+            window.bridgeObjects[id]['options'].success(res.data);
         }
+        
         delete window.bridgeObjects[id];
     }, false);
     // Backbone.sync
@@ -87,8 +91,14 @@ if(location.host == 'localhost:8000') {
             success: function(data, textStatus, jqXHR) {
                 // always expect only json
                 data = data || {};
-                data.data = data.data || {};
-                if(typeof(options.success) == 'function') options.success.call(this, data.data);
+                data.data = data.data || [];
+                
+                if(!(data.data instanceof Object) || !(data.data instanceof Array) || data.data.error > 0) {
+                    console.error('Backbone.sync ERROR: Response: %o;', data.data);
+                } else {
+                    if(typeof(options.success) == 'function') options.success.call(this, data.data);
+                }
+                
                 console.warn('Backbone.sync RESPONCE: %o', data);
             },
             error: function(jqXHR, textStatus, errorThrown) {

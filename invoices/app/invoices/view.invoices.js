@@ -20,6 +20,8 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
         
     },
     renderItem: function(st) {
+    
+        if(!_.include(this.collection.pluck('name'), st)) st = 0;
         
         if(!$('#invoicesInvoicesTabs > #invoicesInvoicesItem-'+st).size()) 
             $('#invoicesInvoicesTabs').append($('<div></div>').attr('id', 'invoicesInvoicesItem-'+st));
@@ -35,8 +37,17 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
             //this._views[st].render(st);
         }
         
+        // helper
+        this.helperSelected(st);        
     },
-    events: {
-        
-    }
+    helperSelected: function(id) {
+        $('#invoicesInvoicesTabs #invoicesInvoicesTabsList', this.el).children().each(function() {
+            if($(this).attr('data-id') != id) $(this).removeAttr('data-selected');
+        });
+        $('#invoicesInvoicesTabs [id^="invoicesInvoicesItem-"]', this.el).hide();
+        $('#invoicesInvoicesTabs #invoicesInvoicesTabsList [data-id="'+id+'"]', this.el).attr('data-selected', 'selected');
+        $('#invoicesInvoicesTabs [id="invoicesInvoicesItem-'+id+'"]', this.el).show();
+        this.helperSelectedItem = id;
+    },
+    helperSelectedItem: 0
 });

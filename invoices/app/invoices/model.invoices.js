@@ -1,6 +1,7 @@
 window.Invoices.ModelInvoices = Backbone.Model.extend({
     defaults: {
         id: 0,
-        name: 'item status'
+        name: 'unknown status',
+        title: 'unknown title'
     }
 });
