@@ -2,7 +2,8 @@ window.Invoices.Router = Backbone.Router.extend({
     initialize: function() {
         // #
         this.route(/^(iteminvoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
-        this.route(/^(iteminvoice\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
+        this.route(/^(iteminvoice\/(view|edit)\/).*$/i, 'iteminvoice', this.iteminvoice);
+        this.route(/^(iteminvoice\/(view|edit)\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
         this.route(/^(invoices\/).*$/i, 'invoices', this.invoices);
         this.route(/^(invoices\/([a-z0-9]+)\/).*$/i, 'invoices', this.invoices);
         this.route(/^(clients\/).*$/i, 'clients', this.clients);
@@ -25,6 +26,7 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesClients').hide();
         $('#invoicesPs').hide();
         $('#invoicesInvoices').hide();
+        $('#invoicesItemInvoice').hide();
         
         if(!this.isObject(this._views['invoices'])) {
 		    this._views['invoices'] = new window.Invoices.ViewInvoices({
@@ -48,6 +50,7 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesClients').hide();
         $('#invoicesPs').hide();
         $('#invoicesInvoices').hide();
+        $('#invoicesItemInvoice').hide();
         
         group = group==undefined?1:parseInt(group);
         
@@ -73,6 +76,7 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesClients').hide();
         $('#invoicesPs').hide();
         $('#invoicesInvoices').hide();
+        $('#invoicesItemInvoice').hide();
         
         group = group==undefined?1:parseInt(group);
         
@@ -90,28 +94,26 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesPs').show();
         
     },
-    iteminvoice: function(query, id) {
-        console.log('QUERY: %o; ID: %o', query, id);
+    iteminvoice: function(query, mod, id) {
+        console.warn('QUERY: %o; ID: %o; MOD: %o', query, id, mod);
         
         this.renderGlobalMenu();
         
         $('#invoicesClients').hide();
         $('#invoicesPs').hide();
         $('#invoicesInvoices').hide();
+        $('#invoicesItemInvoice').hide();
         
-        /*
-        $('#invoices_iteminvoice').hide();
-        $('#invoicesClients').hide();
-        
-        if(!this.isObject(this._views['iteminvoice'])) {
-		    this._views['iteminvoice'] = new window.Invoices.VIEWITEMINVOICE({
-		        model: new window.Invoices.COLLECTIONGLOBALMENU(), router: this
+        if(!this.isObject(this._views['invoice'])) {
+		    this._views['invoice'] = new window.Invoices.ViewItemInvoice({
+		        router: this, 
+		        collection: new window.Invoices.CollectionItemInvoice()
 		    });
-		    this._views['iteminvoice'].render();
 		}
+		// cache on referal
+		this._views['invoice'].render(id, mod);
 		
-		$('#invoices_iteminvoice').show();
-		*/
+		$('#invoicesItemInvoice').show();
         
     },
     renderGlobalMenu: function() {

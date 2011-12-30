@@ -131,12 +131,6 @@ $(document).ready(function() {
     window.JS.push("invoices/app/globalmenu/collection.globalMenu.js");
     window.JS.push('invoices/app/globalmenu/view.globalMenu.js');
     
-    // -iteminvoice-
-    window.TPL.push("invoices/app/iteminvoice/template.iteminvoice.tpl");
-    window.TPL.push('invoices/app/iteminvoice/template.iteminvoice_new_ps.tpl');
-    window.JS.push("invoices/app/iteminvoice/model.iteminvoice.js");
-    window.JS.push('invoices/app/iteminvoice/view.iteminvoice.js');
-    
     // -clients-
     window.TPL.push("invoices/app/clients/template.clients.tpl");
     window.TPL.push('invoices/app/clients/template.clientsItemGroup.tpl');
@@ -191,6 +185,19 @@ $(document).ready(function() {
     window.JS.push("invoices/app/invoicesTables/model.invoicesTable.js");
     window.JS.push("invoices/app/invoicesTables/collection.invoicesTables.js");
     window.JS.push('invoices/app/invoicesTables/view.invoicesTables.js');
+    
+    // -iteminvoice-
+    window.TPL.push("invoices/app/itemInvoice/template.itemInvoice.tpl");
+    window.JS.push("invoices/app/itemInvoice/model.itemInvoice.js");
+    window.JS.push("invoices/app/itemInvoice/collection.itemInvoice.js");
+    window.JS.push('invoices/app/itemInvoice/view.itemInvoice.js');
+    
+    // -iteminvoicebuyers
+    window.TPL.push("invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyers.tpl");
+    window.TPL.push("invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyersItem.tpl");
+    window.JS.push("invoices/app/itemInvoiceBuyers/model.itemInvoiceBuyers.js");
+    window.JS.push("invoices/app/itemInvoiceBuyers/collection.itemInvoiceBuyers.js");
+    window.JS.push('invoices/app/itemInvoiceBuyers/view.itemInvoiceBuyers.js');
     
     // --ROUTER--
     JS.push("invoices/app/router.js");
