@@ -16,12 +16,12 @@ window.Invoices.ViewItemInvoice = Backbone.View.extend({
     },
     render: function(id, mod) {
     
-        
-    
         var self = this;
         if(id) {
             this.collection.fetch({data: {inv_uid: id}, add: true, success: function(collection, response) {
-            
+                
+                // read add user info
+                
                 var view = new window.Invoices.itemInvoiceBuyers({
                     router: this.route, 
                     collection: new window.Invoices.CollectionItemInvoiceBuyers(),
@@ -33,9 +33,12 @@ window.Invoices.ViewItemInvoice = Backbone.View.extend({
                     name: self.collection.models[0].get('b_uid')
                 });
                 
+                // view.render(self.collection.models[0].attributes); // ???
+                
             }});
         } else {
             // отрисовка пустых коллекций, view
+            console.warn('RENDER EMPTY');
         }
         
         return this;
