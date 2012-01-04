@@ -16,68 +16,89 @@
         autocomplete: function(options) {
             var opt = $.extend({}, defOptions, options);
             
+            var self = this;
+            
             var render = function(e) {
+                var self = this;
                 setTimeout(function() {
                     var value = $(e.target).val();
 				    if(value.length >= opt.minLength) {
 				        if(typeof opt.render == 'function') {
-                            opt.render(opt, value);
+                            opt.render.call(self, opt, value);
                         }
                         
                         $($(opt.selectorItem, opt.el).get(0)).attr('data-selected', 'selected');
                         
                         if($(opt.el).children().size() < 1 && typeof opt.renderEmpty == 'function') {
-                            opt.renderEmpty(opt, value);
+                            opt.renderEmpty.call(self, opt, value);
                         }
 				    } else {
-				        if(typeof opt.hided == 'function') opt.hided(opt);
+				        if(typeof opt.hided == 'function') opt.hided.call(self, opt);
 				    }
 				}, 0);
             }
             
+            var selected = function(el) {
+				if(el && typeof opt.selected == 'function') {
+				    opt.selected.call(this, opt, $(this).val(), el);
+				}
+            }
+            
+            var listener = false;
+            
             $(this).bind('focus', function(e) {
-                
+                listener = true;
             });
             
             $(this).bind('keydown', function(e) {
+                if(!listener) return;
                 switch(e.which) {
                     case 38:// UP
                         var length = $(opt.selectorItem, opt.el).size();
 					    var pos = $(opt.selectorItem, opt.el).index($('[data-selected="selected"]'));
 					    $(opt.selectorItem, opt.el).removeAttr('data-selected');
 					    $($(opt.selectorItem, opt.el).get(pos-1>=0?pos-1:length-1)).attr('data-selected', 'selected');
-					    event.preventDefault();
+					    e.preventDefault();
 					break;
 					case 40:// DOWN
 					    var length = $(opt.selectorItem, opt.el).size();
 					    var pos = $(opt.selectorItem, opt.el).index($('[data-selected="selected"]'));
 					    $(opt.selectorItem, opt.el).removeAttr('data-selected');
 					    $($(opt.selectorItem, opt.el).get(pos+1<length?pos+1:0)).attr('data-selected', 'selected');
-					    event.preventDefault();
+					    e.preventDefault();
 					break;
 				    case 13:// ENTER
 				        // selected
 				        var pos = $(opt.selectorItem, opt.el).index($('[data-selected="selected"]'));
-				        if(typeof opt.selected == 'function') {
-                            opt.selected(opt, $(this).val(), $(opt.selectorItem, opt.el).get(pos));
-                        }
-					    event.preventDefault();
+				        var el = $(opt.selectorItem, opt.el).get(pos);
+				        selected.call(this, el);
+				        if(typeof opt.hided == 'function') opt.hided.call(this, opt);
+					    e.preventDefault();
 					break;/*
 					case 8:// ESCAPE
 					    render(e);
 					break;*/
 				    default:// OTHER KEY
-					    render(e);
+					    render.call(this, e);
 					break;
                 }
             });
             
             $(this).bind('blur', function(e) {
-                if(typeof opt.hided == 'function') opt.hided(opt);
+                listener = false;
+                setTimeout(function() {
+                    if(typeof opt.hided == 'function') opt.hided.call(this, opt);
+                }, 150);
             });
             
             $(opt.el).delegate(opt.selectorItem, 'click', function(e) {
-                
+                selected.call(self, e.target);
+                $(self).focus();
+            });
+            
+            $(opt.el).delegate(opt.selectorItem, 'mouseover', function(e) {
+                $(opt.selectorItem, opt.el).removeAttr('data-selected');
+                $(e.target).attr('data-selected', 'selected');
             });
             
             return this;
