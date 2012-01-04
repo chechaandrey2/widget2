@@ -33,8 +33,8 @@ window.Invoices.itemInvoiceBuyers = Backbone.View.extend({
         // create view findBuyers
         this._viewFind = new window.Invoices.ViewItemInvoiceBuyersFind({
             router: this.router,
-            collection: new window.Invoices.CollectionItemInvoiceBuyersFind(),
-            el: elHelp
+            collection: new window.Invoices.CollectionItemInvoiceBuyersFindGroup(),
+            el: $(elHelp)
         });
         
         var self = this;
@@ -43,16 +43,24 @@ window.Invoices.itemInvoiceBuyers = Backbone.View.extend({
         $('#invoicesItemInvoiceBuyersFind', this.el).autocomplete({
             minLength: 2,
             el: elHelp,
-            selectorItem: '',
+            selectorItem: '[data-id]',
             // events
-            selected: function(opts, value) {
-                
+            selected: function(opts, value, el) {
+                if(!$(el).attr('data-role') == 'buyer') {
+                    if(self.collection.find(function(model) {
+                        return $(el).attr('data-id') == model.get('b_uid');
+                    })) {
+                        self.collection.add();
+                    }
+                } else if($(el).attr('data-role') == 'group') {
+                    // ajax
+                }
             },
             render: function(opts, value) {
-                this._viewFind.render(value, this);
+                self._viewFind.render(value);
                 $(opts.el).show();
             },
-            renderEmpty: function(opts, value, el) {
+            renderEmpty: function(opts, value) {
                 $(opts.el).html(self.statsTemplate['itemInvoiceBuyersNewButton']());
                 $(opts.el).show();
             },

@@ -203,6 +203,15 @@ $(document).ready(function() {
     window.JS.push("invoices/app/itemInvoiceBuyers/collection.itemInvoiceBuyers.js");
     window.JS.push('invoices/app/itemInvoiceBuyers/view.itemInvoiceBuyers.js');
     
+    // -iteminvoicebuyersFind
+    window.TPL.push("invoices/app/itemInvoiceBuyersFind/template.itemInvoiceBuyersFindItem.tpl");
+    window.TPL.push("invoices/app/itemInvoiceBuyersFind/template.itemInvoiceBuyersFindGroupItem.tpl");
+    window.JS.push("invoices/app/itemInvoiceBuyersFind/model.itemInvoiceBuyersFindGroup.js");
+    window.JS.push("invoices/app/itemInvoiceBuyersFind/collection.itemInvoiceBuyersFindGroup.js");
+    window.JS.push("invoices/app/itemInvoiceBuyersFind/model.itemInvoiceBuyersFind.js");
+    window.JS.push("invoices/app/itemInvoiceBuyersFind/collection.itemInvoiceBuyersFind.js");
+    window.JS.push('invoices/app/itemInvoiceBuyersFind/view.itemInvoiceBuyersFind.js');
+    
     // --ROUTER--
     JS.push("invoices/app/router.js");
     // --PATHS--

@@ -91,13 +91,22 @@
             });
             
             $(opt.el).delegate(opt.selectorItem, 'click', function(e) {
-                selected.call(self, e.target);
-                $(self).focus();
-            });
-            
-            $(opt.el).delegate(opt.selectorItem, 'mouseover', function(e) {
-                $(opt.selectorItem, opt.el).removeAttr('data-selected');
-                $(e.target).attr('data-selected', 'selected');
+                var $c = $(opt.selectorItem, opt.el);
+                var f1 = function($c, el, i) {// max 2 level rec
+                    if(i >= 2) return -1;
+                    var index = $c.index(el);
+                    if(index < 0) {
+                        i++;
+                        return f1($c, el.parentNode, i);
+                    } else {
+                        return el
+                    }
+                }
+                var el = f1($c, e.target, 0);
+                if($(el).size() > 0) {
+                    selected.call(self, el);
+                    $(self).focus();
+                }
             });
             
             if(typeof opt.hided == 'function') opt.hided.call(this, opt);

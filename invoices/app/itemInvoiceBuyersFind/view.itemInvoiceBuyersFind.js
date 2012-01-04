@@ -7,24 +7,101 @@ window.Invoices.ViewItemInvoiceBuyersFind = Backbone.View.extend({
         
     },
     eventAdd: function(model) {
-        this.el.append();
+        this.el.append(this.statsTemplate['itemInvoiceBuyersFindItem'](model.toJSON()));
     },
     eventAddGroup: function(model) {
-        this.el.append();
+        this.el.append(this.statsTemplate['itemInvoiceBuyersFindGroupItem'](model.toJSON()));
     },
     collections: {},// key: collectionBuyersFind
     statsTemplate: {
-        //'itemInvoice': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoice.tpl'])
+        'itemInvoiceBuyersFindItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoiceBuyersFind/template.itemInvoiceBuyersFindItem.tpl']),
+        'itemInvoiceBuyersFindGroupItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoiceBuyersFind/template.itemInvoiceBuyersFindGroupItem.tpl'])
     },
-    render: function(value, el) {
-    
-        this.collection.each(function(model) {
-            // draw for value
-        });
+    render: function(value) {
         
+        var self = this;
         
+        $(this.el).empty();
+        
+        this.helperRenderHelpGroup(value);
+        
+        // cach engine
+        var arg = this.helperCheckCache(value);
+        if(arg !== false) {
+            if(this.helperStatus[arg] != 'load') {
+            
+                if(this.collections[arg]) {
+                    this.helperRenderHelp(arg, value);
+                } else {
+                    this.helperFetchHelp(arg);
+                }
+                
+            } else {
+                
+                // return this;
+                
+            }
+        } else {
+            
+            this.helperFetchHelp(value);
+            
+        }
+        
+        this.helperCurrentQuery = value;
         
         return this;
     },
+    helperCheckCache: function(value) {
+        for(var i in this.helperStatus) {
+            if(new RegExp(i, 'i').test(value)) {
+                return i;
+            }
+        }
+        return false;
+    },
+    helperRenderHelp: function(arg, value) {
+        var self = this;
+        this.collections[arg].each(function(model) {
+            if(new RegExp(value, 'i').test(model.get('name')) 
+              || new RegExp(value, 'i').test(model.get('phone_main')) 
+              || new RegExp(value, 'i').test(model.get('email'))) {
+                self.eventAdd(model);
+            }
+        });
+    },
+    helperRenderHelpGroup: function(arg) {
+        var self = this;
+        this.collection.each(function(model) {
+            if(new RegExp(arg, 'i').test(model.get('title'))) {
+                self.eventAddGroup(model);
+            }
+        });
+    },
+    helperFetchHelp: function(arg) {
+        var self = this;
+        this.helperStatus[arg] = 'load';
+        this.collections[arg] = new window.Invoices.CollectionItemInvoiceBuyersFind();
+        this.collections[arg].fetch({
+            data: {all: arg},
+            success: function(collection) {
+                self.helperStatus[arg] = 'loaded';
+                
+                // ???
+                // рендер, который вклинивается сам по себе!!!
+                if(self.helperCurrentQuery) {
+                    $(self.el).empty();
+                    
+                    self.helperRenderHelpGroup(self.helperCurrentQuery);
+                    
+                    self.helperRenderHelp(arg, self.helperCurrentQuery);
+                }
+                
+            },
+            error: function(collection) {
+                console.warn('ERROR');
+            }
+        });
+    },
+    helperCurrentQuery: undefined,
     helperStatus: {}// key: collectionBuyersFind status
 });
