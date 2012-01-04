@@ -1,7 +1,6 @@
 (function($) {
 
     var defOptions = {
-        interval: 1000,
         minLength: 2,
         el: null,
         selectorItem: null,
@@ -100,6 +99,10 @@
                 $(opt.selectorItem, opt.el).removeAttr('data-selected');
                 $(e.target).attr('data-selected', 'selected');
             });
+            
+            if(typeof opt.hided == 'function') opt.hided.call(this, opt);
+            
+            $(this).attr('autocomplete', 'off');
             
             return this;
         }

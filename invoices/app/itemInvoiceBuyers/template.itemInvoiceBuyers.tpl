@@ -1,2 +1,3 @@
-<div><span><input type="text" id="invoicesItemInvoiceBuyersFind" value="" /><span></span><input type="button" value="+" id="invoicesItemInvoiceBuyersNew" /></span></div>
+<div><span><input type="text" id="invoicesItemInvoiceBuyersFind" value="" /></span></div>
 <div id="invoicesItemInvoiceBuyersItem"></div>
+<div id="invoicesItemInvoiceBuyersHelp"></div>
