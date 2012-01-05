@@ -12,15 +12,28 @@
     }
     
     $.fn.extend({
-        autocomplete: function(options) {
+        autocomplete: function(options, arg) {
+        
+            if(options == 'cmd' || options == 'option') {
+            
+                if(options == 'cmd' && arg == 'refresh') {
+                    if($(this).get(0) && typeof $(this).get(0)['__autocompleteRender__'] == 'function') {
+                        $(this).get(0)['__autocompleteRender__']();
+                    }
+                }
+                
+                return this;
+            }
+        
             var opt = $.extend({}, defOptions, options);
             
             var self = this;
             
-            var render = function(e) {
+            var render = function(el, timeout) {
                 var self = this;
+                timeout = timeout || 0;
                 setTimeout(function() {
-                    var value = $(e.target).val();
+                    var value = $(el).val();
 				    if(value.length >= opt.minLength) {
 				        if(typeof opt.render == 'function') {
                             opt.render.call(self, opt, value);
@@ -34,11 +47,12 @@
 				    } else {
 				        if(typeof opt.hided == 'function') opt.hided.call(self, opt);
 				    }
-				}, 0);
+				}, timeout);
             }
             
             var selected = function(el) {
 				if(el && typeof opt.selected == 'function') {
+				    console.warn(el);
 				    opt.selected.call(this, opt, $(this).val(), el);
 				}
             }
@@ -78,7 +92,7 @@
 					    render(e);
 					break;*/
 				    default:// OTHER KEY
-					    render.call(this, e);
+					    render.call(this, e.target, 0);
 					break;
                 }
             });
@@ -90,18 +104,19 @@
                 }, 150);
             });
             
+            var f1 = function($c, el, i) {// max 2 level rec
+                if(i >= 2) return -1;
+                var index = $c.index(el);
+                if(index < 0) {
+                    i++;
+                    return f1($c, el.parentNode, i);
+                } else {
+                    return el
+                }
+            }
+            
             $(opt.el).delegate(opt.selectorItem, 'click', function(e) {
                 var $c = $(opt.selectorItem, opt.el);
-                var f1 = function($c, el, i) {// max 2 level rec
-                    if(i >= 2) return -1;
-                    var index = $c.index(el);
-                    if(index < 0) {
-                        i++;
-                        return f1($c, el.parentNode, i);
-                    } else {
-                        return el
-                    }
-                }
                 var el = f1($c, e.target, 0);
                 if($(el).size() > 0) {
                     selected.call(self, el);
@@ -109,9 +124,24 @@
                 }
             });
             
+            $(opt.el).delegate(opt.selectorItem, 'mouseover', function(e) {
+                var $c = $(opt.selectorItem, opt.el);
+                var el = f1($c, e.target, 0);
+                if($(el).size() > 0) {
+                    $c.removeAttr('data-selected');
+                    $(el).attr('data-selected', 'selected');
+                }
+            });
+            
             if(typeof opt.hided == 'function') opt.hided.call(this, opt);
             
             $(this).attr('autocomplete', 'off');
+            
+            if($(this).get(0)) {
+                $(this).get(0)['__autocompleteRender__'] = function() {
+                    render.call(self, $(this).get(0), 0);
+                }
+            }
             
             return this;
         }

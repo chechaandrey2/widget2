@@ -3,7 +3,7 @@ window.Invoices.ViewItemInvoiceBuyersFind = Backbone.View.extend({
     
         this.router = opt.router;
         
-        this.collection.fetch();
+        this.collection.fetch();// move to this.render
         
     },
     eventAdd: function(model) {
@@ -39,6 +39,7 @@ window.Invoices.ViewItemInvoiceBuyersFind = Backbone.View.extend({
             } else {
                 
                 // return this;
+                // wait!!!
                 
             }
         } else {
@@ -50,6 +51,15 @@ window.Invoices.ViewItemInvoiceBuyersFind = Backbone.View.extend({
         this.helperCurrentQuery = value;
         
         return this;
+    },
+    eventEndRequest: undefined,
+    helperGetCollection: function(value) {
+        for(var i in this.collections) {
+            if(new RegExp(i, 'i').test(value)) {
+                return this.collections[i];
+            }
+        }
+        return null;
     },
     helperCheckCache: function(value) {
         for(var i in this.helperStatus) {
@@ -84,17 +94,10 @@ window.Invoices.ViewItemInvoiceBuyersFind = Backbone.View.extend({
         this.collections[arg].fetch({
             data: {all: arg},
             success: function(collection) {
+                
                 self.helperStatus[arg] = 'loaded';
                 
-                // ???
-                // рендер, который вклинивается сам по себе!!!
-                if(self.helperCurrentQuery) {
-                    $(self.el).empty();
-                    
-                    self.helperRenderHelpGroup(self.helperCurrentQuery);
-                    
-                    self.helperRenderHelp(arg, self.helperCurrentQuery);
-                }
+                if(typeof self.eventEndRequest == 'function') self.eventEndRequest.call(self, arg);
                 
             },
             error: function(collection) {

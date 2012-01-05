@@ -199,6 +199,8 @@ $(document).ready(function() {
     window.TPL.push("invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyersItem.tpl");
     window.TPL.push('invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyersNew.tpl');
     window.TPL.push('invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyersNewButton.tpl');
+    window.JS.push("invoices/app/itemInvoiceBuyers/model.itemInvoiceBuyersRemote.js");
+    window.JS.push("invoices/app/itemInvoiceBuyers/collection.itemInvoiceBuyersRemote.js");
     window.JS.push("invoices/app/itemInvoiceBuyers/model.itemInvoiceBuyers.js");
     window.JS.push("invoices/app/itemInvoiceBuyers/collection.itemInvoiceBuyers.js");
     window.JS.push('invoices/app/itemInvoiceBuyers/view.itemInvoiceBuyers.js');

@@ -16,6 +16,8 @@ window.Invoices.ViewItemInvoice = Backbone.View.extend({
     },
     render: function(id, mod) {
     
+        
+    
         var self = this;
         if(id) {
             this.collection.fetch({data: {inv_uid: id}, add: true, success: function(collection, response) {
