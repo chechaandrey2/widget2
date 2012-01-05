@@ -1,4 +1,4 @@
-window.Invoices.ModelItemInvoice = Backbone.Model.extend({
+window.Invoices.ModelInvoice = Backbone.Model.extend({
     defaults: {
         // read
         inv_uid: 0,
@@ -8,15 +8,15 @@ window.Invoices.ModelItemInvoice = Backbone.Model.extend({
         descr: '',// general
         currency: 'UAH',// general
         b_uid: 0,
-        content: '[]',
+        content: null,
         closed_at: null,
         created_at: null,
         expired_at: null,
         issued_at: null,
         paid_at: null,
         // write
-        goods: [],// collection
-        buyers: [],// collection
+        goods: new window.Invoices.CollectionInvoiceGoodss(),// collection
+        buyers: new window.Invoices.CollectionInvoiceBuyers(),// collection
         is_issued: 0
     },
     syncArg: {

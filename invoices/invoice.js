@@ -177,7 +177,7 @@ $(document).ready(function() {
     // -invoices-
     window.TPL.push("invoices/app/invoices/template.invoices.tpl");
     window.JS.push("invoices/app/invoices/model.invoices.js");
-    window.JS.push("invoices/app/invoices/collection.invoices.js");
+    window.JS.push("invoices/app/invoices/collection.invoicess.js");
     window.JS.push('invoices/app/invoices/view.invoices.js');
     
     // -invoicesTables-
@@ -188,12 +188,25 @@ $(document).ready(function() {
     window.JS.push("invoices/app/invoicesTables/collection.invoicesTables.js");
     window.JS.push('invoices/app/invoicesTables/view.invoicesTables.js');
     
-    // -iteminvoice-
-    window.TPL.push("invoices/app/itemInvoice/template.itemInvoice.tpl");
-    window.JS.push("invoices/app/itemInvoice/model.itemInvoice.js");
-    window.JS.push("invoices/app/itemInvoice/collection.itemInvoice.js");
+    // -invoice-
+    window.TPL.push("invoices/app/invoice/template.invoice.tpl");
+    window.JS.push("invoices/app/invoice/model.invoiceBuyer.js");
+    window.JS.push("invoices/app/invoice/collection.invoiceBuyers.js");
+    window.JS.push("invoices/app/invoice/model.invoiceGoods.js");
+    window.JS.push("invoices/app/invoice/collection.invoiceGoodss.js");
+    window.JS.push("invoices/app/invoice/model.invoice.js");
+    window.JS.push("invoices/app/invoice/collection.invoices.js");
+    window.JS.push('invoices/app/invoice/view.invoice.js');
+    
+    // -itemInvoice-
+    window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceEdit.tpl");
+    window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceView.tpl");
+    window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceSend.tpl");
+    window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceEditGoodsItem.tpl");
+    window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceEditBuyerItem.tpl");
     window.JS.push('invoices/app/itemInvoice/view.itemInvoice.js');
     
+    /*
     // -iteminvoicebuyers
     window.TPL.push("invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyers.tpl");
     window.TPL.push("invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyersItem.tpl");
@@ -213,8 +226,11 @@ $(document).ready(function() {
     window.JS.push("invoices/app/itemInvoiceBuyersFind/model.itemInvoiceBuyersFind.js");
     window.JS.push("invoices/app/itemInvoiceBuyersFind/collection.itemInvoiceBuyersFind.js");
     window.JS.push('invoices/app/itemInvoiceBuyersFind/view.itemInvoiceBuyersFind.js');
+    */
     
     // --ROUTER--
+    JS.push("invoices/app/model.router.js");
+    JS.push("invoices/app/collection.routers.js");
     JS.push("invoices/app/router.js");
     // --PATHS--
     

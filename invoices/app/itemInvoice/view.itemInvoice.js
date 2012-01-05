@@ -3,47 +3,69 @@ window.Invoices.ViewItemInvoice = Backbone.View.extend({
     
         this.router = opt.router;
         
-        this.collection.bind('add', this.eventAdd, this);
+        this.model.get('buyers').bind('add', this.eventAddBuyer, this);
+        this.model.get('buyers').bind('remove', this.eventRemoveBuyer, this);
+        this.model.get('goods').bind('add', this.eventAddGoods, this);
+        this.model.get('goods').bind('remove', this.eventRemoveGoods, this);
+        this.model.get('goods').bind('change', this.eventChangeGoods, this);
         
     },
-    eventAdd: function(model) {
-        this.el.html(this.statsTemplate['itemInvoice'](model.toJSON()));
+    eventAddBuyer: function(model) {
+        $('#invoicesItemInvoiceItemBuyers', this.el).append(this.statsTemplate['itemInvoiceEditBuyerItem'](model.toJSON()));
     },
-    _view: {},// {name: value}
-    el: $('#invoicesItemInvoice'),
+    eventRemoveBuyer: function(model) {
+        $('#invoicesItemInvoiceItemBuyers [data-id="'+model.get('b_uid')+'"]', this.el).remove();
+    },
+    eventAddGoods: function(model) {
+        
+    },
+    eventRemoveGoods: function(model) {
+        
+    },
+    eventChangeGoods: function(model) {
+        
+    },
     statsTemplate: {
-        'itemInvoice': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoice.tpl'])
+        'itemInvoiceEdit': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEdit.tpl']),
+        'itemInvoiceEditBuyerItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerItem.tpl']),
+        'itemInvoiceEditGoodsItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsItem.tpl']),
+        'itemInvoiceView': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceView.tpl']),
+        'itemInvoiceSend': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceSend.tpl'])
     },
-    render: function(id, mod) {
-    
+    render: function(mod) {
         
-    
-        var self = this;
-        if(id) {
-            this.collection.fetch({data: {inv_uid: id}, add: true, success: function(collection, response) {
-                
-                // read add user info
-                
-                var view = new window.Invoices.itemInvoiceBuyers({
-                    router: this.route, 
-                    collection: new window.Invoices.CollectionItemInvoiceBuyers(),
-                    el: $('#invoicesItemInvoiceItemBuyers', this.el)
-                });
-                
-                view.render({// hack
-                    b_uid: self.collection.models[0].get('b_uid'),
-                    name: self.collection.models[0].get('b_uid')
-                });
-                
-                // view.render(self.collection.models[0].attributes); // ???
-                
-            }});
+        if(mod == 'view') {
+            this.el.html(this.statsTemplate['itemInvoiceView'](this.model.toJSON()));
+        } else if(mod == 'send') {
+            this.el.html(this.statsTemplate['itemInvoiceSend'](this.model.toJSON()));
         } else {
-            // отрисовка пустых коллекций, view
-            console.warn('RENDER EMPTY');
+            this.el.html(this.statsTemplate['itemInvoiceEdit'](this.model.toJSON()));
+        }
+        var self = this;
+        if(this.model.get('b_uid')) {
+            this.model.get('buyers').fetch({
+                data: {b_uid: this.model.get('b_uid')},
+                add: true,
+                error:function() {
+                    console.warn('ERROR');
+                }
+            });
+        }
+        
+        var content = this.model.get('content');
+        if(this.model.get('goods').length < 1 && content && content.length > 0) {
+            var content = JSON.parse(content) || [];
+            var ids = [];
+            for(var i=0; i<content.length; i++) {
+                
+            }
+            console.log('qwerty');
         }
         
         return this;
+        
+    },
+    events: {
         
     }
 });

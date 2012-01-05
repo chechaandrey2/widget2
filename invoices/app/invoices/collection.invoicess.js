@@ -1,4 +1,4 @@
-window.Invoices.CollectionInvoices = Backbone.Collection.extend({
+window.Invoices.CollectionInvoicess = Backbone.Collection.extend({
     model: window.Invoices.ModelInvoices,
     initialize: function() {
         this.add([
