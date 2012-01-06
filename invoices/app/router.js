@@ -69,6 +69,10 @@ window.Invoices.Router = Backbone.Router.extend({
             this.collection.get('clients').get('view').renderItem(group);
         }
         
+        // help
+        var help = this.collection.get('invoiceHelpBuyer');
+        if(help) this.collection.remove(help);
+        
 		$('#invoicesClients').show();
         
     },
@@ -98,6 +102,10 @@ window.Invoices.Router = Backbone.Router.extend({
             this.collection.get('ps').get('view').renderItem(group);
         }
         
+        // help
+        var help = this.collection.get('invoiceHelpGoods');
+        if(help) this.collection.remove(help);
+        
         $('#invoicesPs').show();
         
     },
@@ -111,6 +119,22 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesInvoices').hide();
         $('#invoicesItemInvoice').hide();
         
+        // help
+        if(!this.collection.get('invoiceHelpBuyer')) {
+            this.collection.add({
+                id: 'invoiceHelpBuyer',
+                view: new window.Invoices.ViewItemInvoiceHelpBuyer({router: this})
+            });
+        }
+        
+        if(!this.collection.get('invoiceHelpGoods')) {
+            this.collection.add({
+                id: 'invoiceHelpGoods',
+                view: new window.Invoices.ViewItemInvoiceHelpGoods({router: this})
+            });
+        }
+        // help
+        
         if(!this.collection.get('invoice')) {
             this.collection.add({
                 id: 'invoice',
@@ -122,14 +146,21 @@ window.Invoices.Router = Backbone.Router.extend({
         }
         
         // Fix a large number of models
+        /*
         var collection = this.collection.get('invoice').get('view').collection;
         if(collection.length > 1) {
             collection.each(function(model) {
                 if(model.id && id != model.id) collection.remove(model);
             });
         }
+        */
         
-        this.collection.get('invoice').get('view').render(id, mod);
+        var view = this.collection.get('invoice').get('view');
+        
+        view.helpBuyer = this.collection.get('invoiceHelpBuyer').get('view');
+		view.helpGoods = this.collection.get('invoiceHelpGoods').get('view');
+        
+        view.render(id, mod);
         
 		$('#invoicesItemInvoice').show();
         

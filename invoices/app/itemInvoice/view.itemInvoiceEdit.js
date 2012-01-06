@@ -23,7 +23,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         $('#invoicesItemInvoiceItemGoods [data-id="'+model.get('gds_uid')+'"]', this.el).remove();
     },
     eventChangeGoods: function(model) {
-        
+        $('#invoicesItemInvoiceItemGoods > [data-id="'+model.get('gds_uid')+'"]')
+            .replaceWith(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON()));
     },
     statsTemplate: {
         'itemInvoiceEdit': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEdit.tpl']),
@@ -31,7 +32,9 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         'itemInvoiceEditGoodsItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsItem.tpl']),
         'itemInvoiceEditGoodsNew': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsNew.tpl'])
     },
-    render: function() {
+    render: function(helpBuyer, helpGoods) {
+    
+        var self = this;
         
         this.el.html(this.statsTemplate['itemInvoiceEdit'](this.model.toJSON()));
         
@@ -46,6 +49,27 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         $('#invoicesItemInvoiceItemGoods', this.el).append(this.statsTemplate['itemInvoiceEditGoodsNew']());
         
         // +autocomplete buyers
+        $('#invoicesItemInvoiceBuyersFind', this.el).iautocomplete({
+            el: $('#invoicesItemInvoiceBuyersHelp', this.el).get(0),
+            selectorItem: '[data-id]',
+            render: function(opt, value) {
+                var data = helpBuyer.render(value);
+                console.warn('RENDER: %o', data);
+            },
+            renderEmpty: function(opt, value) {
+                console.warn('RENDER EMPTY');
+            },
+            selected: function(opt, value, item) {
+                
+            },
+            hided: function(opt) {
+                console.warn('HIDE');
+            }
+        });
+        
+        helpBuyer.eventEndedRequest = function(key) {
+            $('#invoicesItemInvoiceBuyersFind', self.el).iautocomplete('cmd', 'refresh');
+        }
         // +autocomplete goods
         
     },

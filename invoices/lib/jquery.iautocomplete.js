@@ -12,7 +12,7 @@
     }
     
     $.fn.extend({
-        autocomplete: function(options, arg) {
+        iautocomplete: function(options, arg) {
         
             if(options == 'cmd' || options == 'option') {
             
@@ -65,25 +65,26 @@
             
             $(this).bind('keydown', function(e) {
                 if(!listener) return;
+                var $c = $(opt.selectorItem, opt.el);
                 switch(e.which) {
                     case 38:// UP
-                        var length = $(opt.selectorItem, opt.el).size();
-					    var pos = $(opt.selectorItem, opt.el).index($('[data-selected="selected"]'));
-					    $(opt.selectorItem, opt.el).removeAttr('data-selected');
-					    $($(opt.selectorItem, opt.el).get(pos-1>=0?pos-1:length-1)).attr('data-selected', 'selected');
+                        var length = $c.size();
+					    var pos = $c.index($('[data-selected="selected"]'));
+					    $c.removeAttr('data-selected');
+					    $($c.get(pos-1>=0?pos-1:length-1)).attr('data-selected', 'selected');
 					    e.preventDefault();
 					break;
 					case 40:// DOWN
-					    var length = $(opt.selectorItem, opt.el).size();
-					    var pos = $(opt.selectorItem, opt.el).index($('[data-selected="selected"]'));
-					    $(opt.selectorItem, opt.el).removeAttr('data-selected');
-					    $($(opt.selectorItem, opt.el).get(pos+1<length?pos+1:0)).attr('data-selected', 'selected');
+					    var length = $c.size();
+					    var pos = $c.index($('[data-selected="selected"]'));
+					    $c.removeAttr('data-selected');
+					    $($c.get(pos+1<length?pos+1:0)).attr('data-selected', 'selected');
 					    e.preventDefault();
 					break;
 				    case 13:// ENTER
 				        // selected
-				        var pos = $(opt.selectorItem, opt.el).index($('[data-selected="selected"]'));
-				        var el = $(opt.selectorItem, opt.el).get(pos);
+				        var pos = $c.index($('[data-selected="selected"]'));
+				        var el = $c.get(pos);
 				        selected.call(this, el);
 				        if(typeof opt.hided == 'function') opt.hided.call(this, opt);
 					    e.preventDefault();

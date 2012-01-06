@@ -210,6 +210,20 @@ $(document).ready(function() {
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceSend.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoice.js');
     
+    // -itemInvoiceBuyerHelp-
+    window.JS.push('invoices/app/itemInvoiceHelp/model.itemInvoiceHelpItem.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpItem.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/model.itemInvoiceHelpGroupBuyer.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpGroupBuyer.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/model.itemInvoiceHelpGroupGoods.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpGroupGoods.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/model.itemInvoiceHelpSelectionGoods.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpSelectionGoods.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/model.itemInvoiceHelpSelectionBuyer.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpSelectionBuyer.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/view.itemInvoiceHelpBuyer.js');
+    window.JS.push('invoices/app/itemInvoiceHelp/view.itemInvoiceHelpGoods.js');
+    
     /*
     // -iteminvoicebuyers
     window.TPL.push("invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyers.tpl");

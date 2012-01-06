@@ -10,7 +10,7 @@
         <tr><td>
             <table>
                 <thead>
-                    <tr><th>#</th><th>title</th><th>units</th><th>count</th><th>price</th><th></th></tr>
+                    <tr><th>#</th><th>title</th><th>units</th><th>count</th><th>price</th><th>total</th><th></th></tr>
                 </thead>
                 <tbody id="invoicesItemInvoiceItemGoods"></tbody>
             </table>

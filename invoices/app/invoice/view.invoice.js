@@ -133,7 +133,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
             });
         }
         
-        view.render();
+        view.render(this.helpBuyer, this.helpGoods);
         
         return this;
         
