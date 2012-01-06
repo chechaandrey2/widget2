@@ -15,7 +15,7 @@ var dates = {
     <td><%= date('H:i:s d.m.Y', new Date(dates[status])) %></td>
     <td><div><%= total %></div><div><%= currency %></div></td>
     <td><% if(status == 'created') { %><input type="button" name="issued" value="i" data-id="<%= inv_uid %>" /><% } else { %><input type="button" name="issued" disabled="disabled" value="i" data-id="<%= inv_uid %>" /><% } %></td>
-    <td><a href="#iteminvoice/<%= inv_uid %>/view/">v</a></td>
-    <td><a href="#iteminvoice/<%= inv_uid %>/edit/">e</a></td>
+    <td><a href="#iteminvoice/view/<%= inv_uid %>/">v</a></td>
+    <td><a href="#iteminvoice/edit/<%= inv_uid %>/">e</a></td>
     <td><input type="button" name="remove" value="x" data-id="<%= inv_uid %>" /></td>
 </tr>

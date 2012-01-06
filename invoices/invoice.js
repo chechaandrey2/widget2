@@ -204,6 +204,10 @@ $(document).ready(function() {
     window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceSend.tpl");
     window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceEditGoodsItem.tpl");
     window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceEditBuyerItem.tpl");
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsNew.tpl');
+    window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
+    window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');
+    window.JS.push('invoices/app/itemInvoice/view.itemInvoiceSend.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoice.js');
     
     /*

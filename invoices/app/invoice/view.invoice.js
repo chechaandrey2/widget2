@@ -29,7 +29,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                     success: function(collection) {
                     
                         var model = collection.get('inv_uid', id);
-                        model.id = id;// fix id
+                        model.set({id: id});// fix id
                         self.renderItem(model, mod);
                         
                     },
@@ -49,23 +49,93 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         
     },
     renderItem: function(model, mod) {
-        var el;
-        mod = (mod+'').toLowerCase();
-        if(mod == 'view') {
-            el = $('#invoicesItemInvoiceItem-view', this.el);
-        } else if(mod == 'send') {
-            el = $('#invoicesItemInvoiceItem-send', this.el);
+        
+        var self = this, lb = false, lg = false;
+        
+        // add buyer
+        if(model.get('b_uid') && model.get('buyers').length < 1) {
+            model.get('buyers').fetch({
+                data: {b_uid: model.get('b_uid')},
+                success: function(collection) {
+                    lb = true;
+                    if(lg) self.renderItemLoaded(model, mod);
+                },
+                error:function(collection, e) {
+                    console.error(e);
+                }
+            });
         } else {
-            el = $('#invoicesItemInvoiceItem-edit', this.el);
+            lb = true;
+            if(lg) this.renderItemLoaded(model, mod);
         }
         
-        var view = new window.Invoices.ViewItemInvoice({
-            model: model,
-            router: this.router,
-            el: el
-        });
+        // add goodss
+        var content = model.get('content');
+        if(model.get('goods').length < 1 && content && content.length > 0) {
+            var content = JSON.parse(content) || [];
+            var ids = [], args = {};
+            for(var i=0; i<content.length; i++) {
+                if(content[i]) {
+                    var id = content[i]['gds_uid']+'';
+                    ids.push(id);
+                    args[id] = {quantity: content[i]['quantity'], total: content[i]['total']}
+                }
+            }
+            if(ids.length > 0) {
+                model.get('goods').fetch({
+                    data: {gds_uid: ids},
+                    success: function(collection) {
+                        collection.each(function(model) {
+                            model.set(args[model.get('gds_uid')]);
+                        }, collection);
+                        
+                        model.set({content: null});
+                        
+                        lg = true;
+                        if(lb) self.renderItemLoaded(model, mod);
+                    },
+                    error: function(collection, e) {
+                        console.error(e);
+                    }
+                });
+            } else {
+                model.set({content: null});
+                
+                lg = true;
+                if(lb) self.renderItemLoaded(model, mod);
+            }
+        } else {
+            lg = true;
+            if(lb) this.renderItemLoaded(model, mod);
+        }
         
-        view.render(mod);
+        return this;
+        
+    },
+    renderItemLoaded: function(model, mod) {
+        
+        var view;
+        
+        if(mod == 'view') {
+            view = new window.Invoices.ViewItemInvoiceView({
+                el: $('#invoicesItemInvoiceItem-view', this.el),
+                model: model
+            });
+        } else if(mod == 'send') {
+            view = new window.Invoices.ViewItemInvoiceSend({
+                el: $('#invoicesItemInvoiceItem-send', this.el),
+                model: model
+            });
+        } else {
+            view = new window.Invoices.ViewItemInvoiceEdit({
+                el: $('#invoicesItemInvoiceItem-edit', this.el),
+                model: model
+            });
+        }
+        
+        view.render();
+        
+        return this;
         
     }
 });
