@@ -27,7 +27,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                     data: {inv_uid: id}, 
                     add: true, 
                     success: function(collection) {
-                    
+                        
                         var model = collection.get('inv_uid', id);
                         model.set({id: id});// fix id
                         self.renderItem(model, mod);
@@ -53,6 +53,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         var self = this, lb = false, lg = false;
         
         // add buyer
+        if(!model.get('buyers')) model.set({buyers: new window.Invoices.CollectionInvoiceBuyers()});
         if(model.get('b_uid') && model.get('buyers').length < 1) {
             model.get('buyers').fetch({
                 data: {b_uid: model.get('b_uid')},
@@ -70,6 +71,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         }
         
         // add goodss
+        if(!model.get('goods')) model.set({goods: new window.Invoices.CollectionInvoiceGoodss()});
         var content = model.get('content');
         if(model.get('goods').length < 1 && content && content.length > 0) {
             var content = JSON.parse(content) || [];
@@ -118,22 +120,25 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         
         if(mod == 'view') {
             view = new window.Invoices.ViewItemInvoiceView({
-                el: $('#invoicesItemInvoiceItem-view', this.el),
-                model: model
+                el: $('#invoicesItemInvoiceItem-view', this.el).undelegate(),// hack
+                model: model,
+                router: this.router
             });
         } else if(mod == 'send') {
             view = new window.Invoices.ViewItemInvoiceSend({
-                el: $('#invoicesItemInvoiceItem-send', this.el),
-                model: model
+                el: $('#invoicesItemInvoiceItem-send', this.el).undelegate(),// hack
+                model: model,
+                router: this.router
             });
         } else {
             view = new window.Invoices.ViewItemInvoiceEdit({
-                el: $('#invoicesItemInvoiceItem-edit', this.el),
-                model: model
+                el: $('#invoicesItemInvoiceItem-edit', this.el).undelegate(),// hack
+                model: model,
+                router: this.router
             });
         }
         
-        view.render(this.helpBuyer, this.helpGoods);
+        view.render();
         
         return this;
         

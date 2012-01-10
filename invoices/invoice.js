@@ -94,7 +94,7 @@ if(location.host == 'localhost:8000') {
                 data = data || {};
                 data.data = data.data || [];
                 
-                if((!(res.data instanceof Object) && !(res.data instanceof Array)) || data.data.error > 0) {
+                if((!(data.data instanceof Object) && !(data.data instanceof Array)) || data.data.error > 0) {
                     console.error('Backbone.sync ERROR: Response: %o;', data.data);
                     if(typeof(options.error) == 'function') options.error.call(this, jqXHR);// OR data
                 } else {
@@ -205,6 +205,8 @@ $(document).ready(function() {
     window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceEditGoodsItem.tpl");
     window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceEditBuyerItem.tpl");
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsNew.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpGroup.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpItem.tpl');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceSend.js');

@@ -145,22 +145,17 @@ window.Invoices.Router = Backbone.Router.extend({
             });
         }
         
-        // Fix a large number of models
+        // Fix models
         /*
         var collection = this.collection.get('invoice').get('view').collection;
         if(collection.length > 1) {
-            collection.each(function(model) {
+            collection.each(function(model, index) {
                 if(model.id && id != model.id) collection.remove(model);
             });
         }
         */
         
-        var view = this.collection.get('invoice').get('view');
-        
-        view.helpBuyer = this.collection.get('invoiceHelpBuyer').get('view');
-		view.helpGoods = this.collection.get('invoiceHelpGoods').get('view');
-        
-        view.render(id, mod);
+        this.collection.get('invoice').get('view').render(id, mod);
         
 		$('#invoicesItemInvoice').show();
         

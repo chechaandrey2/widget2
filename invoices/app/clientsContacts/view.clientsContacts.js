@@ -103,12 +103,13 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
             email: $('[name="email"]', cel.get(0)).val(),
             gr_id: id
 		}, {
+		    silent: true,
 		    error: function(model, e) {console.log('model: %o; e: %o;', model, e)},
 		    success: function(model) {
 		        // remove appendChild model(Backbone collection add)
-		        self.collection.trigger('remove', model);
+		        //self.collection.trigger('remove', model);
 		        // mod current element
-		        cel.removeAttr('data-new');
+		        cel.removeAttr('data-state');
 		        cel.attr('data-id', model.get('b_uid'));
 		        $('input, textarea', cel.get(0)).each(function() {
 		            if($(this).attr('data-id')) $(this).attr('data-id', model.get('b_uid'));

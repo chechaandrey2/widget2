@@ -7,19 +7,18 @@ window.Invoices.ViewItemInvoiceHelpGoods = Backbone.View.extend({
         this.collectionItems = new window.Invoices.CollectionItemInvoiceHelpItem();
         
     },
-    eventEndedRequest: function(key) {
-        console.warn('QUERY: %o', key);
-    },
+    eventEndedRequest: undefined,
     render: function(key) {
     
         var data = {groups: null, items: null}, self = this;
         
-        if(this.collectionGroups.length < 1) {
+        if(this.collectionGroups.length < 1 && !this.collectionGroups.load) {
             this.collectionGroups.fetch({
                 success: function() {
                     self.eventEndedRequest.call(self, key);
                 }
             });
+            this.collectionGroups.load = true;
         } else {
             // select
             data.groups = this.collectionGroups.findExp(key);
@@ -43,7 +42,7 @@ window.Invoices.ViewItemInvoiceHelpGoods = Backbone.View.extend({
                 data: {name: key},
                 success: function(collection) {
                     model.set({status: 'loaded'});
-                    self.eventEndedRequest.call(self, key);
+                    if(typeof self.eventEndedRequest == 'function') self.eventEndedRequest.call(self, key);
                 }
             });
             model.set({status: 'load'});

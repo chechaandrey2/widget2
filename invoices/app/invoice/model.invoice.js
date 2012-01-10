@@ -15,8 +15,8 @@ window.Invoices.ModelInvoice = Backbone.Model.extend({
         issued_at: null,
         paid_at: null,
         // write
-        goods: new window.Invoices.CollectionInvoiceGoodss(),// collection
-        buyers: new window.Invoices.CollectionInvoiceBuyers(),// collection
+        goods: null,// collection
+        buyers: null,// collection
         is_issued: 0
     },
     syncArg: {

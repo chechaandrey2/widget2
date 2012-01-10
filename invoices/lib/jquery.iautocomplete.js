@@ -29,7 +29,10 @@
             
             var self = this;
             
+            var listener = false;
+            
             var render = function(el, timeout) {
+                if(!listener) return;
                 var self = this;
                 timeout = timeout || 0;
                 setTimeout(function() {
@@ -52,15 +55,13 @@
             
             var selected = function(el) {
 				if(el && typeof opt.selected == 'function') {
-				    console.warn(el);
 				    opt.selected.call(this, opt, $(this).val(), el);
 				}
             }
             
-            var listener = false;
-            
             $(this).bind('focus', function(e) {
                 listener = true;
+                render.call(this, e.target, 0);
             });
             
             $(this).bind('keydown', function(e) {
