@@ -14,26 +14,38 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         $('#invoicesItemInvoiceItemBuyers', this.el).append(this.statsTemplate['itemInvoiceEditBuyerItem'](model.toJSON()));
     },
     eventRemoveBuyer: function(model) {
-        $('#invoicesItemInvoiceItemBuyers [data-id="'+model.get('b_uid')+'"]', this.el).remove();
+        if(model.get('nid')>0) {
+            $('#invoicesItemInvoiceItemBuyers [data-nid="'+model.get('nid')+'"]', this.el).remove();
+        } else {
+            $('#invoicesItemInvoiceItemBuyers [data-id="'+model.get('b_uid')+'"]', this.el).remove();
+        }
     },
     eventAddGoods: function(model) {
-        $('#invoicesItemInvoiceItemGoods', this.el).append(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON()));
+        var $c = $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el);
+        if(model.get('nid')>0) {
+            $c.before(this.statsTemplate['itemInvoiceEditNewGoodsItem'](model.toJSON()));
+            this.helperGoodsAtcmplt(
+                $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"] [name="title"]', this.el).get(0),
+                $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"] [data-name="help"]', this.el).get(0)
+            );
+        } else {
+            $c.before(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON()));
+        }
     },
     eventRemoveGoods: function(model) {
-        var id = model.get('gds_uid'), tid = model.get('t_id');
-        tid = (tid+'').replace(/^0&/i, '');
-        if(id > 0) {
-            $('#invoicesItemInvoiceItemGoods > [data-id="'+model.get('gds_uid')+'"]', this.el).remove();
-        } else if(tid.length > 0) {
-            $('#invoicesItemInvoiceItemGoods > [data-tid="'+model.get('t_id')+'"]', this.el).remove();
+        if(model.get('nid')>0) {
+            $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"]', this.el).remove();
+        } else {
+            $('#invoicesItemInvoiceItemGoods [data-id="'+model.get('gds_uid')+'"]', this.el).remove();
         }
     },
     eventChangeGoods: function(model) {
-        var $c = $('#invoicesItemInvoiceItemGoods > [data-tid="'+model.get('t_id')+'"]', this.el);
-        if($c.size() < 1 || (model.get('t_id') - 0) < 1) {
-            $c = $('#invoicesItemInvoiceItemGoods > [data-id="'+model.get('gds_uid')+'"]', this.el);
+        var val = sprintf("%01.2f", model.get('total'));
+        if(model.get('nid')>0) {
+            $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"] [data-name="total"]', this.el).html(val);
+        } else {
+            $('#invoicesItemInvoiceItemGoods [data-id="'+model.get('gds_uid')+'"] [data-name="total"]', this.el).html(val);
         }
-        $c.replaceWith(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON()));
     },
     eventAddHelpBuyer: function(model) {
         $('#invoicesItemInvoiceBuyersHelp', this.el).append(this.statsTemplate['itemInvoiceEditBuyerHelpItem'](model.toJSON()));
@@ -41,16 +53,60 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
     eventAddHelpGroupBuyer: function(model) {
         $('#invoicesItemInvoiceBuyersHelp', this.el).append(this.statsTemplate['itemInvoiceEditBuyerHelpGroup'](model.toJSON()));
     },
+    eventAddHelpGoods: function(model, el) {
+        $(el, this.el).append(this.statsTemplate['itemInvoiceEditGoodsHelpItem'](model.toJSON()));
+    },
+    eventAddHelpGroupGoods: function(model, el) {
+        $(el, this.el).append(this.statsTemplate['itemInvoiceEditGoodsHelpGroup'](model.toJSON()));
+    },
+    eventNewGoods: function() {
+        /*
+        $('#invoicesItemInvoiceItemGoods', this.el).append(this.statsTemplate['itemInvoiceEditGoodsNew']());
+        // + autocomplete
+        var collectionGoods,
+            helpGoods = this.router.collection.get('invoiceHelpGoods').get('view'),
+            self = this,
+            el = $('#invoicesItemInvoiceItemGoods [data-state="new"] [name="title"]', this.el).get(0);
+        $(el).iautocomplete({
+            el: $('#invoicesItemInvoiceGoodsHelp', this.el).get(0),
+            selectorItem: '[data-id]',
+            render: function(opt, value) {
+                $('#invoicesItemInvoiceGoodsHelp', self.el).empty().show();
+                collectionGoods = helpGoods.render(value);
+                
+                if(collectionGoods.groups && typeof collectionGoods.groups.each == 'function') {
+                    collectionGoods.groups.each(self.eventAddHelpGroupGoods, self);
+                }
+                if(collectionGoods.items && typeof collectionGoods.items.each == 'function') {
+                    collectionGoods.items.each(self.eventAddHelpGoods, self);
+                }
+            },
+            hided: function(opt) {
+                $('#invoicesItemInvoiceGoodsHelp', self.el).hide();
+            }
+        });
+        */
+        /*
+        if(typeof helpGoods.eventEndedRequest != 'function') {
+            helpGoods.eventEndedRequest = function(key) {
+                $(el).iautocomplete('cmd', 'refresh');
+            }
+        }
+        */
+    },
     statsTemplate: {
         'itemInvoiceEdit': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEdit.tpl']),
         'itemInvoiceEditBuyerItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerItem.tpl']),
         'itemInvoiceEditGoodsItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsItem.tpl']),
         'itemInvoiceEditGoodsNew': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsNew.tpl']),
+        'itemInvoiceEditNewGoodsItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditNewGoodsItem.tpl']),
         'itemInvoiceEditBuyerHelpGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpGroup.tpl']),
-        'itemInvoiceEditBuyerHelpItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpItem.tpl'])
+        'itemInvoiceEditBuyerHelpItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpItem.tpl']),
+        'itemInvoiceEditGoodsHelpGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpGroup.tpl']),
+        'itemInvoiceEditGoodsHelpItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl'])
     },
     render: function() {
-    
+        /*
         var self = this,
             helpBuyer = this.router.collection.get('invoiceHelpBuyer').get('view');
         
@@ -64,7 +120,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             model.collection.trigger('add', model);
         });
         
-        $('#invoicesItemInvoiceItemGoods', this.el).append(this.statsTemplate['itemInvoiceEditGoodsNew']());
+        this.eventNewGoods();
         
         // +autocomplete buyers
         var collectionBuyers;
@@ -118,9 +174,30 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             $('#invoicesItemInvoiceBuyersFind', self.el).iautocomplete('cmd', 'refresh');
         }
         // +autocomplete goods
+        */
+        
+        this.el.html(this.statsTemplate['itemInvoiceEdit'](this.model.toJSON()));
+        
+        $('#invoicesItemInvoiceItemGoods', this.el).append(this.statsTemplate['itemInvoiceEditGoodsNew']());
+        
+        this.model.get('buyers').each(function(model) {
+            model.collection.trigger('add', model);
+        });
+        
+        this.model.get('goods').each(function(model) {
+            model.collection.trigger('add', model);
+        });
+        
+        // add buyer autocomplete
+        this.helperBuyerAtcmplt();
+        
+        // add goods autocomplete
+        var $c = $('#invoicesItemInvoiceItemGoods', this.el);
+        this.helperGoodsAtcmplt($('[data-state="new"] [name="title"]', $c).get(0), $('[data-state="new"] [data-name="help"]', $c).get(0));
         
     },
     events: {
+        'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="title"]': 'eventDOMNewGoods',
         'click #invoicesItemInvoiceItemGoods [name="remove"]':'eventDOMRemoveGoods',
         'change #invoicesItemInvoiceItemGoods [name="price"]':'eventDOMChangeGoods',
         'change #invoicesItemInvoiceItemGoods [name="quantity"]':'eventDOMChangeGoods',
@@ -128,60 +205,253 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         'change #invoicesItemInvoiceItemGoods [name="title"]':'eventDOMChangeGoods',
         'click #invoicesItemInvoiceItemBuyers [name="remove"]':'eventDOMRemoveBuyer'
     },
-    eventDOMRemoveGoods: function(e) {
-        var id = $(e.target).attr('data-id');
-        var model;
-        if(id > 0) {
-            model = this.model.get('goods').get('gds_uid', $(e.target).attr('data-id'));
-            if(model) this.model.get('goods').remove(model);
-        } else {
-            model = this.model.get('goods').get('t_id', $(e.target).attr('data-tid'));
-            if(model) this.model.get('goods').remove(model);
-        }
+    eventDOMNewGoods: function(e) {
+        var data = {};
+        $('#invoicesItemInvoiceItemGoods [data-state="new"] input').each(function() {
+            data[$(this).attr('name')] = $(this).val();
+        });
+        data['total'] = parseInt(data['quantity'] || 0)*parseFloat(data['price'] || 0);
+        data['nid'] = _.uniqueId();
         
+        var res = true;
+        this.model.get('goods').add(data, {error:function() {
+            res = false;
+            console.error('ERROR');
+        }});
+        
+        if(res) {
+            $('#invoicesItemInvoiceItemGoods [data-state="new"] input').val('');
+        }
+    },
+    eventDOMRemoveGoods: function(e) {
+        this.helperDOMRemoveGoods(e.target);
     },
     eventDOMRemoveBuyer: function(e) {
-        var model = this.model.get('buyers').get('b_uid', $(e.target).attr('data-id'));
-        if(model) this.model.get('buyers').trigger('remove', model);
-    },
-    eventDOMChangeGoods: function(e) {
-        var id = $(e.target).attr('data-id'), tid = $(e.target).attr('data-tid');
-        var model = this.model.get('goods').get('gds_uid', id);
-        if(model && id > 0) {
-            this.helperDOMChangeGoods(model, e.target);
-        } else {
-            model = this.model.get('goods').get('t_id', tid);
-            tid = tid.replace(/^0$/i,'');console.warn('model: %o; tid: %o', this.model.get('goods'), tid);
-            if(model && tid.length > 0) {
-                this.helperDOMChangeGoods(model, e.target);
-            } else {
-                this.helperDOMNewGoods(this.model.get('goods'), e.target);
-            }
+        var id = $(e.target).attr('data-id'), nid = $(e.target).attr('data-nid'), model;
+        
+        if(id > 0) {
+            model = this.model.get('buyers').get('b_uid', id);
+        } else if(nid > 0) {
+            model = this.model.get('buyers').get('nid', nid);
         }
+        
+        if(model) this.model.get('buyers').remove(model);
+    },
+    eventDOMChangeGoods: function(e) {    
+        var id = $(e.target).attr('data-id'), nid = $(e.target).attr('data-nid'), model;
+        
+        if(id > 0) {
+            model = this.model.get('goods').get('gds_uid', id);
+        } else if(nid > 0) {
+            model = this.model.get('goods').get('nid', nid);
+        }
+        
+        if(model) this.helperDOMChangeGoods(model, e.target);
+    },
+    helperDOMRemoveGoods: function(el) {
+        var id = $(el).attr('data-id'), nid = $(el).attr('data-nid'), model;
+        
+        if(id > 0) {
+            model = this.model.get('goods').get('gds_uid', id);
+        } else if(nid > 0) {
+            model = this.model.get('goods').get('nid', nid);
+        }
+        
+        if(model) this.model.get('goods').remove(model);
     },
     helperDOMChangeGoods: function(model, el) {
-        var name = $(el).attr('name'), data = {};
+        var name = $(el).attr('name'), data = {}, silent = true;
+        
         if(name == 'quantity') {
+            silent = false;
             data[name] = $(el).val();
-            data['total'] = parseInt($(el).val()) * model.get('price');
+            data['total'] = parseInt($(el).val() || 0) * model.get('price');
         } else if(name == 'price') {
+            silent = false;
             data[name] = $(el).val();
-            data['total'] = parseFloat($(el).val()) * model.get('quantity');
-        } else {
-            data[name] = $(el).val();
+            data['total'] = parseFloat($(el).val() || 0) * model.get('quantity');
         }
-        model.set(data, {
-            error: function() {
+        
+        model.set(data, {silent:silent, error: function() {
                 console.warn('ERROR');
             }
         });
     },
+    helperBuyerAtcmplt: function() {
+        var collectionBuyers, 
+            self = this, 
+            helpBuyer = this.router.collection.get('invoiceHelpBuyer').get('view');
+        
+        $('#invoicesItemInvoiceBuyersFind', this.el).iautocomplete({
+            el: $('#invoicesItemInvoiceBuyersHelp', this.el).get(0),
+            selectorItem: '[data-id]',
+            render: function(opt, value) {
+            
+                $('#invoicesItemInvoiceBuyersHelp', self.el).empty().show();
+                collectionBuyers = helpBuyer.render(value);
+                
+                if(collectionBuyers.groups && typeof collectionBuyers.groups.each == 'function') {
+                    collectionBuyers.groups.each(self.eventAddHelpGroupBuyer, self);
+                }
+                
+                if(collectionBuyers.items && typeof collectionBuyers.items.each == 'function') {
+                    collectionBuyers.items.each(self.eventAddHelpBuyer, self);
+                }
+                
+            },
+            renderEmpty: function(opt, value) {
+            
+                $('#invoicesItemInvoiceBuyersHelp', self.el).html('<h1>Not Found</h1>');
+                
+            },
+            selected: function(opt, value, item) {
+            
+                var role = $(item).attr('data-role');
+                
+                if(role == 'buyer') {
+                    // add
+                    if(collectionBuyers.items) {
+                        self.model.get('buyers').add(collectionBuyers.items.get('b_uid', $(item).attr('data-id')).toJSON(), {
+                            expUnique: 'b_uid',
+                            error: function(model, e) {console.error('%o; %o', model, e);}
+                        });
+                    }
+                } else if(role == 'group') {
+                    // fetch
+                    self.model.get('buyers').fetch({
+                        data: {gr_id: $(item).attr('data-id')},
+                        add: true,
+                        expUnique: 'b_uid',
+                        error: function(collection, e, msg) {
+                            console.error(e);
+                        },
+                        success: function(collection) {
+                            console.warn('SUCCESS');
+                        }
+                    });
+                }
+                
+                $(this).val('').focus();
+                
+            },
+            hided: function(opt) {
+            
+                $('#invoicesItemInvoiceBuyersHelp', self.el).hide();
+                
+            }
+        });
+        
+        helpBuyer.eventEndedRequest = function(key) {
+        
+            $('#invoicesItemInvoiceBuyersFind', self.el).iautocomplete('cmd', 'render');
+            
+        }
+    },
+    helperGoodsAtcmplt: function(el, elHelp) {
+        var collectionGoodss, 
+            self = this, 
+            helpGoods = this.router.collection.get('invoiceHelpGoods').get('view');
+        
+        $(el, this.el).iautocomplete({
+            el: $(elHelp, this.el).get(0),
+            selectorItem: '[data-id]',
+            render: function(opt, value) {
+                
+                $(elHelp, self.el).empty().show();
+                collectionGoodss = helpGoods.render(value);
+                
+                if(collectionGoodss.groups && typeof collectionGoodss.groups.each == 'function') {
+                    collectionGoodss.groups.each(function(model) {
+                        self.eventAddHelpGroupGoods.call(self, model, elHelp);
+                    }, self);
+                }
+                
+                if(collectionGoodss.items && typeof collectionGoodss.items.each == 'function') {
+                    collectionGoodss.items.each(function(model) {
+                        self.eventAddHelpGoods.call(self, model, elHelp);
+                    }, self);
+                }
+                
+            },
+            renderEmpty: function(opt, value) {
+                
+                $(elHelp, self.el).html('<h1>Not Found</h1>');
+                
+            },
+            selected: function(opt, value, item) {
+                
+                var role = $(item).attr('data-role'), self1 = this;
+                
+                if(role == 'goods') {
+                    // add
+                    if(collectionGoodss.items) {
+                        
+                        var res = true;
+                        
+                        self.model.get('goods').add(collectionGoodss.items.get('gds_uid', $(item).attr('data-id')).toJSON(), {
+                            expUnique: 'gds_uid',
+                            error: function(model, e) {
+                                res = false;
+                                console.error('%o; %o', model, e);
+                            }
+                        });
+                        
+                        if($(this).attr('data-nid')) {
+                            if(res) self.helperDOMRemoveGoods(this);
+                        } else {
+                            $(this).val('').focus();
+                            $('#invoicesItemInvoiceItemGoods [data-state="new"] input', self.el).val('');
+                        }
+                    
+                    }
+                    
+                } else if(role == 'group') {
+                
+                    // fetch
+                    self.model.get('goods').fetch({
+                        data: {gr_id: $(item).attr('data-id')},
+                        add: true,
+                        expUnique: 'gds_uid',
+                        error: function(collection, e, msg) {
+                            console.error(e);
+                        },
+                        success: function(collection) {
+                            
+                            if($(self1).attr('data-nid')) {
+                                self.helperDOMRemoveGoods(self1);
+                            } else {
+                                $(this).val('').focus();
+                                $('#invoicesItemInvoiceItemGoods [data-state="new"] input', self.el).val('');
+                            }
+                            
+                        }
+                    });
+                        
+                }
+                
+            },
+            hided: function(opt) {
+            
+                $(elHelp, self.el).hide();
+                
+            }
+        });
+        
+        helpGoods.eventEndedRequest = function(key) {
+        
+            $('#invoicesItemInvoiceItemGoods [name="title"]', self.el).iautocomplete('cmd', 'render');
+            
+        }
+        
+    }
+    /*
     helperDOMNewGoods: function(collection, el) {
+        
         var name = $(el).attr('name'), data = {};
         var $c = this.helperSearchNewModel($(el));
         if(name == 'title') {
             var data = {};
-            data['t_id'] = uniqid();
+            data['t_id'] = _.uniqueId();
             data['title'] = $(el).val();
             data['units'] = $('[name="units"]', $c.get(0)).val();
             data['quantity'] = $('[name="quantity"]', $c.get(0)).val();
@@ -195,7 +465,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                 }
             });
             var model = collection.get('t_id', data['t_id']);
-            if(model) {
+            if(model) {helpBuyer = this.router.collection.get('invoiceHelpBuyer').get('view');
                 $c.removeAttr('data-state');
 		        $c.attr('data-tid', model.get('t_id'));
 		        
@@ -209,11 +479,12 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
 		        $('[name="remove"]', $c.get(0)).attr('data-tid', data['t_id']).removeAttr('disabled');
 		        
 		        // append new new
-		        $('#invoicesItemInvoiceItemGoods', this.el).append(this.statsTemplate['itemInvoiceEditGoodsNew']());
+		        this.eventNewGoods();
             }
         }
-    },
+        
+    }*//*,
      helperSearchNewModel: function(el) {
         if(el.attr('data-state')) return el; else return this.helperSearchNewModel(el.parent());
-    }
+    }*/
 });

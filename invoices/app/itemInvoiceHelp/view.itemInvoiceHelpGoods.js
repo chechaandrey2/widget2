@@ -15,7 +15,7 @@ window.Invoices.ViewItemInvoiceHelpGoods = Backbone.View.extend({
         if(this.collectionGroups.length < 1 && !this.collectionGroups.load) {
             this.collectionGroups.fetch({
                 success: function() {
-                    self.eventEndedRequest.call(self, key);
+                    if(typeof self.eventEndedRequest == 'function') self.eventEndedRequest.call(self, key);
                 }
             });
             this.collectionGroups.load = true;

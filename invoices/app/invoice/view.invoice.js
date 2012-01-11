@@ -74,6 +74,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         if(!model.get('goods')) model.set({goods: new window.Invoices.CollectionInvoiceGoodss()});
         var content = model.get('content');
         if(model.get('goods').length < 1 && content && content.length > 0) {
+            // -hack content-
             var content = JSON.parse(content) || [];
             var ids = [], args = {};
             for(var i=0; i<content.length; i++) {
@@ -83,6 +84,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                     args[id] = {quantity: content[i]['quantity'], total: content[i]['total']}
                 }
             }
+            // -hack content-
             if(ids.length > 0) {
                 model.get('goods').fetch({
                     data: {gds_uid: ids},

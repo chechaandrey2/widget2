@@ -1,10 +1,10 @@
 window.Invoices.ModelItemInvoiceHelpSelectionGoods = Backbone.Model.extend({
     defaults: {
-        b_uid: 0,
-        name: null,
-        img_url: '',
-        phone_main: '',
-        email: '',
-        comment: ''
+        gds_uid: 0,
+        title: '',
+        price: '0.00',
+        units: '',
+        img_url: null,
+        desc_url: null
     }
 });

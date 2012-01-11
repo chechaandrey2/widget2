@@ -207,6 +207,11 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsNew.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpGroup.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpItem.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpGroup.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl');
+    
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditNewGoodsItem.tpl');
+    
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceSend.js');
