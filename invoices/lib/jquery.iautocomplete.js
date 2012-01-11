@@ -9,7 +9,8 @@
         selected: null,
         hided: null,
         focusin: null,
-        focusout: null
+        focusout: null,
+        entered: null
     }
     
     var uid = '__autocomplete__';
@@ -56,6 +57,7 @@
 				                var pos = $c.index($('[data-selected="selected"]'));
 				                var el = $c.get(pos);
 				                selected.call(this, el);
+				                if(!el && typeof this[uid].entered == 'function') this[uid].entered.call(this, e.target, this[uid]);
 				                if(typeof this[uid].hided == 'function') this[uid].hided.call(this, this[uid]);
 					            e.preventDefault();// ??
 					        break;/*

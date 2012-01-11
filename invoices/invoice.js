@@ -211,6 +211,7 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl');
     
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditNewGoodsItem.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditDialog.tpl');
     
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');

@@ -103,7 +103,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         'itemInvoiceEditBuyerHelpGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpGroup.tpl']),
         'itemInvoiceEditBuyerHelpItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpItem.tpl']),
         'itemInvoiceEditGoodsHelpGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpGroup.tpl']),
-        'itemInvoiceEditGoodsHelpItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl'])
+        'itemInvoiceEditGoodsHelpItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl']),
+        'itemInvoiceEditDialog': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditDialog.tpl'])
     },
     render: function() {
         /*
@@ -194,6 +195,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         // add goods autocomplete
         var $c = $('#invoicesItemInvoiceItemGoods', this.el);
         this.helperGoodsAtcmplt($('[data-state="new"] [name="title"]', $c).get(0), $('[data-state="new"] [data-name="help"]', $c).get(0));
+        
+        this.helperDialogNewBuyer();
         
     },
     events: {
@@ -336,7 +339,12 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             },
             hided: function(opt) {
             
-                $('#invoicesItemInvoiceBuyersHelp', self.el).hide();
+                $('#invoicesItemInvoiceBuyersHelp', self.el).empty().hide();
+                
+            },
+            entered: function(el, opt) {
+            
+                $('#invoicesItemInvoiceEditDialog-'+self.model.get('inv_uid')).dialog('open');
                 
             }
         });
@@ -432,7 +440,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             },
             hided: function(opt) {
             
-                $(elHelp, self.el).hide();
+                $(elHelp, self.el).empty().hide();
                 
             }
         });
@@ -443,6 +451,24 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             
         }
         
+    },
+    helperDialogNewBuyer: function() {
+        this.el.append(this.statsTemplate['itemInvoiceEditDialog']({id: this.model.get('inv_uid')}));
+        var collection = this.collection;
+        var self = this;
+        $('#invoicesItemInvoiceEditDialog-'+this.model.get('inv_uid'), this.el).dialog({
+            autoOpen:false,
+            resizable: false,
+			modal: true,
+			buttons: {
+				Create: function() {
+				    var dialog = this;
+				    
+				    // model create
+				    
+				}
+			}
+		});
     }
     /*
     helperDOMNewGoods: function(collection, el) {
