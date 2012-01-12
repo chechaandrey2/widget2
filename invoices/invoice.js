@@ -133,26 +133,26 @@ $(document).ready(function() {
     window.JS.push("invoices/app/globalmenu/collection.globalMenu.js");
     window.JS.push('invoices/app/globalmenu/view.globalMenu.js');
     
-    // -clients-
-    window.TPL.push("invoices/app/clients/template.clients.tpl");
-    window.TPL.push('invoices/app/clients/template.clientsItemGroup.tpl');
-    window.TPL.push('invoices/app/clients/template.clientsItemGroupEdit.tpl');
-    window.TPL.push('invoices/app/clients/template.clientsAddGroup.tpl');
-    window.TPL.push('invoices/app/clients/template.clientsDelGroup.tpl');
-    window.L10N.push('invoices/app/clients/l10n.ru.json');
-    window.JS.push("invoices/app/clients/model.clientsGroup.js");
-    window.JS.push("invoices/app/clients/collection.clientsGroup.js");
-    window.JS.push('invoices/app/clients/view.clients.js');
+    // -buyersGroups-
+    window.TPL.push("invoices/app/buyersGroups/template.buyersGroups.tpl");
+    window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsItem.tpl');
+    window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsItemEdit.tpl');
+    window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsAdd.tpl');
+    window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsDel.tpl');
+    window.L10N.push('invoices/app/buyersGroups/l10n.ru.json');
+    window.JS.push("invoices/app/buyersGroups/model.buyersGroups.js");
+    window.JS.push("invoices/app/buyersGroups/collection.buyersGroups.js");
+    window.JS.push('invoices/app/buyersGroups/view.buyersGroups.js');
     
-    // -clientsContacts-
-    window.TPL.push('invoices/app/clientsContacts/template.clientsContacts.tpl');
-    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItem.tpl');
-    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItemEdit.tpl');
-    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsItemNew.tpl');
-    window.TPL.push('invoices/app/clientsContacts/template.clientsContactsDel.tpl');
-    window.JS.push('invoices/app/clientsContacts/model.clientsContacts.js');
-    window.JS.push('invoices/app/clientsContacts/collection.clientsContacts.js');
-    window.JS.push('invoices/app/clientsContacts/view.clientsContacts.js');
+    // -buyers-
+    window.TPL.push('invoices/app/buyers/template.buyers.tpl');
+    window.TPL.push('invoices/app/buyers/template.buyersItem.tpl');
+    window.TPL.push('invoices/app/buyers/template.buyersItemEdit.tpl');
+    window.TPL.push('invoices/app/buyers/template.buyersItemNew.tpl');
+    window.TPL.push('invoices/app/buyers/template.buyersDel.tpl');
+    window.JS.push('invoices/app/buyers/model.buyers.js');
+    window.JS.push('invoices/app/buyers/collection.buyers.js');
+    window.JS.push('invoices/app/buyers/view.buyers.js');
     
     // -ps-
     window.TPL.push("invoices/app/ps/template.ps.tpl");

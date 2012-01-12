@@ -1,7 +1,11 @@
-window.Invoices.ViewClients = Backbone.View.extend({
+window.Invoices.ViewBuyersGroups = Backbone.View.extend({
     initialize: function(opt) {
     
         this.router = opt.router;
+        
+        this.collection = new window.Invoices.CollectionBuyersGroups();
+        
+        this.collectionBuyers = new window.Invoices.CollectionRouters();
         
         this.collection.bind('add', this.eventAdd, this);
         this.collection.bind('remove', this.eventRemove, this);
@@ -22,32 +26,38 @@ window.Invoices.ViewClients = Backbone.View.extend({
         $('#invoicesClientsTabs [id="invoicesClientsItem-'+model.get('gr_id')+'"]', this.el).remove();
     },
     eventChange: function(model) {
-        $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
-            .replaceWith(this.statsTemplate['clientsItemGroup'](model.toJSON()));
+        try {
+            $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
+                .replaceWith(this.statsTemplate['clientsItemGroup'](model.toJSON()));
+        } catch(E) {}// hide jQuery DOM ERROR
     },
     el: $('#invoicesClients'),
     statsTemplate: {
-        'clients': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clients.tpl']),
-        'clientsItemGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsItemGroup.tpl']),
-        'clientsItemGroupEdit': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsItemGroupEdit.tpl']),
-        'clientsAddGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsAddGroup.tpl']),
-        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['invoices/app/clients/template.clientsDelGroup.tpl'])
+        'clients': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroups.tpl']),
+        'clientsItemGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsItem.tpl']),
+        'clientsItemGroupEdit': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsItemEdit.tpl']),
+        'clientsAddGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsAdd.tpl']),
+        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsDel.tpl'])
     },
     l10nHash: {
-        'ru':JSON.parse(window.Invoices.L10N['invoices/app/clients/l10n.ru.json'])
+        'ru':JSON.parse(window.Invoices.L10N['invoices/app/buyersGroups/l10n.ru.json'])
     },
-    render: function() {
-        // test l10n
-        this.l10nLang = 'ru';
-        console.log(this.l10n('Hello world'));
-        // test l10n
+    render: function(group) {
+        var self = this;
         
         this.el.html(this.statsTemplate['clients']());
-        this.collection.fetch({add: true});
+        this.collection.fetch({
+            add: true, 
+            success: function() {
+                self.helperSelected(group);
+            }
+        });
         
         this.helperDialogAdd();
         
         this.helperDialogDel();
+        
+        
         
         return this;
         
@@ -57,15 +67,15 @@ window.Invoices.ViewClients = Backbone.View.extend({
         if(!$('#invoicesClientsTabs > #invoicesClientsItem-'+group).size()) 
             $('#invoicesClientsTabs').append($('<div></div>').attr('id', 'invoicesClientsItem-'+group));
         
-        if(!this.isObject(this._views[group])) {            
-            this._views[group] = new window.Invoices.viewClientsContacts({
-                router: this.router,
-                el: $('#invoicesClientsItem-'+group),
-                collection: new window.Invoices.CollectionClientsContacts()
+        if(!this.collectionBuyers.get(group)) {
+            this.collectionBuyers.add({
+                id: group,
+                view: new window.Invoices.viewClientsContacts({
+                    router: this.router,
+                    el: $('#invoicesClientsItem-'+group)
+                })
             });
-            this._views[group].render(group);
-        } else {
-            //this._views[group].render(group);
+            this.collectionBuyers.get(group).get('view').render(group);
         }
         
         // selected
@@ -77,7 +87,7 @@ window.Invoices.ViewClients = Backbone.View.extend({
         'click #invoicesClientsTabsList [name="edit"]': 'eventGroupEdit',
         'click #invoicesClientsTabsList [name="delete"]': 'eventGroupDel',
         'blur #invoicesClientsTabsList [name^="name-edit-"]':'eventGroupEditBlur',
-        'presskey #invoicesClientsTabsList [name^="name-edit-"]':'eventGroupEditEnter'
+        'keypress #invoicesClientsTabsList [name^="name-edit-"]':'eventGroupEditEnter'
     },
     eventGroupAdd: function(e) {
         $('#invoicesClientsDialogAdd [name="groupName"]').val('');
@@ -88,25 +98,42 @@ window.Invoices.ViewClients = Backbone.View.extend({
         var model = this.collection.get('gr_id', $(e.target).attr('data-id'));
         $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
             .replaceWith(this.statsTemplate['clientsItemGroupEdit'](model.toJSON()));
+        $('#invoicesClientsTabsList [data-id="'+model.get('gr_id')+'"]').focus();
     },
     eventGroupEditBlur: function(e) {
-        // optimize
-        e.target.disabled = true;
-        
+        this.done = true;
+    
         var model = this.collection.get('gr_id', $(e.target).attr('data-id'));
         model.id = model.get('gr_id');
         
-        model.set({'title': $(e.target).val()}, {silent:true, error: function(model, e) {console.error(e)}});
+        if(model.get('title') == $(e.target).val()) {
+            model.change();
+        } else {
+            model.save({'title': $(e.target).val()}, {
+                error: function(model, err) {
+                    console.error(err);
+                    $(e.target).addClass('error').one('focus', function(e) {
+			            $(this).removeClass('error');
+			        }).one('keydown', function(e) {
+			            $(this).removeClass('error');
+			        });
+                }
+            });
+        }
         
-        model.save();
+        this.done = false;
     },
     eventGroupEditEnter: function(e) {
-        if(e.which != 13) return;
+        if(e.which != 13 || this.done) return;
         this.eventGroupEditBlur.call(this,e);
     },
     eventGroupDel: function(e) {
+        if(this.helperGroupDelModel) return;
+        
         this.helperGroupDelModel = this.collection.get('gr_id', $(e.target).attr('data-id'));
+        
         $('#invoicesClientsDialogDel [name="groupDelForce"]').get(0).checked = false;
+        
         $('#invoicesClientsDialogDel').dialog("open");
     },
     helperDialogAdd: function() {
@@ -121,7 +148,13 @@ window.Invoices.ViewClients = Backbone.View.extend({
 					var res = collection.create({
 					    title: $('#invoicesClientsDialogAdd [name="groupName"]').val()
 					}, {
-					    error: function(model, e) {console.log(e)}
+					    error: function(model, e) {
+					        $('#invoicesClientsDialogAdd [name="groupName"]').addClass('error').one('focus', function(e) {
+					            $(this).removeClass('error');
+					        }).one('keydown', function(e) {
+					            $(this).removeClass('error');
+					        });
+					    }
 					});
 					
 					if(res) { $(this).dialog("close"); }
@@ -149,9 +182,11 @@ window.Invoices.ViewClients = Backbone.View.extend({
 				    self.helperGroupDelModel.set({'buyers': del_force});
 				    self.helperGroupDelModel.destroy({success: function(model) {
 				        $(dialog).dialog('close');
-				        // move to General & remove contacts current group at "del_force"
+				        // move to General & remove buyers current group at "del_force"
 				        if(self.helperSelectedNumber == model.id) {
-				            self.router.navigate('clients/1/', true);				            
+				            // remove "General" selection
+				            self.collectionBuyers.get(1);
+				            self.router.navigate('buyers/1/', true);				            
 				        }
 				    }});
                     

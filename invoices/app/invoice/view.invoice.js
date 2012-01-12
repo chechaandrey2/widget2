@@ -39,9 +39,13 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                 });
             }
         } else {
-            // create empty model, render
-            var model = new window.Invoices.ModelInvoice();
-            this.collection.add(model);
+            // create(select current model) empty model, render
+            var model = this.collection.get('inv_uid', 0);
+            if(!model) {
+                model = new window.Invoices.ModelInvoice();
+                this.collection.add(model);
+            }
+                        
             this.renderItem(model, mod);
         }
         

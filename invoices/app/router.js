@@ -5,8 +5,8 @@ window.Invoices.Router = Backbone.Router.extend({
         this.route(/^(iteminvoice\/(view|edit|send)\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
         this.route(/^(invoices\/).*$/i, 'invoices', this.invoices);
         this.route(/^(invoices\/([a-z0-9]+)\/).*$/i, 'invoices', this.invoices);
-        this.route(/^(clients\/).*$/i, 'clients', this.clients);
-        this.route(/^(clients\/([a-z0-9]+)\/).*$/i, 'clients', this.clients);
+        this.route(/^(buyers\/).*$/i, 'buyers', this.buyers);
+        this.route(/^(buyers\/([a-z0-9]+)\/).*$/i, 'buyers', this.buyers);
         this.route(/^(ps\/).*$/i, 'ps', this.ps);
         this.route(/^(ps\/([a-z0-9]+)\/).*$/i, 'ps', this.ps);
         
@@ -43,7 +43,7 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesInvoices').show();
         
     },
-    clients: function(query, group) {
+    buyers: function(query, group) {
         console.log('QUERY: %o; GROUP: %o', query, group);
         
         this.renderGlobalMenu();
@@ -53,20 +53,19 @@ window.Invoices.Router = Backbone.Router.extend({
         $('#invoicesInvoices').hide();
         $('#invoicesItemInvoice').hide();
         
-        group = group==undefined?1:parseInt(group);
+        group = parseInt(group);
+        group = group > 0?group:1;
         
-        if(!this.collection.get('clients')) {
+        // buyersGroups
+        if(!this.collection.get('buyers')) {
             this.collection.add({
-                id: 'clients',
-                view: new window.Invoices.ViewClients({
-		            router: this, 
-		            collection: new window.Invoices.CollectionClientsGroups()
-		        })
+                id: 'buyers',
+                view: new window.Invoices.ViewBuyersGroups({router: this})
             });
-		    this.collection.get('clients').get('view').render();
-		    this.collection.get('clients').get('view').renderItem(group);
+		    this.collection.get('buyers').get('view').render(group);
+		    this.collection.get('buyers').get('view').renderItem(group);
         } else {
-            this.collection.get('clients').get('view').renderItem(group);
+            this.collection.get('buyers').get('view').renderItem(group);
         }
         
         // help
@@ -146,16 +145,20 @@ window.Invoices.Router = Backbone.Router.extend({
         }
         
         // Fix models
-        /*
         var collection = this.collection.get('invoice').get('view').collection;
         if(collection.length > 1) {
             collection.each(function(model, index) {
-                if(model.id && id != model.id) collection.remove(model);
+                if(model.id && id && id != model.id) collection.remove(model);
             });
         }
-        */
         
         this.collection.get('invoice').get('view').render(id, mod);
+        
+        // remove buyers, goods
+        var buyers = this.collection.get('buyers');
+        if(buyers) buyers.get('view').collectionBuyers = new window.Invoices.CollectionRouters();
+        
+        // remove buyers, goods
         
 		$('#invoicesItemInvoice').show();
         
@@ -164,10 +167,7 @@ window.Invoices.Router = Backbone.Router.extend({
         if(!this.collection.get('globalmenu')) {
             this.collection.add({
                 id: 'globalmenu',
-                view: new window.Invoices.ViewGlobalMenu({
-		            router: this, 
-		            collection: new window.Invoices.CollectionGlobalMenu()
-		        })
+                view: new window.Invoices.ViewGlobalMenu({router: this})
             });
 		    this.collection.get('globalmenu').get('view').render();
         }

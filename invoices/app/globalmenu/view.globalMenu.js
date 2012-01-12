@@ -3,6 +3,8 @@ window.Invoices.ViewGlobalMenu = Backbone.View.extend({
     
         this.router = opt.router;
         
+        this.collection = new window.Invoices.CollectionGlobalMenu();
+        
     },
     el: $('#invoicesGlobalMenu'),
     statsTemplate: {

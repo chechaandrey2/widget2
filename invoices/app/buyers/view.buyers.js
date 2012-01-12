@@ -3,13 +3,15 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         
         this.router = opt.router;
         
+        this.collection = new window.Invoices.CollectionClientsContacts();
+        
         this.collection.bind('add', this.eventAdd, this);
         this.collection.bind('remove', this.eventRemove, this);
         this.collection.bind('change', this.eventChange, this);
         
     },
     eventAdd: function(model) {
-        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['clientsContactsItem'](model.toJSON()));
+        $('#invoicesClientsTbody [data-state="new"]', this.el).before(this.statsTemplate['clientsContactsItem'](model.toJSON()));
     },
     eventRemove: function(model) {
         $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el).remove();
@@ -19,23 +21,23 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
             .replaceWith(this.statsTemplate['clientsContactsItem'](model.toJSON()));
     },
     statsTemplate: {
-        'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContacts.tpl']),
-        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItem.tpl']),
-        'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItemEdit.tpl']),
-        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsItemNew.tpl']),
-        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['invoices/app/clientsContacts/template.clientsContactsDel.tpl'])
+        'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyers.tpl']),
+        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItem.tpl']),
+        'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItemEdit.tpl']),
+        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItemNew.tpl']),
+        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersDel.tpl'])
     },
     render: function(group) {
         
         var self = this;
         
         this.el.html(this.statsTemplate['clientsContacts']());
+        
+        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['clientsContactsItemNew']());
+        
         this.collection.fetch({
             data: {gr_id: group}, 
             add: true,
-            success: function(collection, response) {
-                $('#invoicesClientsTbody', self.el).append(self.statsTemplate['clientsContactsItemNew']());
-            },
             error: function(collection, response) {
                 console.log('collection: %o; response: %o;', collection, response)
             }
@@ -48,13 +50,18 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         return this;
     },
     events: {
-        'click [name="save"]':'eventSaveItem',
-        'click [name="del"]':'eventDeleteItem',
-        'click [name="edit"]':'eventEditItem',
+        //'click [name="save"]':'eventSaveItem',
+        //'click [name="del"]':'eventDeleteItem',
+        //'click [name="edit"]':'eventEditItem',
         'blur [data-label="edit"]':'eventSaveItemModel'
     },
     helperGroup: 0,
+    eventSaveItemModel: function() {
+        
+    }
+    /*
     eventDeleteItem: function(e) {
+        if(this.helperItemDelModel) return;
         this.helperItemDelModel = this.collection.get('b_uid', $(e.target).attr('data-id'));
         $('#invoicesClientsContactsDialogDel-'+this.helperGroup).dialog("open");
     },
@@ -150,5 +157,5 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
 			}
 		});
     },
-    helperItemDelModel: undefined
+    helperItemDelModel: undefined*/
 });
