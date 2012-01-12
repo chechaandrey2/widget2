@@ -7,7 +7,7 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         
         this.collection.bind('add', this.eventAdd, this);
         this.collection.bind('remove', this.eventRemove, this);
-        this.collection.bind('change', this.eventChange, this);
+        //this.collection.bind('change', this.eventChange, this);
         
     },
     eventAdd: function(model) {
@@ -45,7 +45,7 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         
         this.helperGroup = group;
         
-        this.helperDialogDel();
+        //this.helperDialogDel();
         
         return this;
     },
@@ -53,10 +53,47 @@ window.Invoices.viewClientsContacts = Backbone.View.extend({
         //'click [name="save"]':'eventSaveItem',
         //'click [name="del"]':'eventDeleteItem',
         //'click [name="edit"]':'eventEditItem',
-        'blur [data-label="edit"]':'eventSaveItemModel'
+        'blur [name="name"]':'eventSaveItemModel',
+        'blur [name="email"]':'eventSaveItemModel',
+        'blur [name="phone_main"]':'eventSaveItemModel',
+        'blur [name="addr"]':'eventSaveItemModel',
+        'blur [name="comment"]':'eventSaveItemModel',
+        'keypress [name="email"]':'eventSaveItemModelEnter',
+        'keypress[name="phone_main"]':'eventSaveItemModelEnter'
     },
     helperGroup: 0,
-    eventSaveItemModel: function() {
+    eventSaveItemModel: function(e) {
+        var model = this.collection.get('b_uid', $(e.target).attr('data-id'));
+        if(model) {
+            // save
+        } else {
+            // new
+            this.helperNewModel(model, e.target);
+        }
+    },
+    eventSaveItemModelEnter: function(e) {
+        
+    },
+    helperNewModel: function(model, el) {
+        var data = {}, $c = $('#invoicesClientsTbody [data-state="new"]', this.el);
+        
+        $('input[type="text"], textarea', $c).each(function() {
+            data[$(this).attr('name')] = $(this).val() || null;
+        });
+        
+        var res = this.collection.create(data, {
+            error: function(model, e) {
+                console.log('model: %o; e: %o;', model, e)
+            },
+            success: function(model, res) {
+                
+            }
+        });
+        
+        if(res) {
+            // preload
+            console.error(res);
+        }
         
     }
     /*
