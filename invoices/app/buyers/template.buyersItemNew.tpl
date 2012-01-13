@@ -5,5 +5,6 @@
     <td><input type="text" name="email" value="" /></td>
     <td><textarea name="addr"></textarea></td>
     <td><textarea name="comment"></textarea></td>
-    <td><input type="button" name="new" value="s" /></td>
+    <td><input type="button" name="save" value="s" /></td>
+    <td><input type="button" name="del" value="x" /></td>
 </tr>
