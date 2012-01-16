@@ -25,13 +25,27 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
             .replaceWith(this.statsTemplate['clientsItemGroup'](model.toJSON()));
     },
+    eventAddLoadre: function() {
+        $('#invoicesClientsTabsList', this.el).prepend(this.statsTemplate['buyersGroupsLoader']())
+    },
+    eventRemoveLoadre: function() {
+        $('#invoicesClientsTabsList [data-sync="buyersGroups"]', this.el).remove();
+    },
+    eventAddLoaderDialog: function() {
+        $('#invoicesClientsDialogAdd').append(this.statsTemplate['buyersGroupsLoaderDialog']());
+    },
+    eventRemoveLoaderDialog: function() {
+        $('#invoicesClientsDialogAdd [data-sync="buyersGroups"]').remove();
+    },
     el: $('#invoicesClients'),
     statsTemplate: {
         'clients': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroups.tpl']),
         'clientsItemGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsItem.tpl']),
         'clientsItemGroupEdit': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsItemEdit.tpl']),
         'clientsAddGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsAdd.tpl']),
-        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsDel.tpl'])
+        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsDel.tpl']),
+        'buyersGroupsLoader': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsLoader.tpl']),
+        'buyersGroupsLoaderDialog': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsLoaderDialog.tpl'])
     },
     l10nHash: {
         'ru':JSON.parse(window.Invoices.L10N['invoices/app/buyersGroups/l10n.ru.json'])
@@ -40,18 +54,21 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         var self = this;
         
         this.el.html(this.statsTemplate['clients']());
+        
         this.collection.fetch({
             add: true, 
             success: function() {
                 self.helperSelected(group);
+            },
+            loader: function(progress) {
+                if(progress == 0) self.eventAddLoadre.call(self);
+                else if(progress == 1) self.eventRemoveLoadre.call(self);
             }
         });
         
         this.helperDialogAdd();
         
         this.helperDialogDel();
-        
-        
         
         return this;
         
@@ -99,19 +116,22 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         
         var self = this;
         e.target.done = true;
-    
-        var model = this.collection.get('gr_id', $(e.target).attr('data-id'));
-        model.id = model.get('gr_id');
+        
+        var model = this.collection.get($(e.target).attr('data-id'));
+        //var model = this.collection.get('gr_id', $(e.target).attr('data-id'));
+        //model.id = model.get('gr_id');
+        
+        var $c = $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]');
         
         $(e.target).attr('data-state', 'load');
         
         model.save({'title': $(e.target).val()}, {
             error: function(model, err) {
-            
+                
                 if(err.attr) {// client
-                    $.ierror({el: e.target, msg: err.message, position: {at: 'center bottom', my: 'center top'}});
+                    $(e.target).ierror({wrap: true, msg: err.message});
                 } else {//server
-                    $.ierror({el: e.target, msg: err.msg || err, position: {at: 'center bottom', my: 'center top'}});
+                    $(e.target).ierror({wrap: true, msg: err.msg || err});
                 }
 			    
 			    if(e.target) e.target.done = false;
@@ -122,6 +142,13 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
                 
                 if(e.target) e.target.done = false;
                 
+            },
+            loader: function(progress) {
+                if(progress == 0) {
+                    $c.addClass('saving');
+                } else if(progress == 1) {
+                    $c.removeClass('saving');
+                }
             }
        });
     },
@@ -132,7 +159,8 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
     eventGroupDel: function(e) {
         if(this.helperGroupDelModel) return;
         
-        this.helperGroupDelModel = this.collection.get('gr_id', $(e.target).attr('data-id'));
+        //this.helperGroupDelModel = this.collection.get('gr_id', $(e.target).attr('data-id'));
+        this.helperGroupDelModel = this.collection.get($(e.target).attr('data-id'));
         
         $('#invoicesClientsDialogDel [name="groupDelForce"]').get(0).checked = false;
         
@@ -140,30 +168,36 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
     },
     helperDialogAdd: function() {
         this.el.append(this.statsTemplate['clientsAddGroup']());
-        var collection = this.collection;
+        var self = this;
         
         var $e = $('#invoicesClientsDialogAdd [name="groupName"]');
         
-        $('#invoicesClientsDialogAdd', this.el).dialog({
+        $('#invoicesClientsDialogAdd', this.el)
+        .iplaceholder()
+        .dialog({
             autoOpen:false,
             resizable: false,
 			modal: true,
 			buttons: {
 				Add: function() {
 				    var dialog = this;
-			        collection.create({
-			            title: $e.val()
-			        }, {
+			        self.collection.create({
+			                title: $e.val()
+			            }, {
 			            error: function(model, err) {
-				            if(err.attr) {// client
-                                $.ierror({el: $e.get(0), msg: err.message, position: {at: 'center bottom', my: 'center top'}});
+			                if(err.attr) {// client
+                                $($e.get(0)).ierror({wrap: true, msg: err.message});
                             } else {//server
-                                $.ierror({el: $e.get(0), msg: err.msg || err, position: {at: 'center bottom', my: 'center top'}});
+                                $($e.get(0)).ierror({wrap: true, msg: err.msg || err});
                             }
 				        },
 				        success: function(model) {
 				            $(dialog).dialog("close");
-				        }
+				        },
+				        loader: function(progress) {
+                            if(progress == 0) self.eventAddLoaderDialog.call(self);
+                            else if(progress == 1) self.eventRemoveLoaderDialog.call(self);
+                        }
 			        });
 				},
 				Cancel: function() {
@@ -185,20 +219,31 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
 				    var del_force = $('#invoicesClientsDialogDel [name="groupDelForce"]:checked').size();
 				    var dialog = this;
 				    
-				    self.helperGroupDelModel.id = self.helperGroupDelModel.get('gr_id');// hack
+				    var $c = $('#invoicesClientsTabsList > [data-id="item-'+self.helperGroupDelModel.get('gr_id')+'"]', self.el);
+				    
+				    //self.helperGroupDelModel.id = self.helperGroupDelModel.get('gr_id');// hack
 				    self.helperGroupDelModel.set({'buyers': del_force});
-				    self.helperGroupDelModel.destroy({error: function(model, err) {
-				        console.error('model: %o, error: %o', model, err);
-				    }, success: function(model) {
+				    self.helperGroupDelModel.destroy({
+				        error: function(model, err) {
+				            console.error('model: %o, error: %o', model, err);
+				        }, success: function(model) {
 				        
-				        // move to General & remove buyers current group at "del_force"
-				        if(self.helperSelectedNumber == model.id) {
-				            // remove "General" selection
-				            self.collectionBuyers.remove(self.collectionBuyers.get(1));
-				            self.router.navigate('buyers/1/', true);				            
-				        }
+				            // move to General & remove buyers current group at "del_force"
+				            if(self.helperSelectedNumber == model.id) {
+				                // remove "General" selection
+				                if(del_force) self.collectionBuyers.remove(self.collectionBuyers.get(1));
+				                self.router.navigate('buyers/1/', true);				            
+				            }
 				        
-				    }});
+				        },
+				        loader: function(progress) {
+                            if(progress == 0) {
+                                $c.addClass('removing');
+                            } else if(progress == 1) {
+                                $c.removeClass('removing');
+                            }
+                        }
+				    });
 				    
                     self.helperGroupDelModel = undefined;
                     $(dialog).dialog('close');

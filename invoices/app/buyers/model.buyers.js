@@ -1,6 +1,6 @@
 window.Invoices.ModelClientsContacts = Backbone.Model.extend({
     defaults: {
-        b_uid: 0,
+        b_uid: null,
         img_url: '',
         name: '',
         phone_main: null,
@@ -8,6 +8,7 @@ window.Invoices.ModelClientsContacts = Backbone.Model.extend({
         addr: null,
         comment: null
     },
+    idAttribute: 'b_uid',
     syncArg: {
         'read': null,
         'create': 'new_buyers',

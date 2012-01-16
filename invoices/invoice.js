@@ -36,6 +36,8 @@ if(location.host == 'localhost:8000') {
         }
     
         if(!(arg instanceof Array)) window.bridgeObjects[id0]['data']['data'] = arg;
+        
+        if(typeof options.loader == 'function') options.loader.call(this, 0);// progress
     
         if(model.syncArg[method] && (model.syncArg[method]+'').length > 0) {
             console.log('Backbone.sync SEND: %o', JSON.stringify(window.bridgeObjects[id0]['data']));
@@ -58,6 +60,9 @@ if(location.host == 'localhost:8000') {
         } else {
             window.bridgeObjects[id]['options'].success(res.data);
         }
+        
+        if(typeof window.bridgeObjects[id]['options'].loader == 'function') 
+            window.bridgeObjects[id]['options'].loader.call(this, 1);// progress
         
         delete window.bridgeObjects[id];
     }, false);
@@ -82,6 +87,8 @@ if(location.host == 'localhost:8000') {
             data.data[j] = data1[j];
         }
         
+        if(typeof options.loader == 'function') options.loader.call(this, 0);// progress
+        
         console.warn('Backbone.sync REQUEST: %o', data);
         
         $.ajax({
@@ -105,6 +112,9 @@ if(location.host == 'localhost:8000') {
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Backbone.sync($.ajax) error: jqXHR: %o; textStatus: %o; errorThrown: %o;', jqXHR, textStatus, errorThrown);
+            },
+            complete: function() {
+                if(typeof options.loader == 'function') options.loader.call(this, 1);// progress
             }
         });
         
@@ -139,6 +149,8 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsItemEdit.tpl');
     window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsAdd.tpl');
     window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsDel.tpl');
+    window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsLoader.tpl');
+    window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsLoaderDialog.tpl');
     window.L10N.push('invoices/app/buyersGroups/l10n.ru.json');
     window.JS.push("invoices/app/buyersGroups/model.buyersGroups.js");
     window.JS.push("invoices/app/buyersGroups/collection.buyersGroups.js");
@@ -150,6 +162,7 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/buyers/template.buyersItemEdit.tpl');
     window.TPL.push('invoices/app/buyers/template.buyersItemNew.tpl');
     window.TPL.push('invoices/app/buyers/template.buyersDel.tpl');
+    window.TPL.push('invoices/app/buyers/template.buyersLoader.tpl');
     window.JS.push('invoices/app/buyers/model.buyers.js');
     window.JS.push('invoices/app/buyers/collection.buyers.js');
     window.JS.push('invoices/app/buyers/view.buyers.js');
@@ -297,13 +310,46 @@ $(document).ready(function() {
                                 // wait load iFrame
                                 // Backbone.sync local
                                 document.getElementById("invoices_iframe").onload = function() {
-                                
+                                    
+                                    $.iplaceholder('default', {
+                                        plClass: 'placeholder',
+		                                contClass: null,
+		                                placeholder: true
+                                    });
+                                    
+                                    $.ierror('default', {
+                                        errClass: 'error',
+		                                contClass: null,
+		                                elClass: null,
+		                                wrap: false,
+		                                autoshow: true,
+		                                eventHided: 'focus keypress'
+                                    });
+                                    
                                     window.Invoices.router = new window.Invoices.Router();
                                 
                                     Backbone.history.start();
                                 }
                                 // Backbone.sync local
                             } else {
+                                
+                                $.iplaceholder('default', {
+                                    plClass: 'placeholder',
+		                            contClass: null,
+		                            placeholder: true
+                                });
+                                
+                                $.ierror('default', {
+                                    errClass: 'error',
+		                            contClass: null,
+		                            elClass: null,
+		                            wrap: false,
+		                            autoshow: true,
+		                            eventHided: 'focus keypress'
+                                });
+                                
+                                $.ierror({});
+                            
                                 window.Invoices.router = new window.Invoices.Router();
                                 Backbone.history.start();
                             }

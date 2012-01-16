@@ -1,57 +1,81 @@
 (function($) {
 
-    var errors = {};// code:msg
-    var defOptions = {
-        errcode: 0,
-        msg: null,
-        el: null,
-        position: {},// jquery position
-        attr: 'data-error',
-        errorClass: null,
-        errorContClass: null,
-        eventErrHiden: 'focus keypress'
-    }
+	var defOptions = {
+		errClass: null,
+		contClass: null,
+		elClass: null,
+		msg: null,
+		el: null,
+		wrap: false,
+		autoshow: true,
+		eventHided: 'focus keypress'
+	};
 
-    $.extend({
-        ierror: function(options, arg, value) {
-            
-            if(typeof options == 'string') {
-                // cmd
-                if(options == 'cmd') {
-                    if(arg == 'add') {
-                        value = value || {};
-                        for(var i in value) {
-                            errors[i] = value[i];
-                        }
-                    }
-                } else if(options == 'option') {
-                    
-                }
-            } else {
-                
-                var opt = $.extend({}, defOptions, options);
-                
-                opt.position = opt.position || {};
-                opt.position.of = $(opt.el);
-                
-                var errmsgdef = '<h2>Not message error</h2>', attrmsg = $(opt.el).attr(opt.attr);
-                var errmsg = opt.msg?opt.msg:(
-                    opt.errcode?(errors[opt.errcode]?errors[opt.errcode]:errmsgdef):(attrmsg?attrmsg:errmsgdef)
-                );
-                
-                $(opt.el).addClass(opt.errorClass).css('position', 'relative');
-                
-                var $e = $('<div></div>').addClass(opt.errorContClass).html(errmsg).appendTo(document.body).css('position', 'absolute');
-                $e.position(opt.position);
-                
-                $(opt.el).one(opt.eventErrHiden, function(e) {
-                    $e.remove();
-                    $(opt.el).removeClass(opt.errorClass);
-                });
-                
-            }
-            
+	var uid = '__ierror__';
+	
+	$.fn.extend({
+        ierror: function(options, arg) {
+        	
+        	options = options || {};
+        	
+        	$(this).each(function() {
+        	
+        		var self = this;
+        		
+        		if(!this[uid]) {
+        			
+        			this[uid] = $.extend({}, defOptions, options);
+        			
+        			if($(this[uid].el).size() < 1) {
+        				this[uid].el = $('<div></div>').addClass(this[uid].errClass).hide()
+        				.css('position', 'absolute').css('z-index',($(this).css('z-index')-0+1));
+        			}
+        			
+        			$(this[uid].el).html(this[uid].msg);
+        			
+        			if(this[uid].wrap) {
+        				$(this).wrap($('<span></span>').addClass(this[uid].contClass).css('position', 'relative'));
+        				$(this).parent().append(this[uid].el);
+        			} else {
+        				$(document.body).append(this[uid].el);
+        			}
+        			
+        			$(this).addClass(this[uid].elClass).bind(this[uid].eventHided, function(e) {
+        				$(this[uid].el).hide();
+        			});
+        			
+        			if(this[uid].autoshow) $(this[uid].el).show();
+        			
+        		} else {
+        		
+        			if(options == 'hide') {
+        				
+        				$(this[uid].el).hide();
+        				
+        			} else {
+        				
+        				this[uid] = $.extend({}, this[uid], options);
+        			
+        				$(this[uid].el).html(this[uid].msg);
+        			
+        				$(this[uid].el).show();
+        				
+        			}
+        			
+        		}
+        		
+        	});
+        	
+        	return this;
         }
     });
-
+    
+    $.extend({
+        ierror: function(options, arg) {
+        	if(options == 'default') {
+    			defOptions = $.extend({}, defOptions, arg);
+    		}
+        }
+    });
+	
 })(jQuery);

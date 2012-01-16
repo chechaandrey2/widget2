@@ -1,8 +1,9 @@
 window.Invoices.ModelBuyersGroups = Backbone.Model.extend({
     defaults: {
-        gr_id: 0,
+        gr_id: null,
         title: 'new group'
     },
+    idAttribute: 'gr_id',
     syncArg: {
         'read': null,
         'create': 'new_group_brs',
@@ -12,6 +13,7 @@ window.Invoices.ModelBuyersGroups = Backbone.Model.extend({
     validate: function(attrs) {
         attrs = attrs || {};
         if(!(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title', message: 'Attribute "title" - incorrect'};
+        // client validate duplication
         //if(this.collection.get('title', attrs.title) && attrs.title != this.get('title')) return {attr: 'title', message: 'Duplicate model'};
     }
 });
