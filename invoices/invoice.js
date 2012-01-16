@@ -326,6 +326,10 @@ $(document).ready(function() {
 		                                eventHided: 'focus keypress'
                                     });
                                     
+                                    $.itabs('default', {
+		                                elClassTabItem: 'tab-item'
+                                    });
+                                    
                                     window.Invoices.router = new window.Invoices.Router();
                                 
                                     Backbone.history.start();
@@ -348,7 +352,9 @@ $(document).ready(function() {
 		                            eventHided: 'focus keypress'
                                 });
                                 
-                                $.ierror({});
+                                $.itabs('default', {
+		                            elClassTabItem: 'tab-item'
+                                });
                             
                                 window.Invoices.router = new window.Invoices.Router();
                                 Backbone.history.start();

@@ -3,14 +3,16 @@
 	var defOptions = {
 		elClass: null,
 		elClassTabs: null,
-		elClassConts: null
-		elTabs: null
+		elClassTabItem: null,
+		elClassCont: null,
+		elTabs: null,
+		selected: null
 	};
 
 	var uid = '__itabs__';
 	
 	$.fn.extend({
-        itabs: function(options, arg) {
+        itabs: function(options, arg, arg1) {
         	
         	options = options || {};
         	
@@ -34,15 +36,37 @@
         			
         			    var id = $(this).attr('href');
         			    
-        			    if($('[data-id="'+id+'"]', self).size() < 1) {
-        			        $(self).append($('<div></div>').attr());
-        			    }
+        			    console.warn($('[data-id="'+id+'"]', self).size());
+        			    
+        			    if($('[data-id="'+id+'"]', self).size() < 1) 
+        			        $(self).append($('<div></div>').attr('data-id', id).hide().addClass(self[uid].elClassCont));
         			    
         			});
+        			
+        			if(this[uid].selected) selected.call(this, this[uid].selected);
         			
         		} else {
         		
         			// cmd
+        			if(options == 'select') {
+        			    
+        			    if($('[data-id="#'+arg+'"]', this).size() < 1)
+        			        $(this).append($('<div></div>').attr('data-id', '#'+arg).hide().addClass(this[uid].elClassCont));
+        			    
+        			    selected.call(this, arg);
+        			    
+        			} else if(options == 'get') {
+        			    
+        			    var $e = $('> [data-id="#'+arg+'"]', this);
+        			    
+        			    if($e.size() < 1) {
+        			        $e = $('<div></div>').attr('data-id', '#'+arg).hide().addClass(this[uid].elClassCont);
+        			        $(this).append($e);
+        			    }
+        			    
+        			    if(typeof arg1 == 'function') arg1.call(this, $e.get(0));
+        			    
+        			}
         			
         		}
         		
@@ -51,6 +75,16 @@
         	return this;
         }
     });
+    
+    function selected(id) {console.warn(id);
+        
+        var $tabs = $(this[uid].elTabs, this).removeClass(this[uid].elClassTabItem);
+        $('> [data-id^="#"]', this).hide();
+        
+        $('[href^="#'+id+'"]', $tabs).addClass(this[uid].elClassTabItem);
+        $('> [data-id="#'+id+'"]', this).show();
+        
+    }
     
     $.extend({
         itabs: function(options, arg) {
