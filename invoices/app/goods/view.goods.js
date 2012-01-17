@@ -1,9 +1,9 @@
-window.Invoices.viewBuyers = Backbone.View.extend({
+window.Invoices.viewGoods = Backbone.View.extend({
     initialize: function(opt) {
         
         this.router = opt.router;
         
-        this.collection = new window.Invoices.CollectionBuyers();
+        this.collection = new window.Invoices.CollectionGoods();
         
         this.collection.bind('add', this.eventAdd, this);
         this.collection.bind('remove', this.eventRemove, this);
@@ -12,37 +12,37 @@ window.Invoices.viewBuyers = Backbone.View.extend({
     },
     eventAdd: function(model) {
         // fix bug data-state in collection.create
-        $('#invoicesClientsTbody [data-state="new"]', this.el).before(this.statsTemplate['clientsContactsItem'](model.toJSON()));
+        $('#invoicesGoodsTbody [data-state="new"]', this.el).before(this.statsTemplate['clientsContactsItem'](model.toJSON()));
     },
     eventRemove: function(model) {
-        $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el).remove();
+        $('#invoicesGoodsTbody > [data-id="'+model.get('gds_uid')+'"]', this.el).remove();
     },
     eventChange: function(model) {
-        $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el)
+        $('#invoicesGoodsTbody > [data-id="'+model.get('gds_uid')+'"]', this.el)
             .replaceWith(this.statsTemplate['clientsContactsItem'](model.toJSON()));
     },
     eventChangeEdit: function(model) {
-        $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el)
+        $('#invoicesGoodsTbody > [data-id="'+model.get('gds_uid')+'"]', this.el)
             .replaceWith(this.statsTemplate['clientsContactsItemEdit'](model.toJSON()));
             
-        $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el).iplaceholder();
+        $('#invoicesGoodsTbody > [data-id="'+model.get('gds_uid')+'"]', this.el).iplaceholder();
     },
     eventNew: function() {
-        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['clientsContactsItemNew']()).iplaceholder();
+        $('#invoicesGoodsTbody', this.el).append(this.statsTemplate['clientsContactsItemNew']()).iplaceholder();
     },
     eventAddLoadre: function() {
-        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['buyersLoader']())
+        $('#invoicesGoodsTbody', this.el).append(this.statsTemplate['goodsLoader']())
     },
     eventRemoveLoadre: function() {
-        $('#invoicesClientsTbody [data-sync="buyers"]', this.el).remove();
+        $('#invoicesGoodsTbody [data-sync="goods"]', this.el).remove();
     },
     statsTemplate: {
-        'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyers.tpl']),
-        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItem.tpl']),
-        'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItemEdit.tpl']),
-        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItemNew.tpl']),
-        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersDel.tpl']),
-        'buyersLoader': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersLoader.tpl'])
+        'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goods.tpl']),
+        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsItem.tpl']),
+        'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsItemEdit.tpl']),
+        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsItemNew.tpl']),
+        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsDel.tpl']),
+        'goodsLoader': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsLoader.tpl'])
     },
     render: function(group) {
         
@@ -74,21 +74,20 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         'click [name="save"]':'eventSaveItem',
         'click [name="del"]':'eventDeleteItem',
         'click [name="edit"]':'eventEditItem',
-        'change [name="name"]':'eventSaveItemModel',
-        'change [name="email"]':'eventSaveItemModel',
-        'change [name="phone_main"]':'eventSaveItemModel',
-        'change [name="addr"]':'eventSaveItemModel',
-        'change [name="comment"]':'eventSaveItemModel'
+        'change [name="title"]':'eventSaveItemModel',
+        'change [name="units"]':'eventSaveItemModel',
+        'change [name="price"]':'eventSaveItemModel',
+        'change [name="desc_url"]':'eventSaveItemModel'
     },
     helperGroup: 0,
     helperItemDelModel: undefined,
     eventDeleteItem: function(e) {
-        
+    
         if(this.helperItemDelModel) return;
         var model = this.collection.get($(e.target).attr('data-id'));
         if(model) {
             this.helperItemDelModel = model;
-            $('#invoicesClientsContactsDialogDel-'+this.helperGroup).dialog("open");
+            $('#invoicesGoodsDialogDel-'+this.helperGroup).dialog("open");
         }
         
     },
@@ -100,14 +99,14 @@ window.Invoices.viewBuyers = Backbone.View.extend({
             if(e.target.done) return;
             e.target.done = true;
             
-            var $c = $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el);
+            var $c = $('#invoicesGoodsTbody > [data-id="'+model.get('gds_uid')+'"]', this.el);
             
             model.save(model.toJSON(), {
                 error: function(model, err, arg) {
                     if(err.attr) {// client
                         $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
                     } else {//server
-                        $('input[name="name"]', $c).ierror({wrap: true, msg: err.msg || err});
+                        $('input[name="title"]', $c).ierror({wrap: true, msg: err.msg || err});
                     }
                     if(e.target.done) e.target.done = false;
                 },
@@ -137,7 +136,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         var model = this.collection.get($(e.target).attr('data-id'));
         if(model) {
             // save to model
-            var arg = model.attributes, $c = $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el);
+            var arg = model.attributes, $c = $('#invoicesGoodsTbody > [data-id="'+model.get('gds_uid')+'"]', this.el);
             arg[$(e.target).attr('name')] = $(e.target).val() || null;
             
             if(arg['email'] === null && arg['phone_main'] == null) arg['phone_main'] = '';// hack
@@ -178,13 +177,13 @@ window.Invoices.viewBuyers = Backbone.View.extend({
                 if(err.attr) {// client
                     $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
                 } else {//server
-                    $('input[name="name"]', $c).ierror({wrap: true, msg: err.msg || err});
+                    $('input[name="title"]', $c).ierror({wrap: true, msg: err.msg || err});
                 }
             },
             success: function(model, res) {
                 $c.removeAttr('data-state');
-                $('input, textarea, [data-name^="err"]', $c).attr('data-id', model.get('b_uid'));
-                $c.attr('data-id', model.get('b_uid'));
+                $('input, textarea, [data-name^="err"]', $c).attr('data-id', model.get('gds_uid'));
+                $c.attr('data-id', model.get('gds_uid'));
                 self.eventNew.call(self);
             },
             loader: function(progress) {
@@ -208,7 +207,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         this.el.append(this.statsTemplate['clientsContactsDel']({id: this.helperGroup}));
         var collection = this.collection;
         var self = this;
-        $('#invoicesClientsContactsDialogDel-'+this.helperGroup, this.el).dialog({
+        $('#invoicesGoodsDialogDel-'+this.helperGroup, this.el).dialog({
             autoOpen:false,
             resizable: false,
 			modal: true,
@@ -216,7 +215,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
 				Remove: function() {
 				    var dialog = this;
 				    
-				    var $c = $('#invoicesClientsTbody > [data-id="'+self.helperItemDelModel.get('b_uid')+'"]', self.el);
+				    var $c = $('#invoicesGoodsTbody > [data-id="'+self.helperItemDelModel.get('gds_uid')+'"]', self.el);
 				    
 				    self.helperItemDelModel.destroy({
 				        error: function(model, err) {

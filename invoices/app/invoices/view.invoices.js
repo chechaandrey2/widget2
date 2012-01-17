@@ -3,12 +3,14 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
     
         this.router = opt.router;
         
+        this.collection = new window.Invoices.CollectionInvoicess();
+        
     },
     isObject: function(arg) {
         return (arg && typeof arg == 'object');
     },
     _views: {},// name: View
-    el: $('#invoicesInvoices'),
+    //el: $('#invoicesInvoices'),
     statsTemplate: {
         'invoices': _.template(window.Invoices.TEMPLATE['invoices/app/invoices/template.invoices.tpl'])
     },

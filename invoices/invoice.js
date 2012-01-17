@@ -167,25 +167,29 @@ $(document).ready(function() {
     window.JS.push('invoices/app/buyers/collection.buyers.js');
     window.JS.push('invoices/app/buyers/view.buyers.js');
     
-    // -ps-
-    window.TPL.push("invoices/app/ps/template.ps.tpl");
-    window.TPL.push('invoices/app/ps/template.psItemGroup.tpl');
-    window.TPL.push('invoices/app/ps/template.psItemGroupEdit.tpl');
-    window.TPL.push('invoices/app/ps/template.psAddGroup.tpl');
-    window.TPL.push('invoices/app/ps/template.psDelGroup.tpl');
-    window.JS.push("invoices/app/ps/model.psGroupItem.js");
-    window.JS.push("invoices/app/ps/collection.psGroup.js");
-    window.JS.push('invoices/app/ps/view.ps.js');
+    // -goodsGroups-
+    window.TPL.push("invoices/app/goodsGroups/template.goodsGroups.tpl");
+    window.TPL.push('invoices/app/goodsGroups/template.goodsGroupsItem.tpl');
+    window.TPL.push('invoices/app/goodsGroups/template.goodsGroupsItemEdit.tpl');
+    window.TPL.push('invoices/app/goodsGroups/template.goodsGroupsAdd.tpl');
+    window.TPL.push('invoices/app/goodsGroups/template.goodsGroupsDel.tpl');
+    window.TPL.push('invoices/app/goodsGroups/template.goodsGroupsLoader.tpl');
+    window.TPL.push('invoices/app/goodsGroups/template.goodsGroupsLoaderDialog.tpl');
+    window.L10N.push('invoices/app/goodsGroups/l10n.ru.json');
+    window.JS.push("invoices/app/goodsGroups/model.goodsGroups.js");
+    window.JS.push("invoices/app/goodsGroups/collection.goodsGroups.js");
+    window.JS.push('invoices/app/goodsGroups/view.goodsGroups.js');
     
-    // -psTables-
-    window.TPL.push('invoices/app/psTables/template.psTables.tpl');
-    window.TPL.push('invoices/app/psTables/template.psTablesItem.tpl');
-    window.TPL.push('invoices/app/psTables/template.psTablesItemEdit.tpl');
-    window.TPL.push('invoices/app/psTables/template.psTablesItemNew.tpl');
-    window.TPL.push('invoices/app/psTables/template.psTablesDel.tpl');
-    window.JS.push('invoices/app/psTables/model.psTable.js');
-    window.JS.push('invoices/app/psTables/collection.psTables.js');
-    window.JS.push('invoices/app/psTables/view.psTables.js');
+    // -goods-
+    window.TPL.push('invoices/app/goods/template.goods.tpl');
+    window.TPL.push('invoices/app/goods/template.goodsItem.tpl');
+    window.TPL.push('invoices/app/goods/template.goodsItemEdit.tpl');
+    window.TPL.push('invoices/app/goods/template.goodsItemNew.tpl');
+    window.TPL.push('invoices/app/goods/template.goodsDel.tpl');
+    window.TPL.push('invoices/app/goods/template.goodsLoader.tpl');
+    window.JS.push('invoices/app/goods/model.goods.js');
+    window.JS.push('invoices/app/goods/collection.goods.js');
+    window.JS.push('invoices/app/goods/view.goods.js');
     
     // -invoices-
     window.TPL.push("invoices/app/invoices/template.invoices.tpl");

@@ -1,5 +1,5 @@
-window.Invoices.CollectionClientsContacts = Backbone.Collection.extend({
-    model: window.Invoices.ModelClientsContacts,
+window.Invoices.CollectionBuyers = Backbone.Collection.extend({
+    model: window.Invoices.ModelBuyers,
     initialize: function() {
         
     },

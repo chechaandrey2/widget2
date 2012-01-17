@@ -5,6 +5,7 @@
 		elClassTabs: null,
 		elClassTabItem: null,
 		elClassCont: null,
+		selectorItem: null,
 		elTabs: null,
 		selected: null
 	};
@@ -76,12 +77,18 @@
         }
     });
     
-    function selected(id) {console.warn(id);
+    function selected(id) {
+    
+        var self = this;
         
-        var $tabs = $(this[uid].elTabs, this).removeClass(this[uid].elClassTabItem);
+        var $tabs = $(this[uid].elTabs, this);
+        $(this[uid].selectorItem, $tabs).removeClass(this[uid].elClassTabItem)
         $('> [data-id^="#"]', this).hide();
         
-        $('[href^="#'+id+'"]', $tabs).addClass(this[uid].elClassTabItem);
+        $(this[uid].selectorItem, $tabs).each(function() {
+            if($('[href^="#'+id+'"]', this).size() > 0) $(this).addClass(self[uid].elClassTabItem);
+        });
+        
         $('> [data-id="#'+id+'"]', this).show();
         
     }

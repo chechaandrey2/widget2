@@ -1,4 +1,4 @@
-window.Invoices.ModelBuyersGroups = Backbone.Model.extend({
+window.Invoices.ModelGoodsGroups = Backbone.Model.extend({
     defaults: {
         gr_id: null,
         title: 'new group'
@@ -6,9 +6,9 @@ window.Invoices.ModelBuyersGroups = Backbone.Model.extend({
     idAttribute: 'gr_id',
     syncArg: {
         'read': null,
-        'create': 'new_group_brs',
-        'update': 'edit_group_brs',
-        'delete': 'del_group_brs'
+        'create': 'new_group_gds',
+        'update': 'edit_group_gds',
+        'delete': 'del_group_gds'
     },
     validate: function(attrs) {
         attrs = attrs || {};
