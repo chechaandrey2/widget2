@@ -37,8 +37,6 @@
         			
         			    var id = $(this).attr('href');
         			    
-        			    console.warn($('[data-id="'+id+'"]', self).size());
-        			    
         			    if($('[data-id="'+id+'"]', self).size() < 1) 
         			        $(self).append($('<div></div>').attr('data-id', id).hide().addClass(self[uid].elClassCont));
         			    

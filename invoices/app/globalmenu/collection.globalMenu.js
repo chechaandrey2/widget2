@@ -5,7 +5,7 @@ window.Invoices.CollectionGlobalMenu = Backbone.Collection.extend({
             {name: 'goodss', hash: 'goods/'},
             {name: 'buyers', hash: 'buyers/'},
             {name: 'invoices', hash: 'invoices/'},
-            {name: 'new invoice', hash: 'iteminvoice/'}
+            {name: 'new invoice', hash: 'invoice/'}
         ]);
     }
 });

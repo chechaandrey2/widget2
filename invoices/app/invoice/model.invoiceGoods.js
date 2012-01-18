@@ -1,11 +1,12 @@
 window.Invoices.ModelInvoiceGoods = Backbone.Model.extend({
     defaults: {
         nid: 0,
-        gds_uid: 0,
-        title: '',
-        price: '0.00',
+        gds_uid: null,
+        title: null,
+        price: null,
         total: 0,
-        units: '',
+        units: null,
         quantity: 0
-    }
+    },
+    idAttribute: 'gds_uid'
 });

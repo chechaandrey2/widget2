@@ -193,6 +193,7 @@ $(document).ready(function() {
     
     // -invoices-
     window.TPL.push("invoices/app/invoices/template.invoices.tpl");
+    window.TPL.push('invoices/app/invoice/template.invoiceLoader.tpl');
     window.JS.push("invoices/app/invoices/model.invoices.js");
     window.JS.push("invoices/app/invoices/collection.invoicess.js");
     window.JS.push('invoices/app/invoices/view.invoices.js');
@@ -233,7 +234,6 @@ $(document).ready(function() {
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceSend.js');
-    window.JS.push('invoices/app/itemInvoice/view.itemInvoice.js');
     
     // -itemInvoiceBuyerHelp-
     window.JS.push('invoices/app/itemInvoiceHelp/model.itemInvoiceHelpItem.js');

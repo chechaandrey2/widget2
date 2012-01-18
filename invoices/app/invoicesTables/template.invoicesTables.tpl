@@ -1,4 +1,4 @@
-<table>
+<table class="info_table">
     <thead>
         <tr>
             <th></th><th>#</th><th>client</th><th>description</th><th>status</th><th>date</th><th>total</th><th colspan="4">actions</th>

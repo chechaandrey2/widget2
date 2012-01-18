@@ -1,10 +1,10 @@
 <tr data-state="new">
-    <td></td>
-    <td><input type="text" name="name" value="" placeholder="buyer name" /></td>
-    <td><input type="text" name="phone_main" value="" placeholder="buyer phone" /></td>
-    <td><input type="text" name="email" value="" placeholder="buyer email" /></td>
-    <td><textarea name="addr" placeholder="buyer address"></textarea></td>
-    <td><textarea name="comment" placeholder="buyer comment"></textarea></td>
+    <td class="center">&nbsp;</td>
+    <td class="center"><input style="text-align: center" type="text" name="name" value="" placeholder="buyer name" /></td>
+    <td class="center"><input style="text-align: center" type="text" name="phone_main" value="" placeholder="buyer phone" /></td>
+    <td class="center"><input style="text-align: center" type="text" name="email" value="" placeholder="buyer email" /></td>
+    <td class="center"><textarea name="addr" placeholder="buyer address"></textarea></td>
+    <td class="center"><textarea name="comment" placeholder="buyer comment"></textarea></td>
     <td><input type="button" name="save" value="s" /></td>
     <td><input type="button" name="del" value="x" /></td>
 </tr>

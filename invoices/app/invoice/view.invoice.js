@@ -11,9 +11,15 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
     eventAdd: function(model) {
         this.el.html(this.statsTemplate['invoice'](model.toJSON()));
     },
-    //el: $('#invoicesItemInvoice'),
+    eventAddLoadre: function() {
+        this.el.html(this.statsTemplate['invoiceLoader']());
+    },
+    eventRemoveLoadre: function() {
+        $('[data-sync="invoice"]', this.el).remove();
+    },
     statsTemplate: {
-        'invoice': _.template(window.Invoices.TEMPLATE['invoices/app/invoice/template.invoice.tpl'])
+        'invoice': _.template(window.Invoices.TEMPLATE['invoices/app/invoice/template.invoice.tpl']),
+        'invoiceLoader': _.template(window.Invoices.TEMPLATE['invoices/app/invoice/template.invoiceLoader.tpl'])
     },
     render: function(id, mod) {
     
@@ -22,7 +28,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         if(id) {
             if(this.collection.get(id)) {
                 // render
-                this.renderItem(this.collection.get(id), mod);
+                this.renderItem(this.collection.get(id), id, mod);
             } else {
                 // fetch, render
                 this.collection.fetch({
@@ -30,13 +36,16 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                     add: true, 
                     success: function(collection) {
                         
-                        var model = collection.get('inv_uid', id);
-                        model.set({id: id});// fix id
-                        self.renderItem(model, mod);
+                        var model = collection.get(id);
+                        self.renderItem(model, id, mod);
                         
                     },
                     error: function(collection, e) {
                         console.error(e);
+                    },
+                    loader: function(progress) {
+                        if(progress == 0) self.eventAddLoadre.call(self);
+                        else if(progress == 1) self.eventRemoveLoadre.call(self);
                     }
                 });
             }
@@ -48,105 +57,85 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                 this.collection.add(model);
             }
                         
-            this.renderItem(model, mod);
+            this.renderItem(model, id, mod);
         }
         
         return this;
         
     },
-    renderItem: function(model, mod) {
+    renderItem: function(model, id, mod) {
         
-        var self = this, lb = false, lg = false;
-        
-        // add buyer
+        // add buyers
         if(!model.get('buyers')) model.set({buyers: new window.Invoices.CollectionInvoiceBuyers()});
-        if(model.get('b_uid') && model.get('buyers').length < 1) {
-            model.get('buyers').fetch({
-                data: {b_uid: model.get('b_uid')},
-                success: function(collection) {
-                    lb = true;
-                    if(lg) self.renderItemLoaded(model, mod);
-                },
-                error:function(collection, e) {
-                    console.error(e);
-                }
-            });
-        } else {
-            lb = true;
-            if(lg) this.renderItemLoaded(model, mod);
+        var binfo = model.get('b_info');
+        if(model.get('buyers').length < 1 && binfo && binfo.length > 0) {
+            // parse b_info
+            binfo = JSON.parse(binfo) || [];
+            if(!(binfo instanceof Array)) binfo = [binfo];
+            model.get('buyers').add(binfo);
         }
         
         // add goodss
         if(!model.get('goods')) model.set({goods: new window.Invoices.CollectionInvoiceGoodss()});
         var content = model.get('content');
         if(model.get('goods').length < 1 && content && content.length > 0) {
-            // -hack content-
-            var content = JSON.parse(content) || [];
-            var ids = [], args = {};
-            for(var i=0; i<content.length; i++) {
-                if(content[i]) {
-                    var id = content[i]['gds_uid']+'';
-                    ids.push(id);
-                    args[id] = {quantity: content[i]['quantity'], total: content[i]['total']}
-                }
-            }
-            // -hack content-
-            if(ids.length > 0) {
-                model.get('goods').fetch({
-                    data: {gds_uid: ids},
-                    success: function(collection) {
-                        collection.each(function(model) {
-                            model.set(args[model.get('gds_uid')]);
-                        }, collection);
-                        
-                        model.set({content: null});
-                        
-                        lg = true;
-                        if(lb) self.renderItemLoaded(model, mod);
-                    },
-                    error: function(collection, e) {
-                        console.error(e);
-                    }
-                });
-            } else {
-                model.set({content: null});
-                
-                lg = true;
-                if(lb) self.renderItemLoaded(model, mod);
-            }
-        } else {
-            lg = true;
-            if(lb) this.renderItemLoaded(model, mod);
+            // parse content
+            content = JSON.parse(content) || [];
+            if(!(binfo instanceof Array)) content = [content];
+            model.get('goods').add(content);
         }
+        
+        this.renderItemLoaded(model, id, mod);
         
         return this;
         
     },
-    renderItemLoaded: function(model, mod) {
+    renderItemLoaded: function(model, id, mod) {
         
-        var view;
+        var self = this;
         
-        if(mod == 'view') {
-            view = new window.Invoices.ViewItemInvoiceView({
-                el: $('#invoicesItemInvoiceItem-view', this.el).undelegate(),// hack
-                model: model,
-                router: this.router
-            });
-        } else if(mod == 'send') {
-            view = new window.Invoices.ViewItemInvoiceSend({
-                el: $('#invoicesItemInvoiceItem-send', this.el).undelegate(),// hack
-                model: model,
-                router: this.router
-            });
-        } else {
-            view = new window.Invoices.ViewItemInvoiceEdit({
-                el: $('#invoicesItemInvoiceItem-edit', this.el).undelegate(),// hack
-                model: model,
-                router: this.router
-            });
-        }
+        // +itabs
+        $('#invoicesInvoiceTabs', this.el).itabs({
+            elTabs: $('#invoicesInvoiceTabs #invoicesItemInvoiceTabsList', this.el),
+            selectorItem: '[data-id]'
+        });
         
-        view.render();
+        if(!mod) mod = 'edit';
+        
+        $('#invoicesInvoiceTabs', this.el).itabs('get', 'invoice/'+mod+'/'+(id?id+'/':''), function(el) {
+            var view;
+        
+            if(mod == 'view') {
+            
+                $('#invoicesInvoiceTabs', this.el).itabs('select', 'invoice/view/'+(id?id+'/':''));
+            
+                view = new window.Invoices.ViewItemInvoiceView({
+                    el: $(el).undelegate(),// hack
+                    model: model,
+                    router: self.router
+                });
+            } else if(mod == 'send') {
+            
+                $('#invoicesInvoiceTabs', this.el).itabs('select', 'invoice/send/'+(id?id+'/':''));
+            
+                view = new window.Invoices.ViewItemInvoiceSend({
+                    el: $(el).undelegate(),// hack
+                    model: model,
+                    router: self.router
+                });
+            } else if(mod == 'edit') {
+            
+                $('#invoicesInvoiceTabs', this.el).itabs('select', 'invoice/edit/'+(id?id+'/':''));
+            
+                view = new window.Invoices.ViewItemInvoiceEdit({
+                    el: $(el).undelegate(),// hack
+                    model: model,
+                    router: self.router
+                });
+            }
+        
+            view.render();
+        });
         
         return this;
         

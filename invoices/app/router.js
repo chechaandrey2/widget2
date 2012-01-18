@@ -1,8 +1,8 @@
 window.Invoices.Router = Backbone.Router.extend({
     initialize: function() {
-        this.route(/^(iteminvoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
-        this.route(/^(iteminvoice\/(view|edit|send)\/).*$/i, 'iteminvoice', this.iteminvoice);
-        this.route(/^(iteminvoice\/(view|edit|send)\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
+        this.route(/^(invoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
+        this.route(/^(invoice\/(view|edit|send)\/).*$/i, 'iteminvoice', this.iteminvoice);
+        this.route(/^(invoice\/(view|edit|send)\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);
         this.route(/^(invoices\/).*$/i, 'invoices', this.invoices);
         this.route(/^(invoices\/([a-z0-9]+)\/).*$/i, 'invoices', this.invoices);
         this.route(/^(buyers\/).*$/i, 'buyers', this.buyers);

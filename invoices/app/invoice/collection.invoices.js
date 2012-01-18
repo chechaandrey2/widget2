@@ -4,6 +4,6 @@ window.Invoices.CollectionInvoices = Backbone.Collection.extend({
         
     },
     syncArg: {
-        'read': 'data_invoice'
+        'read': 'data_invoice_ex'
     }
 });

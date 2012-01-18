@@ -24,9 +24,10 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         var $c = $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el);
         if(model.get('nid')>0) {
             $c.before(this.statsTemplate['itemInvoiceEditNewGoodsItem'](model.toJSON()));
+            var $c1 = $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"]', this.el);
             this.helperGoodsAtcmplt(
-                $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"] [name="title"]', this.el).get(0),
-                $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"] [data-name="help"]', this.el).get(0)
+                $('[name="title"]', $c1).get(0),
+                $('[data-name="help"]', $c1).get(0)
             );
         } else {
             $c.before(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON()));
@@ -193,11 +194,12 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         this.helperBuyerAtcmplt();
         
         // add goods autocomplete
-        var $c = $('#invoicesItemInvoiceItemGoods', this.el);
-        this.helperGoodsAtcmplt($('[data-state="new"] [name="title"]', $c).get(0), $('[data-state="new"] [data-name="help"]', $c).get(0));
+        var $c = $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el);
+        this.helperGoodsAtcmplt($('[name="title"]', $c).get(0), $('[data-name="help"]', $c).get(0));
         
-        this.helperDialogNewBuyer();
+        //this.helperDialogNewBuyer();
         
+        return this;
     },
     events: {
         'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="title"]': 'eventDOMNewGoods',

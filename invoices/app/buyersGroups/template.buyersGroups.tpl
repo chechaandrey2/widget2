@@ -1,6 +1,6 @@
 <div></div>
 <div id="invoicesClientsTabs">
-    <div id="invoicesClientsTabsList">
-        <span id="invoicesClientsNewGroup"><input type="button" id="invoicesClientsAddGroup" value="+" /></span>
+    <div id="invoicesClientsTabsList" class="clean">
+        <span id="invoicesClientsNewGroup"><input class="input_add" type="button" id="invoicesClientsAddGroup" value="+" /></span>
     </div>
 </div>
