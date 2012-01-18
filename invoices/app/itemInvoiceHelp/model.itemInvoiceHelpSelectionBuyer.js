@@ -6,5 +6,6 @@ window.Invoices.ModelItemInvoiceHelpSelectionBuyer = Backbone.Model.extend({
         phone_main: '',
         email: '',
         comment: ''
-    }
+    },
+    idAttribute: 'b_uid'
 });

@@ -1,4 +1,4 @@
-<div id="invoicesItemInvoiceEditDialog-<%= id %>" title="Create new buyer">
+<div id="invoicesItemInvoiceEditDialog-<%= id || 0 %>" title="Create new buyer">
     <table>
         <tbody>
             <tr><td><strong>name</strong></td><td><input type="text" name="name" value="" /></td></tr>

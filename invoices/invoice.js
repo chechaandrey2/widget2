@@ -231,6 +231,9 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditNewGoodsItem.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditDialog.tpl');
     
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderGoodsGroup.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderBuyersGroup.tpl');
+    
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceSend.js');
@@ -334,6 +337,11 @@ $(document).ready(function() {
 		                                elClassTabItem: 'tab-item'
                                     });
                                     
+                                    $.iautocomplete('default', {
+                                        minLength: 2,
+                                        elClassItem: 'selected'
+                                    });
+                                    
                                     window.Invoices.router = new window.Invoices.Router();
                                 
                                     Backbone.history.start();
@@ -358,6 +366,11 @@ $(document).ready(function() {
                                 
                                 $.itabs('default', {
 		                            elClassTabItem: 'tab-item'
+                                });
+                                
+                                $.iautocomplete('default', {
+                                    minLength: 2,
+                                    elClassItem: 'selected'
                                 });
                             
                                 window.Invoices.router = new window.Invoices.Router();

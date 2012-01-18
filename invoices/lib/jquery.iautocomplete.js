@@ -2,6 +2,7 @@
     
     var defOptions = {
         minLength: 2,
+        elClassItem: null,
         el: null,
         selectorItem: null,
         render: null,
@@ -40,21 +41,21 @@
                         switch(e.which) {
                             case 38:// UP
                                 var length = $c.size();
-					            var pos = $c.index($('[data-selected="selected"]'));
-					            $c.removeAttr('data-selected');
-					            $($c.get(pos-1>=0?pos-1:length-1)).attr('data-selected', 'selected');
+					            var pos = $c.index($('.'+this[uid].elClassItem));
+					            $c.removeClass(this[uid].elClassItem);
+					            $($c.get(pos-1>=0?pos-1:length-1)).addClass(this[uid].elClassItem);
 					            e.preventDefault();
 					        break;
 					        case 40:// DOWN
 					            var length = $c.size();
-					            var pos = $c.index($('[data-selected="selected"]'));
-					            $c.removeAttr('data-selected');
-					            $($c.get(pos+1<length?pos+1:0)).attr('data-selected', 'selected');
+					            var pos = $c.index($('.'+this[uid].elClassItem));
+					            $c.removeClass(this[uid].elClassItem);
+					            $($c.get(pos+1<length?pos+1:0)).addClass(this[uid].elClassItem);
 					            e.preventDefault();
 					        break;
 				            case 13:// ENTER
 				                // selected
-				                var pos = $c.index($('[data-selected="selected"]'));
+				                var pos = $c.index($('.'+this[uid].elClassItem));
 				                var el = $c.get(pos);
 				                selected.call(this, el);
 				                if(!el && typeof this[uid].entered == 'function') this[uid].entered.call(this, e.target, this[uid]);
@@ -92,8 +93,8 @@
                         var $c = $(self[uid].selectorItem, self[uid].el);
                         var el = f1($c, e.target, 0);
                         if($(el).size() > 0) {
-                            $c.removeAttr('data-selected');
-                            $(el).attr('data-selected', 'selected');
+                            $c.removeClass(self[uid].elClassItem);
+                            $(el).addClass(self[uid].elClassItem);
                         }
                     });
                     
@@ -120,6 +121,14 @@
         }
     });
     
+    $.extend({
+        iautocomplete: function(options, arg) {
+        	if(options == 'default') {
+    			defOptions = $.extend({}, defOptions, arg);
+    		}
+        }
+    });
+    
     function f1($c, el, i) {// max 5 level rec
         if(i >= 5) return -1;
         var index = $c.index(el);
@@ -142,7 +151,7 @@
                     self[uid].render.call(self, self[uid], value);
                 }
                 
-                $($(self[uid].selectorItem, self[uid].el).get(0)).attr('data-selected', 'selected');
+                $($(self[uid].selectorItem, self[uid].el).get(0)).addClass(self[uid].elClassItem);
                 
                 if($(self[uid].el).children().size() < 1 && typeof self[uid].renderEmpty == 'function') {
                     self[uid].renderEmpty.call(self, self[uid], value);

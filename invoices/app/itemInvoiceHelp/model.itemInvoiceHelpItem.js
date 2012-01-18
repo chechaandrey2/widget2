@@ -3,5 +3,6 @@ window.Invoices.ModelItemInvoiceHelpItem = Backbone.Model.extend({
         id: 0,
         selection: null,
         status: 'unloaded',//load, loaded
-    }
+    },
+    idAttribute: 'id'
 });

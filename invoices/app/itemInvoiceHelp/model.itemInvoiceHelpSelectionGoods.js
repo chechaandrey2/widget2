@@ -6,5 +6,6 @@ window.Invoices.ModelItemInvoiceHelpSelectionGoods = Backbone.Model.extend({
         units: '',
         img_url: null,
         desc_url: null
-    }
+    },
+    idAttribute: 'gds_uid'
 });

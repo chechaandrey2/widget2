@@ -4,6 +4,6 @@
     <td><input type="text" name="units" value="" /></td>
     <td><input type="text" name="quantity" value="" /></td>
     <td><input type="text" name="price" value="" /></td>
-    <td></td>
-    <td></td>
+    <td><span data-name="total"></span></td>
+    <td><input type="button" name="remove" value="x" /></td>
 </tr>
