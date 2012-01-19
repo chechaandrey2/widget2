@@ -8,7 +8,9 @@ window.Invoices.ViewItemInvoiceHelpBuyer = Backbone.View.extend({
         
     },
     eventEndedRequest: undefined,
-    render: function(key) {
+    render: function(key, loader) {
+    
+        var lg = false, li = false;
     
         var data = {groups: null, items: null}, self = this;
         
@@ -16,6 +18,15 @@ window.Invoices.ViewItemInvoiceHelpBuyer = Backbone.View.extend({
             this.collectionGroups.fetch({
                 success: function() {
                     if(typeof self.eventEndedRequest == 'function') self.eventEndedRequest.call(self, key);
+                },
+                loader: function(progress) {
+                    if(progress == 0) {
+                        lg = true;
+                        if(!li && typeof loader == 'function') loader.call(self, progress);
+                    } else if(progress == 1) {
+                        lg = false;
+                        if(!li && typeof loader == 'function') loader.call(self, progress);
+                    }
                 }
             });
             this.collectionGroups.load = true;
@@ -43,6 +54,15 @@ window.Invoices.ViewItemInvoiceHelpBuyer = Backbone.View.extend({
                 success: function(collection) {
                     model.set({status: 'loaded'});
                     if(typeof self.eventEndedRequest == 'function') self.eventEndedRequest.call(self, key);
+                },
+                loader: function(progress) {
+                    if(progress == 0) {
+                        li = true;
+                        if(!lg && typeof loader == 'function') loader.call(self, progress);
+                    } else if(progress == 1) {
+                        li = false;
+                        if(!lg && typeof loader == 'function') loader.call(self, progress);
+                    }
                 }
             });
             model.set({status: 'load'});

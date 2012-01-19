@@ -1,3 +1,3 @@
 <tr data-sync="goodsQuery">
-    <td><h2 style="color: red">Wait...</h2></td>
+    <td colspan="7"><h2 style="color: red">Wait...</h2></td>
 </tr>

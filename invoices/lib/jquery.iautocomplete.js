@@ -75,7 +75,7 @@
                     $(this).bind('blur', function(e) {
                         this[uid]['listener'] = false;
                         setTimeout(function() {
-                            if(typeof self[uid].hided == 'function') self[uid].hided.call(self, this[uid]);
+                            if(typeof self[uid].hided == 'function') self[uid].hided.call(self, self[uid]);
                         }, 150);
                         if(typeof this[uid].focusout == 'function') this[uid].focusout.call(this, this[uid]);
                     });
@@ -105,12 +105,8 @@
                 } else {
                     // cmd
                     
-                    if(options == 'cmd') {
-                        if(arg == 'render') {
-                            render.call(this, this, 0);
-                        }
-                    } else if(options == 'option') {
-                        
+                    if(options == 'render') {
+                        render.call(this, this, 0);
                     }
                     
                 }

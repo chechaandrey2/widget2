@@ -233,6 +233,8 @@ $(document).ready(function() {
     
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderGoodsGroup.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderBuyersGroup.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderAtcmplt.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditAtcmpltEmpty.tpl');
     
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');
