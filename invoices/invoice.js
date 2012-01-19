@@ -227,14 +227,14 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpItem.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpGroup.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl');
-    
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditNewGoodsItem.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditDialog.tpl');
-    
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderGoodsGroup.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderBuyersGroup.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderAtcmplt.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditAtcmpltEmpty.tpl');
+    
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceViewBuyers.tpl');
     
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');
