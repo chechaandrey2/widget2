@@ -23,7 +23,6 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
             this.eventRemove(model);
         } else {
             // new Date, new status
-            model.set({status: 'issued', issued_at: Math.ceil(new Date().getTime()/1000)}, {silent: true});
             $('#invoicesInvoicesTbody > [data-id="'+model.get('inv_uid')+'"]')
                 .replaceWith(this.statsTemplate['invoicesItem'].call(this, model.toJSON()));
         }
@@ -86,14 +85,21 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
         
         var model = this.collection.get($(e.target).attr('data-id'));
         
-        model.set({'issued_at': Math.ceil(new Date().getTime()/1000)}, {silent:true});
+        var $c = $('#invoicesInvoicesTbody [data-id="'+model.get('inv_uid')+'"]', this.el);
+        
+        // 2011-11-19 15:02:55 -> H:i:s d.m.Y
+        model.set({status: 'issued', issued_at: date('Y-m-d H:i:s', new Date())}, {silent: true});
         
         model.save(null, {
             error: function(model, err) {
                 console.error('%o, %o', model, err);
             },
-            loader: function() {
-                
+            loader: function(progress) {
+                if(progress == 0) {
+                        $c.addClass('saving');
+                    } else if(progress == 1) {
+                        $c.removeClass('saving');
+                    }
             }
         });
         
