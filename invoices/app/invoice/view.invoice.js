@@ -9,10 +9,15 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         
     },
     eventAdd: function(model) {
-        this.el.html(this.statsTemplate['invoice'](model.toJSON()));
+        this.el.html(this.statsTemplate['invoice'].call(this, model.toJSON()));
+        // +itabs
+        $('#invoicesInvoiceTabs', this.el).itabs({
+            elTabs: $('#invoicesInvoiceTabs #invoicesItemInvoiceTabsList', this.el),
+            selectorItem: '[data-id]'
+        });
     },
     eventAddLoadre: function() {
-        this.el.html(this.statsTemplate['invoiceLoader']());
+        this.el.html(this.statsTemplate['invoiceLoader'].call(this));
     },
     eventRemoveLoadre: function() {
         $('[data-sync="invoice"]', this.el).remove();
@@ -28,7 +33,9 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         if(id) {
             if(this.collection.get(id)) {
                 // render
-                this.renderItem(this.collection.get(id), id, mod);
+                var model = this.collection.get(id);
+                this.eventAdd.call(this, model);
+                this.renderItem(model, id, mod);
             } else {
                 // fetch, render
                 this.collection.fetch({
@@ -37,7 +44,11 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                     success: function(collection) {
                         
                         var model = collection.get(id);
-                        self.renderItem(model, id, mod);
+                        if(!model) {
+                            self.router.navigate('invoice/edit/', true);
+                        } else {
+                            self.renderItem(model, id, mod);
+                        }
                         
                     },
                     error: function(collection, e) {
@@ -51,10 +62,12 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
             }
         } else {
             // create(select current model) empty model, render
-            var model = this.collection.get('inv_uid', 0);
+            var model = this.collection.get('inv_uid', null);
             if(!model) {
                 model = new window.Invoices.ModelInvoice();
                 this.collection.add(model);
+            } else {
+                this.eventAdd.call(this, model);
             }
                         
             this.renderItem(model, id, mod);
@@ -93,12 +106,6 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
     renderItemLoaded: function(model, id, mod) {
         
         var self = this;
-        
-        // +itabs
-        $('#invoicesInvoiceTabs', this.el).itabs({
-            elTabs: $('#invoicesInvoiceTabs #invoicesItemInvoiceTabsList', this.el),
-            selectorItem: '[data-id]'
-        });
         
         if(!mod) mod = 'edit';
         

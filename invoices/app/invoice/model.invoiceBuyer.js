@@ -8,6 +8,9 @@ window.Invoices.ModelInvoiceBuyer = Backbone.Model.extend({
         email: null
     },
     idAttribute: 'b_uid',
+    syncArg: {
+        'create': 'new_buyers'
+    },
     validate: function(attrs) {
         if(attrs.name !== undefined) {
             if(!(/^[\w\sа-яА-ЯёЁ\.,\(\)]+$/i.test(attrs.name || ''))) return {attr: 'name', msg: 'Attribute "name" - incorrect'};

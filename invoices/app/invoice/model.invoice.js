@@ -23,6 +23,6 @@ window.Invoices.ModelInvoice = Backbone.Model.extend({
     },
     idAttribute: 'inv_uid',
     syncArg: {
-        'update': 'new_invoice'
+        'create': 'new_invoice'
     }
 });

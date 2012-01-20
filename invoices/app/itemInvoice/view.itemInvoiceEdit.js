@@ -26,9 +26,9 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         var $c = $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el);
         
         if(model.get('nid')>0) {
-            $c.before(this.statsTemplate['itemInvoiceEditNewGoodsItem'](model.toJSON()));
+            $c.before($(this.statsTemplate['itemInvoiceEditNewGoodsItem'](model.toJSON())).iplaceholder());
         } else {
-            $c.before(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON()));
+            $c.before($(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON())).iplaceholder());
         }
         this.eventAssumeInvoice.call(this);
     },
@@ -47,7 +47,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         
         if(model.get('gds_uid')>0 && model.get('nid')>0) {
             $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"]', this.el)
-                .replaceWith(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON()));
+                .replaceWith($(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON())).iplaceholder());
             
             model.set({nid: 0}, {silent: true});// hack
         } else if(model.get('nid')>0) {
@@ -58,7 +58,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         this.eventAssumeInvoice.call(this);
     },
     eventNewGoods: function(model) {
-        $('#invoicesItemInvoiceItemGoods', this.el).append(this.statsTemplate['itemInvoiceEditGoodsNew']());
+        $('#invoicesItemInvoiceItemGoods', this.el).append($(this.statsTemplate['itemInvoiceEditGoodsNew']()).iplaceholder());
         var $c = $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el);
         this.helperGoodsAtcmplt(
             $('[name="title"]', $c).get(0),
@@ -125,7 +125,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
     },
     render: function() {
         
-        this.el.html(this.statsTemplate['itemInvoiceEdit'](this.model.toJSON()));
+        this.el.html($(this.statsTemplate['itemInvoiceEdit'].call(this, this.model.toJSON())).iplaceholder());
         
         this.eventNewGoods();
         
@@ -159,8 +159,18 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         'click [name="addbuyer"]': 'eventDOMOpenDialog',
         'change [name="descr"]': 'eventDOMChangeInvoice',
         'change [name="msg"]': 'eventDOMChangeInvoice',
-        'click [name="issued"]': 'eventDOMSendIssuedInvoice',
-        'click [name="created"]': 'eventDOMSendCreatedInvoice'
+        'click [name="created"]': 'eventDOMSaveCreated',
+        'click [name="issued"]': 'eventDOMSaveIssued'
+    },
+    eventDOMSaveCreated: function(e) {
+        this.model.set({is_issued: 0, save: true});
+        var id = this.model.get('inv_uid');
+        this.router.navigate('invoice/send/'+(id?id+'/':''), true);
+    },
+    eventDOMSaveIssued: function(e) {
+        this.model.set({is_issued: 1, save: true});
+        var id = this.model.get('inv_uid');
+        this.router.navigate('invoice/send/'+(id?id+'/':''), true);
     },
     eventDOMOpenDialog: function(e) {
         
@@ -222,16 +232,6 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         var data = {};
         data[$(e.target).attr('name')] = $(e.target).val();
         this.model.set(data, {silent: true});
-        
-    },
-    eventDOMSendCreatedInvoice: function(e) {
-        
-        console.warn(this.model.toJSON());
-        
-    },
-    eventDOMSendIssuedInvoice: function(e) {
-        
-        
         
     },
     helperDOMRemoveGoods: function(el) {
@@ -490,17 +490,46 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
     },
     helperDialogNewBuyer: function() {
         this.el.append(this.statsTemplate['itemInvoiceEditDialog']({id: this.model.get('inv_uid')}));
-        var collection = this.collection;
         var self = this;
-        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0), this.el).dialog({
+        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0), this.el)
+        .iplaceholder()
+        .dialog({
             autoOpen:false,
             resizable: false,
 			modal: true,
 			buttons: {
 				Create: function() {
-				    var dialog = this;
+				    var dialog = this, data = {};
+				    
+				    $('input[type="text"], textarea', dialog).each(function() {
+                        data[$(this).attr('name')] = $(this).val() || null;
+                    });
+        
+                    data['gr_id'] = 1;
 				    
 				    // model create
+				    self.model.get('buyers').create(data, {
+                        error: function(model, err) {
+                            if(err.attr) {// client
+                                $('input[name="'+err.attr+'"]', dialog).ierror({wrap: true, msg: err.msg});
+                            } else {//server
+                                $('input[name="name"]', dialog).ierror({wrap: true, msg: err.msg || err});
+                            }
+                        },
+                        success: function(model, res) {
+                            
+                            $('input[type="text"], textarea', dialog).val('');
+                            $(dialog).dialog('close');
+                            
+                        },
+                        loader: function(progress) {
+                            if(progress == 0) {
+                                
+                            } else if(progress == 1) {
+                                
+                            }
+                        }
+                    });
 				    
 				},
 				Cancel: function() {

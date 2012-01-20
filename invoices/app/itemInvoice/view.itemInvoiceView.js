@@ -19,5 +19,19 @@ window.Invoices.ViewItemInvoiceView = Backbone.View.extend({
         }));
         
         return this;
+    },
+    events: {
+        'click [name="created"]': 'eventDOMSaveCreated',
+        'click [name="issued"]': 'eventDOMSaveIssued'
+    },
+    eventDOMSaveCreated: function(e) {
+        this.model.set({is_issued: 0, save: true});
+        var id = this.model.get('inv_uid');
+        this.router.navigate('invoice/send/'+(id?id+'/':''), true);
+    },
+    eventDOMSaveIssued: function(e) {
+        this.model.set({is_issued: 1, save: true});
+        var id = this.model.get('inv_uid');
+        this.router.navigate('invoice/send/'+(id?id+'/':''), true);
     }
 });

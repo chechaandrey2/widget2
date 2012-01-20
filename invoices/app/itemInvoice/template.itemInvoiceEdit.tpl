@@ -11,7 +11,7 @@ var dates = {
         <tr><td colspan="2"><% if(status) { %><div><span><%= status %></span><span>(<%= date('H:i:s d.m.Y', new Date(dates[status])) %>)</span></div><% } %></td></tr>
         <tr><td colspan="2"><strong>byers</strong></td></tr>
         <tr><td colspan="2">
-            <div><span><input type="text" id="invoicesItemInvoiceBuyersFind" value="" /><span id="invoicesInvoiceBuyersGroupLoader"></span></span><input type="button" name="addbuyer" value="+" /></div>
+            <div><span><input type="text" id="invoicesItemInvoiceBuyersFind" value="" placeholder="buyer, you want to add" /><span id="invoicesInvoiceBuyersGroupLoader"></span></span><input type="button" name="addbuyer" value="+" /></div>
             <div id="invoicesItemInvoiceItemBuyers"></div>
             <div id="invoicesItemInvoiceBuyersHelp"></div>
         </td></tr>
@@ -26,8 +26,8 @@ var dates = {
         </td></tr>
         <tr><td colspan="2"><div><span id="invoicesInvoiceGoodsTotal"><%= sprintf('%01.2f', total) %></span><span>(<%= currency %>)</span></div></td><td></td></tr>
         <tr><td colspan="2"><span>additional fields</span></td></tr>
-        <tr><td><strong>description</strong></td><td><textarea name="descr"><%= descr %></textarea></td></tr>
-        <tr><td><strong>message</strong></td><td><textarea name="msg"><%= descr %></textarea></td></tr>
+        <tr><td><strong>description</strong></td><td><textarea name="descr" placeholder="invoice description"><%= descr %></textarea></td></tr>
+        <tr><td><strong>message</strong></td><td><textarea name="msg" placeholder="invoice message"><%= descr %></textarea></td></tr>
     </tbody>
     <tfoot>
         <tr><th colspan="2"><% if(inv_uid) { %><input type="button" name="created" value="create of current" /><input type="button" name="issued" value="issue of current" /><a href="#invoice/view/<%= inv_uid %>/">view</a><% } else { %><input type="button" name="created" value="create" /><input type="button" name="issued" value="issue" /><a href="#invoice/view/">view</a><% } %></th></tr>
