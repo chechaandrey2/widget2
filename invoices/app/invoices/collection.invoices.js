@@ -1,5 +1,5 @@
 window.Invoices.CollectionInvoices = Backbone.Collection.extend({
-    model: window.Invoices.ModelInvoice,
+    model: window.Invoices.ModelInvoices,
     initialize: function() {
         
     },

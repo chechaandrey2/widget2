@@ -3,53 +3,99 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
     
         this.router = opt.router;
         
-        this.collection = new window.Invoices.CollectionInvoicess();
+        this.collection = new window.Invoices.CollectionInvoices();
+        
+        this.collection.bind('add', this.eventAdd, this);
+        this.collection.bind('remove', this.eventRemove, this);
+        this.collection.bind('change', this.eventChange, this);
         
     },
-    isObject: function(arg) {
-        return (arg && typeof arg == 'object');
+    eventAdd: function(model) {
+        this.helperPrepareBinfo(model);
+        $('#invoicesInvoicesTbody', this.el).append(this.statsTemplate['invoicesItem'].call(this, model.toJSON()));
     },
-    _views: {},// name: View
-    //el: $('#invoicesInvoices'),
+    eventRemove: function(model) {
+        $('#invoicesInvoicesTbody [data-id="'+model.get('inv_uid')+'"]', this.el).remove();
+    },
+    eventChange: function(model) {
+        
+        if(this.helperStatus == 'created') {
+            this.eventRemove(model);
+        } else {
+            // new Date, new status
+            model.set({status: 'issued', issued_at: Math.ceil(new Date().getTime()/1000)}, {silent: true});
+            $('#invoicesInvoicesTbody > [data-id="'+model.get('inv_uid')+'"]')
+                .replaceWith(this.statsTemplate['invoicesItem'].call(this, model.toJSON()));
+        }
+        
+    },
+    eventAddLoader: function() {
+        $('#invoicesInvoicesTbody', this.el).append(this.statsTemplate['invoicesLoader'].call(this));
+    },
+    eventRemoveLoader: function() {
+        $('#invoicesInvoicesTbody [data-sync="invoices"]', this.el).remove();
+    },
     statsTemplate: {
-        'invoices': _.template(window.Invoices.TEMPLATE['invoices/app/invoices/template.invoices.tpl'])
+        'invoices': _.template(window.Invoices.TEMPLATE['invoices/app/invoices/template.invoices.tpl']),
+        'invoicesItem': _.template(window.Invoices.TEMPLATE['invoices/app/invoices/template.invoicesItem.tpl']),
+        'invoicesLoader': _.template(window.Invoices.TEMPLATE['invoices/app/invoices/template.invoicesLoader.tpl'])
     },
-    render: function() {
-    
-        this.el.html(this.statsTemplate['invoices'](this.collection));
+    render: function(st, status) {
+        
+        var self = this;
+        
+        this.el.html(this.statsTemplate['invoices'].call(this));
+        
+        var data = st===0?{}:{status: status};
+        
+        this.collection.fetch({
+            data: data, 
+            add: true,
+            error: function(collection, err) {
+                console.error('%o, %o', collection, err);
+            },
+            loader:function(progress) {
+                if(progress == 0) {
+                    self.eventAddLoader.call(self);
+                } else if(progress == 1) {
+                    self.eventRemoveLoader.call(self);
+                }
+            }
+        });
+        
+        this.helperStatus = status;
         
         return this;
         
     },
-    renderItem: function(st) {
-    
-        if(!_.include(this.collection.pluck('name'), st)) st = 0;
-        
-        if(!$('#invoicesInvoicesTabs > #invoicesInvoicesItem-'+st).size()) 
-            $('#invoicesInvoicesTabs').append($('<div></div>').attr('id', 'invoicesInvoicesItem-'+st));
-        
-        if(!this.isObject(this._views[st])) {            
-            this._views[st] = new window.Invoices.ViewInvoicesTables({
-                router: this.router,
-                el: $('#invoicesInvoicesItem-'+st),
-                collection: new window.Invoices.CollectionInvoicesTables()
-            });
-            this._views[st].render(st);
+    events: {
+        'click [name="issued"]': 'eventUpdateItem'
+    },
+    helperPrepareBinfo: function(model) {
+        var binfo = model.get('b_info');
+        if(binfo && binfo.length > 0) {
+            binfo = JSON.parse(binfo) || [];
+            if(!(binfo instanceof Array)) binfo = [binfo];
+            model.set({buyers: binfo}, {silent: true});
         } else {
-            //this._views[st].render(st);
+            model.set({buyers: []}, {silent: true});
         }
+    },
+    helperStatus: undefined,
+    eventUpdateItem: function(e) {
         
-        // helper
-        this.helperSelected(st);        
-    },
-    helperSelected: function(id) {
-        $('#invoicesInvoicesTabs #invoicesInvoicesTabsList', this.el).children().each(function() {
-            if($(this).attr('data-id') != id) $(this).removeAttr('data-selected');
+        var model = this.collection.get($(e.target).attr('data-id'));
+        
+        model.set({'issued_at': Math.ceil(new Date().getTime()/1000)}, {silent:true});
+        
+        model.save(null, {
+            error: function(model, err) {
+                console.error('%o, %o', model, err);
+            },
+            loader: function() {
+                
+            }
         });
-        $('#invoicesInvoicesTabs [id^="invoicesInvoicesItem-"]', this.el).hide();
-        $('#invoicesInvoicesTabs #invoicesInvoicesTabsList [data-id="'+id+'"]', this.el).attr('data-selected', 'selected');
-        $('#invoicesInvoicesTabs [id="invoicesInvoicesItem-'+id+'"]', this.el).show();
-        this.helperSelectedItem = id;
-    },
-    helperSelectedItem: 0
+        
+    }
 });

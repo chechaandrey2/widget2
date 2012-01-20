@@ -19,7 +19,7 @@ if(location.host == 'localhost:8000') {
         return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
     };
 
-    Backbone.sync = function(method, model, options) {console.warn('method: %o, model: %o, options: %o, syncArg: %o', method, model, options, model.syncArg);
+    Backbone.sync = function(method, model, options) {
         var id0 = _guid();
         window.bridgeObjects[id0] = {
             'data': {subname: model.syncArg[method]},
@@ -191,30 +191,30 @@ $(document).ready(function() {
     window.JS.push('invoices/app/goods/collection.goods.js');
     window.JS.push('invoices/app/goods/view.goods.js');
     
+    // -invoicesStatus-
+    window.TPL.push("invoices/app/invoicesStatus/template.invoicesStatus.tpl");
+    window.JS.push("invoices/app/invoicesStatus/model.invoicesStatus.js");
+    window.JS.push("invoices/app/invoicesStatus/collection.invoicesStatus.js");
+    window.JS.push('invoices/app/invoicesStatus/view.invoicesStatus.js');
+    
     // -invoices-
     window.TPL.push("invoices/app/invoices/template.invoices.tpl");
-    window.TPL.push('invoices/app/invoice/template.invoiceLoader.tpl');
+    window.TPL.push("invoices/app/invoices/template.invoicesItem.tpl");
+    window.TPL.push('invoices/app/invoices/template.invoicesLoader.tpl');
     window.JS.push("invoices/app/invoices/model.invoices.js");
-    window.JS.push("invoices/app/invoices/collection.invoicess.js");
+    window.JS.push("invoices/app/invoices/collection.invoices.js");
     window.JS.push('invoices/app/invoices/view.invoices.js');
-    
-    // -invoicesTables-
-    window.TPL.push("invoices/app/invoicesTables/template.invoicesTables.tpl");
-    window.TPL.push("invoices/app/invoicesTables/template.invoicesTablesItem.tpl");
-    window.TPL.push('invoices/app/invoicesTables/template.invoicesTablesItemDel.tpl');
-    window.JS.push("invoices/app/invoicesTables/model.invoicesTable.js");
-    window.JS.push("invoices/app/invoicesTables/collection.invoicesTables.js");
-    window.JS.push('invoices/app/invoicesTables/view.invoicesTables.js');
     
     // -invoice-
     window.TPL.push("invoices/app/invoice/template.invoice.tpl");
+    window.TPL.push('invoices/app/invoice/template.invoiceLoader.tpl');
     window.JS.push("invoices/app/invoice/model.invoiceBuyer.js");
     window.JS.push("invoices/app/invoice/collection.invoiceBuyers.js");
     window.JS.push("invoices/app/invoice/model.invoiceGoods.js");
     window.JS.push("invoices/app/invoice/collection.invoiceGoodss.js");
     window.JS.push("invoices/app/invoice/model.invoice.js");
-    window.JS.push("invoices/app/invoice/collection.invoices.js");
-    window.JS.push('invoices/app/invoice/view.invoice.js');
+    window.JS.push("invoices/app/invoice/collection.invoice.js");
+     window.JS.push("invoices/app/invoice/view.invoice.js");
     
     // -itemInvoice-
     window.TPL.push("invoices/app/itemInvoice/template.itemInvoiceEdit.tpl");
@@ -229,6 +229,7 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditNewGoodsItem.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditDialog.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditDialogLoader.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderGoodsGroup.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderBuyersGroup.tpl');
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditLoaderAtcmplt.tpl');

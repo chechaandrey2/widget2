@@ -25,7 +25,7 @@ window.Invoices.Router = Backbone.Router.extend({
         
         this.helperRenderInvoices(status);
         
-        this.helperShow('invoices');
+        this.helperShow('invoicesStatus');
         
     },
     buyers: function(query, group) {
@@ -120,17 +120,17 @@ window.Invoices.Router = Backbone.Router.extend({
         }
     },
     helperRenderInvoices: function(status) {
-        if(!this.collection.get('invoices')) {
+        if(!this.collection.get('invoicesStatus')) {
             var el = $('#invoicesInvoices');
             this.collection.add({
-                id: 'invoices',
+                id: 'invoicesStatus',
                 el: el,
-                view: new window.Invoices.ViewInvoices({router: this, el: el})
+                view: new window.Invoices.ViewInvoicesStatus({router: this, el: el})
             });
-		    this.collection.get('invoices').get('view').render();
-		    this.collection.get('invoices').get('view').renderItem(status);
+		    this.collection.get('invoicesStatus').get('view').render();
+		    this.collection.get('invoicesStatus').get('view').renderItem(status);
         } else {
-            this.collection.get('invoices').get('view').renderItem(status);
+            this.collection.get('invoicesStatus').get('view').renderItem(status);
         }
     },
     helperRenderInvoice: function(id, mod) {
@@ -159,7 +159,6 @@ window.Invoices.Router = Backbone.Router.extend({
         
         var goodss = this.collection.get('goods');
         if(goodss) goods.get('view').collectionGoodss = new window.Invoices.CollectionRouters();
-        
         // remove buyers, goods
     },
     helperRenderHelpBuyer: function() {

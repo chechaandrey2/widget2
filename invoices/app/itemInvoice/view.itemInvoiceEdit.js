@@ -107,6 +107,12 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         this.model.set({total: total});
         $('#invoicesInvoiceGoodsTotal', this.el).html(sprintf('%01.2f', total));
     },
+    eventAddLoaderDialog: function() {
+        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)).append(this.statsTemplate['itemInvoiceEditDialogLoader']());
+    },
+    eventRemoveLoaderDialog: function() {
+        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)+' [data-sync="buyers"]').remove();
+    },
     statsTemplate: {
         'itemInvoiceEdit': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEdit.tpl']),
         'itemInvoiceEditBuyerItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerItem.tpl']),
@@ -121,7 +127,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         'itemInvoiceEditLoaderBuyersGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditLoaderBuyersGroup.tpl']),
         'itemInvoiceEditLoaderGoodsGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditLoaderGoodsGroup.tpl']),
         'itemInvoiceEditLoaderAtcmplt': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditLoaderAtcmplt.tpl']),
-        'itemInvoiceEditAtcmpltEmpty': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditAtcmpltEmpty.tpl'])
+        'itemInvoiceEditAtcmpltEmpty': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditAtcmpltEmpty.tpl']),
+        'itemInvoiceEditDialogLoader': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditDialogLoader.tpl'])
     },
     render: function() {
         
@@ -150,6 +157,9 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
     },
     events: {
         'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="title"]': 'eventDOMNewGoods',
+        'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="price"]': 'eventDOMNewGoods',
+        'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="quantity"]': 'eventDOMNewGoods',
+        'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="units"]': 'eventDOMNewGoods',
         'click #invoicesItemInvoiceItemGoods [name="remove"]': 'eventDOMRemoveGoods',
         'change #invoicesItemInvoiceItemGoods [name="price"]': 'eventDOMChangeGoods',
         'change #invoicesItemInvoiceItemGoods [name="quantity"]':'eventDOMChangeGoods',
@@ -189,8 +199,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         data['nid'] = _.uniqueId();
         
         var model = new window.Invoices.ModelInvoiceGoods();
-        var res = model.set(data, {error: function(model, e) {
-            console.error('ERROR');
+        var res = model.set(data, {error: function(model, err) {
+            $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
         }});
         
         if(res) {
@@ -250,8 +260,9 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         
         data[name] = $(el).val();
         
-        model.set(data, {error: function() {
-                console.warn('ERROR');
+        model.set(data, {
+            error: function(model, err) {
+                $(el).ierror({wrap: true, msg: err.msg});
             }
         });
     },
@@ -303,7 +314,9 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                     if(collectionBuyers.items) {
                         self.model.get('buyers').add(collectionBuyers.items.get('b_uid', $(item).attr('data-id')).toJSON(), {
                             expUnique: 'b_uid',
-                            error: function(model, e) {console.error('%o; %o', model, e);}
+                            error: function(model, err) {
+                                console.error('%o; %o', model, err);
+                            }
                         });
                     }
                 } else if(role == 'group') {
@@ -320,11 +333,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         data: {gr_id: id},
                         add: true,
                         expUnique: 'b_uid',
-                        error: function(collection, e, msg) {
-                            console.error(e);
-                        },
-                        success: function(collection) {
-                            console.warn('SUCCESS');
+                        error: function(collection, err) {
+                            console.error('%o; %o', collection, err);
                         },
                         loader: function(progress) {
                             if(progress == 0) {
@@ -425,8 +435,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         } else {
                             self.model.get('goods').add(collectionGoodss.items.get('gds_uid', $(item).attr('data-id')).toJSON(), {
                                 expUnique: 'gds_uid',
-                                error: function(model, e) {
-                                    console.error('%o; %o', model, e);
+                                error: function(model, err) {
+                                    console.error('%o; %o', model, err);
                                 }
                             });
                             $(this).val('').focus();
@@ -444,8 +454,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         data: {gr_id: $(item).attr('data-id')},
                         add: true,
                         expUnique: 'gds_uid',
-                        error: function(collection, e, msg) {
-                            console.error(e);
+                        error: function(collection, err) {
+                            console.error('%o; %o', collection, err);
                         },
                         success: function(collection) {
                             
@@ -524,9 +534,9 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         },
                         loader: function(progress) {
                             if(progress == 0) {
-                                
+                                self.eventAddLoaderDialog.call(self);
                             } else if(progress == 1) {
-                                
+                                self.eventRemoveLoaderDialog.call(self);
                             }
                         }
                     });

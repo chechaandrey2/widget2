@@ -3,7 +3,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
     
         this.router = opt.router;
         
-        this.collection = new window.Invoices.CollectionInvoices();
+        this.collection = new window.Invoices.CollectionInvoice();
         
         this.collection.bind('add', this.eventAdd, this);
         
