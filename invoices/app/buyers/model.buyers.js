@@ -15,6 +15,11 @@ window.Invoices.ModelBuyers = Backbone.Model.extend({
         'update': 'edit_buyers',
         'delete': 'del_buyers'
     },
+    syncFilter: {
+        'create': {there: ['name', 'phone_main', 'email', 'addr', 'comment']},
+        'update': {there: ['b_uid', 'name', 'phone_main', 'email', 'addr', 'comment']},
+        'delete': {there: ['b_uid']}
+    },
     validate: function(attrs) {
         if(attrs.name !== undefined) {
             if(!(/^[\w\sа-яА-ЯёЁ\.,\(\)]+$/i.test(attrs.name || ''))) return {attr: 'name', msg: 'Attribute "name" - incorrect'};

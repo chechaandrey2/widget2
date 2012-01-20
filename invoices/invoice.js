@@ -19,14 +19,16 @@ if(location.host == 'localhost:8000') {
         return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
     };
 
-    Backbone.sync = function(method, model, options) {console.warn('%o %o %o %o', method, model, options, model.syncArg);
+    Backbone.sync = function(method, model, options) {
         var id0 = _guid();
         window.bridgeObjects[id0] = {
             'data': {subname: model.syncArg[method]},
             'options': options
         };
-    
-        var arg = model.toJSON() || {};
+        
+        model.syncFilter = model.syncFilter || {};
+        
+        var arg = model.toJSONExt(model.syncFilter[method]) || {};
         if(arg instanceof Array) arg = {};
     
         // options.data
@@ -73,9 +75,10 @@ if(location.host == 'localhost:8000') {
     // Backbone.sync
     Backbone.sync = function(method, model, options) {
         options = options || {};
+        model.syncFilter = model.syncFilter || {};
         model.syncArg = model.syncArg || {};
         var data = {subname: model.syncArg[method], data: {}};
-        var data0 = model.toJSON(), data1 = options.data || {};
+        var data0 = model.toJSONExt(model.syncFilter[method]), data1 = options.data || {};
         
         if(!(data0 instanceof Array)) {
             for(var i in data0) {

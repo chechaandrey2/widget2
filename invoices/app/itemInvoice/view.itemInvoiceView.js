@@ -12,8 +12,8 @@ window.Invoices.ViewItemInvoiceView = Backbone.View.extend({
         this.el.html(this.statsTemplate['itemInvoiceView'](this.model.toJSON()));
         
         $('#invoicesItemInvoiceViews', this.el).html(this.statsTemplate['itemInvoiceViewBuyers'].call(this, {
-            buyers: this.model.get('buyers').toJSON(), 
-            goods: this.model.get('goods').toJSON(), 
+            buyers: this.model.get('_buyers').toJSON(), 
+            goods: this.model.get('_goods').toJSON(), 
             merchater: null, 
             invoice: this.model.toJSON()
         }));

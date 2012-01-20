@@ -14,6 +14,11 @@ window.Invoices.ModelGoods = Backbone.Model.extend({
         'update': 'edit_goods',
         'delete': 'del_goods'
     },
+    syncFilter: {
+        'create': {there: ['title', 'price', 'units', 'desc_url']},
+        'update': {there: ['gds_uid', 'title', 'price', 'units', 'desc_url']},
+        'delete': {there: ['gds_uid']}
+    },
     validate: function(attrs) {
         if(attrs.title !== undefined && !(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title', msg: 'Attribute "title" - incorrect'};
         if(attrs.units !== undefined && !(/^[a-zA-Z0-9а-яА-ЯёЁ\.,-_;:]{1,5}$/i.test(attrs.units || ''))) return {attr: 'units', msg: 'Attribute "units" - incorrect'};

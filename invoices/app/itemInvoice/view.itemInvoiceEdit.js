@@ -3,11 +3,11 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
     
         this.router = opt.router;
         
-        this.model.get('buyers').unbind('add').bind('add', this.eventAddBuyer, this);
-        this.model.get('buyers').unbind('remove').bind('remove', this.eventRemoveBuyer, this);
-        this.model.get('goods').unbind('add').bind('add', this.eventAddGoods, this);
-        this.model.get('goods').unbind('remove').bind('remove', this.eventRemoveGoods, this);
-        this.model.get('goods').unbind('change').bind('change', this.eventChangeGoods, this);
+        this.model.get('_buyers').unbind('add').bind('add', this.eventAddBuyer, this);
+        this.model.get('_buyers').unbind('remove').bind('remove', this.eventRemoveBuyer, this);
+        this.model.get('_goods').unbind('add').bind('add', this.eventAddGoods, this);
+        this.model.get('_goods').unbind('remove').bind('remove', this.eventRemoveGoods, this);
+        this.model.get('_goods').unbind('change').bind('change', this.eventChangeGoods, this);
         
     },
     eventAddBuyer: function(model) {
@@ -101,7 +101,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
     },
     eventAssumeInvoice: function() {
         var total = 0;
-        this.model.get('goods').each(function(model) {
+        this.model.get('_goods').each(function(model) {
             total += model.get('total');
         });
         this.model.set({total: total});
@@ -136,11 +136,11 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         
         this.eventNewGoods();
         
-        this.model.get('buyers').each(function(model) {
+        this.model.get('_buyers').each(function(model) {
             model.collection.trigger('add', model);
         });
         
-        this.model.get('goods').each(function(model) {
+        this.model.get('_goods').each(function(model) {
             model.collection.trigger('add', model);
         });
         
@@ -204,7 +204,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         }});
         
         if(res) {
-            this.model.get('goods').add(model, {silent: true});
+            this.model.get('_goods').add(model, {silent: true});
             $c.removeAttr('data-state');
             $('input, textarea, [data-name="total"]', $c).attr('data-nid', model.get('nid'));
             $c.attr('data-nid', model.get('nid'));
@@ -219,20 +219,20 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         var id = $(e.target).attr('data-id'), nid = $(e.target).attr('data-nid'), model;
         
         if(id > 0) {
-            model = this.model.get('buyers').get('b_uid', id);
+            model = this.model.get('_buyers').get('b_uid', id);
         } else if(nid > 0) {
-            model = this.model.get('buyers').get('nid', nid);
+            model = this.model.get('_buyers').get('nid', nid);
         }
         
-        if(model) this.model.get('buyers').remove(model);
+        if(model) this.model.get('_buyers').remove(model);
     },
     eventDOMChangeGoods: function(e) {    
         var id = $(e.target).attr('data-id'), nid = $(e.target).attr('data-nid'), model;
         
         if(id > 0) {
-            model = this.model.get('goods').get('gds_uid', id);
+            model = this.model.get('_goods').get('gds_uid', id);
         } else if(nid > 0) {
-            model = this.model.get('goods').get('nid', nid);
+            model = this.model.get('_goods').get('nid', nid);
         }
         
         if(model) this.helperDOMChangeGoods(model, e.target);
@@ -248,12 +248,12 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         var id = $(el).attr('data-id'), nid = $(el).attr('data-nid'), model;
         
         if(id > 0) {
-            model = this.model.get('goods').get('gds_uid', id);
+            model = this.model.get('_goods').get('gds_uid', id);
         } else if(nid > 0) {
-            model = this.model.get('goods').get('nid', nid);
+            model = this.model.get('_goods').get('nid', nid);
         }
         
-        if(model) this.model.get('goods').remove(model);
+        if(model) this.model.get('_goods').remove(model);
     },
     helperDOMChangeGoods: function(model, el) {
         var name = $(el).attr('name'), data = {};
@@ -312,7 +312,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                 if(role == 'buyer') {
                     // add
                     if(collectionBuyers.items) {
-                        self.model.get('buyers').add(collectionBuyers.items.get('b_uid', $(item).attr('data-id')).toJSON(), {
+                        self.model.get('_buyers').add(collectionBuyers.items.get('b_uid', $(item).attr('data-id')).toJSON(), {
                             expUnique: 'b_uid',
                             error: function(model, err) {
                                 console.error('%o; %o', model, err);
@@ -329,7 +329,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         if(model) group = model.get('title');
                     }
                     
-                    self.model.get('buyers').fetch({
+                    self.model.get('_buyers').fetch({
                         data: {gr_id: id},
                         add: true,
                         expUnique: 'b_uid',
@@ -419,11 +419,11 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         
                         if($(this).attr('data-nid')) {
                             
-                            var model = self.model.get('goods').get('nid', $(this).attr('data-nid'));
+                            var model = self.model.get('_goods').get('nid', $(this).attr('data-nid'));
                             
                             var helpModel = collectionGoodss.items.get('gds_uid', $(item).attr('data-id'));
                             
-                            if(!self.model.get('goods').get(helpModel.get('gds_uid'))) {
+                            if(!self.model.get('_goods').get(helpModel.get('gds_uid'))) {
                                 model.set(helpModel.toJSON(), {
                                     error: function(model, e) {
                                         console.error('%o; %o', model, e);
@@ -433,7 +433,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                                 console.error('Duplicate error %o; %o');
                             }
                         } else {
-                            self.model.get('goods').add(collectionGoodss.items.get('gds_uid', $(item).attr('data-id')).toJSON(), {
+                            self.model.get('_goods').add(collectionGoodss.items.get('gds_uid', $(item).attr('data-id')).toJSON(), {
                                 expUnique: 'gds_uid',
                                 error: function(model, err) {
                                     console.error('%o; %o', model, err);
@@ -450,7 +450,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                     self.eventDOMNewGoods.call(self);
                 
                     // fetch
-                    self.model.get('goods').fetch({
+                    self.model.get('_goods').fetch({
                         data: {gr_id: $(item).attr('data-id')},
                         add: true,
                         expUnique: 'gds_uid',
@@ -518,7 +518,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                     data['gr_id'] = 1;
 				    
 				    // model create
-				    self.model.get('buyers').create(data, {
+				    self.model.get('_buyers').create(data, {
                         error: function(model, err) {
                             if(err.attr) {// client
                                 $('input[name="'+err.attr+'"]', dialog).ierror({wrap: true, msg: err.msg});

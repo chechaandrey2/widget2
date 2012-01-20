@@ -17,5 +17,8 @@ window.Invoices.ModelInvoices = Backbone.Model.extend({
     idAttribute: 'inv_uid',
     syncArg: {
         'update': 'issue_invoice'
-    }
+    },
+    syncFilter: {
+        'update': {there: ['inv_uid']}
+    },
 });

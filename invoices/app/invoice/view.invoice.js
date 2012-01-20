@@ -79,23 +79,23 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
     renderItem: function(model, id, mod) {
         
         // add buyers
-        if(!model.get('buyers')) model.set({buyers: new window.Invoices.CollectionInvoiceBuyers()});
+        if(!model.get('_buyers')) model.set({_buyers: new window.Invoices.CollectionInvoiceBuyers()});
         var binfo = model.get('b_info');
-        if(model.get('buyers').length < 1 && binfo && binfo.length > 0) {
+        if(model.get('_buyers').length < 1 && binfo && binfo.length > 0) {
             // parse b_info
             binfo = JSON.parse(binfo) || [];
             if(!(binfo instanceof Array)) binfo = [binfo];
-            model.get('buyers').add(binfo);
+            model.get('_buyers').add(binfo);
         }
         
         // add goodss
-        if(!model.get('goods')) model.set({goods: new window.Invoices.CollectionInvoiceGoodss()});
+        if(!model.get('_goods')) model.set({_goods: new window.Invoices.CollectionInvoiceGoodss()});
         var content = model.get('content');
-        if(model.get('goods').length < 1 && content && content.length > 0) {
+        if(model.get('_goods').length < 1 && content && content.length > 0) {
             // parse content
             content = JSON.parse(content) || [];
             if(!(binfo instanceof Array)) content = [content];
-            model.get('goods').add(content);
+            model.get('_goods').add(content);
         }
         
         this.renderItemLoaded(model, id, mod);

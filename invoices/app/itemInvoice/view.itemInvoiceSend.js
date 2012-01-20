@@ -12,6 +12,8 @@ window.Invoices.ViewItemInvoiceSend = Backbone.View.extend({
         this.el.html(this.statsTemplate['itemInvoiceSend']());
         
         if(this.model.get('save')) {
+            // prepare buyers, goods
+            //this.model.set({buyers: this.model.get('_buyers').toJSONExt(), goods: }, {silent:true});
             this.model.save(null, {
                 error: function(model, err) {
                     console.error('ERROR');

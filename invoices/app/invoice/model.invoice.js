@@ -17,13 +17,19 @@ window.Invoices.ModelInvoice = Backbone.Model.extend({
         b_info: null,
         
         // write
-        goods: null,// collection
-        buyers: null,// collection
+        goods: null,
+        buyers: null,
+        _goods: null,// collection
+        _buyers: null,// collection
         is_issued: 0
     },
     idAttribute: 'inv_uid',
     syncArg: {
         'create': 'new_invoice',
         'update': 'new_invoice'// hack
+    },
+    syncFilter: {
+        'create': {there: ['goods', 'buyers', 'total', 'currency', 'descr', 'msg', 'pref_system_id', 'created_at', 'expired_at', 'is_regular', 'is_issued']},
+        'update': {there: ['goods', 'buyers', 'total', 'currency', 'descr', 'msg', 'pref_system_id', 'created_at', 'expired_at', 'is_regular', 'is_issued']}
     }
 });

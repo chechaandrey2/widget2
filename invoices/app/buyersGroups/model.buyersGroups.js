@@ -10,6 +10,11 @@ window.Invoices.ModelBuyersGroups = Backbone.Model.extend({
         'update': 'edit_group_brs',
         'delete': 'del_group_brs'
     },
+    syncFilter: {
+        'create': {there: ['title']},
+        'update': {there: ['gr_id', 'title']},
+        'delete': {there: ['gr_id']}
+    },
     validate: function(attrs) {
         attrs = attrs || {};
         if(!(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title', msg: 'Attribute "title" - incorrect'};

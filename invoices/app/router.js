@@ -158,7 +158,7 @@ window.Invoices.Router = Backbone.Router.extend({
         if(buyers) buyers.get('view').collectionBuyers = new window.Invoices.CollectionRouters();
         
         var goodss = this.collection.get('goods');
-        if(goodss) goods.get('view').collectionGoodss = new window.Invoices.CollectionRouters();
+        if(goodss) goodss.get('view').collectionGoodss = new window.Invoices.CollectionRouters();
         // remove buyers, goods
     },
     helperRenderHelpBuyer: function() {
