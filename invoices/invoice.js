@@ -19,7 +19,7 @@ if(location.host == 'localhost:8000') {
         return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
     };
 
-    Backbone.sync = function(method, model, options) {
+    Backbone.sync = function(method, model, options) {console.warn('%o %o %o %o', method, model, options, model.syncArg);
         var id0 = _guid();
         window.bridgeObjects[id0] = {
             'data': {subname: model.syncArg[method]},
