@@ -158,6 +158,7 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsDel.tpl');
     window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsLoader.tpl');
     window.TPL.push('invoices/app/buyersGroups/template.buyersGroupsLoaderDialog.tpl');
+    window.TPL.push('invoices/app/buyersGroups/template.buyersDialogImport.tpl');
     window.L10N.push('invoices/app/buyersGroups/l10n.ru.json');
     window.JS.push("invoices/app/buyersGroups/model.buyersGroups.js");
     window.JS.push("invoices/app/buyersGroups/collection.buyersGroups.js");
