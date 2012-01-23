@@ -3,6 +3,7 @@
         <meta charset="utf-8" />
         <script type="text/javascript" src="invoices/lib/json2.js"></script>
         <script type="text/javascript" src="invoices/lib/jquery.js"></script>
+        <script type="text/javascript" src="invoices/lib/jquery.iframe-transport.js"></script>
         <script type="text/javascript" src="invoices/lib/underscore.js"></script>
         <script type="text/javascript" src="invoices/lib/backbone.js"></script>
         <script type="text/javascript" src="invoices/lib/backbone.l10n.js"></script>
@@ -15,6 +16,7 @@
         <script type="text/javascript" src="invoices/lib/jquery.iautocomplete.js"></script>
         <script type="text/javascript" src="invoices/lib/jquery.iplaceholder.js"></script>
         <script type="text/javascript" src="invoices/lib/jquery.ierror.js"></script>
+        <script type="text/javascript" src="invoices/lib/jquery.ierrorDialog.js"></script>
         <script type="text/javascript" src="invoices/lib/jquery.itabs.js"></script>
         <script type="text/javascript" src="invoices/lib/date.js"></script>
         <script type="text/javascript" src="invoices/lib/sprintf.js"></script>
@@ -39,6 +41,14 @@
             .selected {
                 color: red;
             }
+            
+            .error-cont {
+                border: 1px solid red; padding-bottom: 2px;
+            }
+            
+            .error-item {
+                border: 1px solid red; margin: 0px 2px 2px 2px;
+            }
         </style>
     </head>
     <body>
@@ -47,6 +57,7 @@
         <div id="invoicesItemInvoice"></div>
         <div id="invoicesClients"></div>
         <div id="invoicesPs"></div>
+        <form 
         <!-- transport -->
         <iframe src="https://pulyaev.test.liqpay.com/?do=invoices" id="invoices_iframe" style="visibility: hidden; position: absolute; top: -500px; left: -500px;"></iframe>
         <!--

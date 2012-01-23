@@ -52,7 +52,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                         
                     },
                     error: function(collection, e) {
-                        console.error(e);
+                        //console.error(e);
                     },
                     loader: function(progress) {
                         if(progress == 0) self.eventAddLoadre.call(self);

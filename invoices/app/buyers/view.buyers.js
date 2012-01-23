@@ -54,7 +54,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
             data: {gr_id: group}, 
             add: true,
             error: function(collection, response) {
-                console.log('collection: %o; response: %o;', collection, response)
+                //console.error('collection: %o; response: %o;', collection, response)
             },
             loader: function(progress) {
                 if(progress == 0) self.eventAddLoadre.call(self);
@@ -220,7 +220,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
 				    
 				    self.helperItemDelModel.destroy({
 				        error: function(model, err) {
-				            console.error('model: %o, error: %o', model, err);
+				            //console.error('model: %o, error: %o', model, err);
 				        },
 				        success: function(model) {
 				        

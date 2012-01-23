@@ -51,7 +51,7 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
             data: data, 
             add: true,
             error: function(collection, err) {
-                console.error('%o, %o', collection, err);
+                //console.error('%o, %o', collection, err);
             },
             loader:function(progress) {
                 if(progress == 0) {
@@ -92,7 +92,7 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
         
         model.save(null, {
             error: function(model, err) {
-                console.error('%o, %o', model, err);
+                //console.error('%o, %o', model, err);
             },
             loader: function(progress) {
                 if(progress == 0) {

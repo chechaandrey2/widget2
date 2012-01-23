@@ -275,6 +275,10 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         $('#invoicesItemInvoiceBuyersFind', this.el).iautocomplete({
             el: $('#invoicesItemInvoiceBuyersHelp', this.el).get(0),
             selectorItem: '[data-id]',
+            validate: function(value) {
+                if(!(/^[0-9a-zA-Zа-яА-ЯёЁ]+$/i.test(value))) return false;
+                return true;
+            },
             render: function(opt, value) {
                 
                 collectionBuyers = helpBuyer.render(value, function(progress) {
@@ -315,7 +319,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         self.model.get('_buyers').add(collectionBuyers.items.get('b_uid', $(item).attr('data-id')).toJSON(), {
                             expUnique: 'b_uid',
                             error: function(model, err) {
-                                console.error('%o; %o', model, err);
+                                //console.error('%o; %o', model, err);
                             }
                         });
                     }
@@ -334,7 +338,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         add: true,
                         expUnique: 'b_uid',
                         error: function(collection, err) {
-                            console.error('%o; %o', collection, err);
+                            //console.error('%o; %o', collection, err);
                         },
                         loader: function(progress) {
                             if(progress == 0) {
@@ -378,6 +382,10 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         $(el, this.el).iautocomplete({
             el: $(elHelp, this.el).get(0),
             selectorItem: '[data-id]',
+            validate: function(value) {
+                if(!(/^[0-9a-zA-Zа-яА-ЯёЁ]+$/i.test(value))) return false;
+                return true;
+            },
             render: function(opt, value) {
                 
                 collectionGoodss = helpGoods.render(value, function(progress) {
@@ -427,16 +435,18 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                                 model.set(helpModel.toJSON(), {
                                     error: function(model, e) {
                                         console.error('%o; %o', model, e);
+                                        // replace to ierror
                                     }
                                 });
                             } else {
                                 console.error('Duplicate error %o; %o');
+                                // replace to ierror
                             }
                         } else {
                             self.model.get('_goods').add(collectionGoodss.items.get('gds_uid', $(item).attr('data-id')).toJSON(), {
                                 expUnique: 'gds_uid',
                                 error: function(model, err) {
-                                    console.error('%o; %o', model, err);
+                                    //console.error('%o; %o', model, err);
                                 }
                             });
                             $(this).val('').focus();
@@ -455,7 +465,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         add: true,
                         expUnique: 'gds_uid',
                         error: function(collection, err) {
-                            console.error('%o; %o', collection, err);
+                            //console.error('%o; %o', collection, err);
                         },
                         success: function(collection) {
                             

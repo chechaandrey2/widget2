@@ -45,7 +45,8 @@ if(location.host == 'localhost:8000') {
             console.log('Backbone.sync SEND: %o', JSON.stringify(window.bridgeObjects[id0]['data']));
             window.bridge.postMessage(JSON.stringify({id: id0, data: window.bridgeObjects[id0]['data']}), '*');
         } else {
-            console.error('Backbone.sync ERROR');
+            //console.error('Backbone.sync ERROR');
+            $.ierrorDialog('add', 'Backbone.sync ERROR; NOT model.syncArg[method]');
         }
     }
 
@@ -57,7 +58,8 @@ if(location.host == 'localhost:8000') {
         
         if((!(res.data instanceof Object) && !(res.data instanceof Array)) || res.data.error > 0) {
             //window.bridgeObjects[id]['options'].error(res.data);
-            console.error('Backbone.sync ERROR: Response: %o;', res.data);
+            //console.error('Backbone.sync ERROR: Response: %o;', res.data);
+            $.ierrorDialog('add', 'Backbone.sync ERROR: Response: '+e.data);
             window.bridgeObjects[id]['options'].error(res.data);
         } else {
             window.bridgeObjects[id]['options'].success(res.data);
@@ -99,13 +101,14 @@ if(location.host == 'localhost:8000') {
             dataType: 'json',
             type: 'POST',
             data: {json: JSON.stringify(data)},
-            success: function(data, textStatus, jqXHR) {
+            success: function(data, textStatus, jqXHR) {// jqXHR.responseText
                 // always expect only json
                 data = data || {};
                 data.data = data.data || [];
                 
                 if((!(data.data instanceof Object) && !(data.data instanceof Array)) || data.data.error > 0) {
-                    console.error('Backbone.sync ERROR: Response: %o;', data.data);
+                    //console.error('Backbone.sync ERROR: Response: %o;', data.data);
+                    $.ierrorDialog('add', 'Backbone.sync($.ajax) error: textStatus: '+textStatus+'; responseText: '+jqXHR.responseText);
                     if(typeof(options.error) == 'function') options.error.call(this, jqXHR);// OR data
                 } else {
                     if(typeof(options.success) == 'function') options.success.call(this, data.data);
@@ -114,7 +117,8 @@ if(location.host == 'localhost:8000') {
                 console.warn('Backbone.sync RESPONCE: %o', data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Backbone.sync($.ajax) error: jqXHR: %o; textStatus: %o; errorThrown: %o;', jqXHR, textStatus, errorThrown);
+                //console.error('Backbone.sync($.ajax) error: jqXHR: %o; textStatus: %o; errorThrown: %o;', jqXHR, textStatus, errorThrown);
+                $.ierrorDialog('add', 'Backbone.sync($.ajax) error: textStatus: '+textStatus+'; responseText: '+jqXHR.responseText);
             },
             complete: function() {
                 if(typeof options.loader == 'function') options.loader.call(this, 1);// progress
@@ -348,6 +352,13 @@ $(document).ready(function() {
                                         elClassItem: 'selected'
                                     });
                                     
+                                    $.ierrorDialog('default', {
+                                        errContClass: 'error-cont',
+		                                errItemClass: 'error-item',
+		                                textButton: 'ok',
+		                                textTitle: 'Server Error'
+                                    });
+                                    
                                     window.Invoices.router = new window.Invoices.Router();
                                 
                                     Backbone.history.start();
@@ -377,6 +388,13 @@ $(document).ready(function() {
                                 $.iautocomplete('default', {
                                     minLength: 2,
                                     elClassItem: 'selected'
+                                });
+                                
+                                $.ierrorDialog('default', {
+                                    errContClass: 'error-cont',
+		                            errItemClass: 'error-item',
+		                            textButton: 'ok',
+		                            textTitle: 'Server Error'
                                 });
                             
                                 window.Invoices.router = new window.Invoices.Router();

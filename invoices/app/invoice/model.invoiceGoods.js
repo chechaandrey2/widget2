@@ -8,6 +8,10 @@ window.Invoices.ModelInvoiceGoods = Backbone.Model.extend({
         units: null,
         quantity: 1
     },
+    syncFilter: {
+        'new': {there: ['quantity', 'total', 'price', 'units', 'title', 'gr_id']},
+        'item': {there: ['quantity', 'total', 'gds_uid']}
+    },
     idAttribute: 'gds_uid',
     validate: function(attrs) {
         if(attrs.units !== undefined && !(/^[a-zA-Z0-9а-яА-ЯёЁ\.,-_;:]{1,5}$/i.test(attrs.units || ''))) return {attr: 'units', msg: 'Attribute "units" - incorrect'};

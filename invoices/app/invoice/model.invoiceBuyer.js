@@ -14,7 +14,9 @@ window.Invoices.ModelInvoiceBuyer = Backbone.Model.extend({
         'create': 'new_buyers'
     },
     syncFilter: {
-        'create': ['name', 'phone_main', 'email', 'addr', 'comment']
+        'create': {there: ['name', 'phone_main', 'email', 'addr', 'comment']},
+        'new': {there: []},
+        'item': {there: ['b_uid']}
     },
     validate: function(attrs) {
         if(attrs.name !== undefined) {

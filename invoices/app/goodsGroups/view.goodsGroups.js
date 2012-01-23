@@ -226,7 +226,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
 				    self.helperGroupDelModel.set({'goods': del_force});
 				    self.helperGroupDelModel.destroy({
 				        error: function(model, err) {
-				            console.error('model: %o, error: %o', model, err);
+				            //console.error('model: %o, error: %o', model, err);
 				        }, success: function(model) {
 				        
 				            // move to General & remove buyers current group at "del_force"
