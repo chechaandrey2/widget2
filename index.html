@@ -30,7 +30,7 @@
                 top: -40px; left: 0px; background-color: red; z-index: 999; color: white; font-weight: bold;
             }
             
-            .saving, .removing, .creating {
+            .saving, .removing, .creating, .upload {
                 background-color: orange;
             }
             
@@ -57,7 +57,7 @@
         <div id="invoicesItemInvoice"></div>
         <div id="invoicesClients"></div>
         <div id="invoicesPs"></div>
-        <form id="invoicesUpload" method="post" enctype="multipart/form-data"><input type="file" name="file" /></form>
+        <form style="display: none;" id="invoicesUpload" method="post" enctype="multipart/form-data"><input type="file" name="file" /></form>
         <!-- transport -->
         <iframe src="https://pulyaev.test.liqpay.com/?do=invoices" id="invoices_iframe" style="visibility: hidden; position: absolute; top: -500px; left: -500px;"></iframe>
         <!--

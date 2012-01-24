@@ -278,27 +278,32 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
 			modal: true
         });
         
-        $('#invoicesUpload').clone(true).appendTo($('[data-id="form"]', $dialog)).attr('id', 'invoicesBuyersImportForm');
+        var $form = $('#invoicesUpload').clone(true)
+            .show().appendTo($('[data-id="form"]', $dialog)).attr('id', 'invoicesBuyersImportForm');
         
         $('#invoicesBuyersImportSubmit', $dialog).bind('click', function(e) {
             
             // start loader
+            $form.addClass('upload');
             
             $.ajax({
-                fileInput: $('#invoicesBuyersImportForm :file'),
                 url: 'https://pulyaev.test.liqpay.com/?do=invoices&act=ajax',
-                dataType: 'json',
+                fileInput: $('[type="file"]', $form),
+                formData: [{name: 'json', value: JSON.stringify({subname: "import_buyers"})}],
+                paramName: 'file',
                 type: 'POST',
-                data: {json: JSON.stringify({subname: 'import_buyers'})},
-                iframe: true,
-                error: function() {
-                    
-                },
+                dataType: "iframe",
                 success: function(data) {
-                    //console.
+                    console.warn('SUCCESS: %o', data);
+                    $dialog.dialog('close');
                 },
-                complete:function() {
+                error: function(jqXHR) {
+                    console.error('ERROR: %o', jqXHR);
+                },
+                complete: function() {
                     // end loader
+                    $('[type="file"]', $form).val('');
+                    $form.removeClass('upload');
                 }
             });
             
