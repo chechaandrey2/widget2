@@ -15,9 +15,46 @@
         </table>
         <div>
             <div id="invoicesMerchantLogo" style="background-image: url(<%= logo_url %>);"></div>
-            <span id="invoicesMerchantEditLogo"></span>
+            <input type="button" value="edit" id="invoicesMerchantEditLogo" />
         </div>
     </div>
-    <div data-id="#merchant/pay/"></div>
-    <div data-id="#merchant/general/"></div>
+    <div data-id="#merchant/general/">
+        <table>
+            <tbody id="invoicesMerchantGeneralTable">
+                <tr><td></td><td><span>Currency default <%= currency %></span></td></tr>
+                <tr>
+                    <td><input type="checkbox" name="is_vat_payer" value="1"<%= is_vat_payer > 0?' checked="checked"':'' %> /></td>
+                    <td><span data-id="is_vat_payer">Payer VAT 20%</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="to_notify" value="1"<%= to_notify > 0?' checked="checked"':'' %> /></td>
+                    <td><span data-id="to_notify">Notification of change of the status of the invoice <select name="notivy_via">
+                        <option value="sms" selected>sms</option>
+                        <option value="email">email</option>
+                    </select></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div data-id="#merchant/pay/">
+        <table>
+            <tbody id="invoicesMerchantPayTable">
+                <tr><td>take on</td><td>
+                    <select name="pref_payment">
+                        <option value="liqpay" selected>liqpay</option>
+                        <option value="p24">p24</option>
+                        <option value="cash">cash</option>
+                    </select>
+                </td></tr>
+                <tr data-id="liqpay"><td>phone</td><td><%= phone %></td></tr>
+                <tr data-id="p24"><td>card</td><td><input type="text" name="card" value="<%= card %>" /></td></tr>
+                <tr data-id="cash"><td>mfo</td><td><%= mfo %></td></tr>
+                <tr data-id="cash"><td>okpo</td><td><%= okpo %></td></tr>
+                <tr data-id="cash"><td>score</td><td><input type="text" name="card" value="<%= card %>" /></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <input type="button" value="save" id="invoicesMerchantSave" />
+    </div>
 </div>

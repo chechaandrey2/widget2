@@ -266,6 +266,7 @@ $(document).ready(function() {
     // -merchant-
     window.TPL.push('invoices/app/merchant/template.merchant.tpl');
     window.TPL.push('invoices/app/merchant/template.merchantLoader.tpl');
+    window.TPL.push('invoices/app/merchant/template.merchantDialogLogo.tpl');
     window.JS.push('invoices/app/merchant/model.merchant.js');
     window.JS.push('invoices/app/merchant/view.merchant.js');
     

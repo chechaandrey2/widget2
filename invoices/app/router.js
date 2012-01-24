@@ -105,7 +105,7 @@ window.Invoices.Router = Backbone.Router.extend({
             });
 		    this.collection.get('merchant').get('view').renderDisplay(tab);
         } else {
-            this.collection.get('merchant').get('view').renderDisplay(tab);
+            this.collection.get('merchant').get('view').renderDisplayItem(tab);
         }
     },
     helperRenderGlobalMenu: function() {
