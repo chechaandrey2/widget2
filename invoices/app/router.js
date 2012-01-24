@@ -9,6 +9,8 @@ window.Invoices.Router = Backbone.Router.extend({
         this.route(/^(buyers\/([a-z0-9]+)\/).*$/i, 'buyers', this.buyers);
         this.route(/^(goods\/).*$/i, 'goods', this.goods);
         this.route(/^(goods\/([a-z0-9]+)\/).*$/i, 'goods', this.goods);
+        this.route(/^(merchant\/).*$/i, 'merchant', this.merchant);
+        this.route(/^(merchant\/(contacts|general|pay)\/).*$/i, 'merchant', this.merchant);
         
         // collection routers
         this.collection = new window.Invoices.CollectionRouters();
@@ -17,7 +19,7 @@ window.Invoices.Router = Backbone.Router.extend({
 	    "": "iteminvoice"// default page
     },
     invoices: function(query, status) {
-        console.log('QUERY: %o; STATUS: %o', query, status);
+        //console.log('QUERY: %o; STATUS: %o', query, status);
         
         this.helperRenderGlobalMenu();
         
@@ -29,7 +31,7 @@ window.Invoices.Router = Backbone.Router.extend({
         
     },
     buyers: function(query, group) {
-        console.log('QUERY: %o; GROUP: %o', query, group);
+        //console.log('QUERY: %o; GROUP: %o', query, group);
         
         this.helperRenderGlobalMenu();
         
@@ -48,7 +50,7 @@ window.Invoices.Router = Backbone.Router.extend({
         
     },
     goods: function(query, group) {
-        console.log('QUERY: %o; GROUP: %o', query, group);
+        //console.log('QUERY: %o; GROUP: %o', query, group);
         
         this.helperRenderGlobalMenu();
         
@@ -65,7 +67,7 @@ window.Invoices.Router = Backbone.Router.extend({
         
     },
     iteminvoice: function(query, mod, id) {
-        console.warn('QUERY: %o; ID: %o; MOD: %o', query, id, mod);
+        //console.warn('QUERY: %o; ID: %o; MOD: %o', query, id, mod);
         
         this.helperRenderGlobalMenu();
         
@@ -81,6 +83,30 @@ window.Invoices.Router = Backbone.Router.extend({
 		
 		this.helperShow('invoice');
         
+    },
+    merchant: function(query, tab) {
+        
+        this.helperRenderGlobalMenu();
+        
+        this.helperHide('globalmenu');
+        
+        this.helperRenderMerchant(tab);
+        
+        this.helperShow('merchant');
+        
+    },
+    helperRenderMerchant: function(tab) {
+        if(!this.collection.get('merchant')) {
+            var el = $('#invoicesMerchant');
+            this.collection.add({
+                id: 'merchant',
+                el: el,
+                view: new window.Invoices.ViewMerchant({router: this, el: el})
+            });
+		    this.collection.get('merchant').get('view').renderDisplay(tab);
+        } else {
+            this.collection.get('merchant').get('view').renderDisplay(tab);
+        }
     },
     helperRenderGlobalMenu: function() {
         if(!this.collection.get('globalmenu')) {

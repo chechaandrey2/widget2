@@ -263,6 +263,12 @@ $(document).ready(function() {
     window.JS.push('invoices/app/itemInvoiceHelp/view.itemInvoiceHelpBuyer.js');
     window.JS.push('invoices/app/itemInvoiceHelp/view.itemInvoiceHelpGoods.js');
     
+    // -merchant-
+    window.TPL.push('invoices/app/merchant/template.merchant.tpl');
+    window.TPL.push('invoices/app/merchant/template.merchantLoader.tpl');
+    window.JS.push('invoices/app/merchant/model.merchant.js');
+    window.JS.push('invoices/app/merchant/view.merchant.js');
+    
     /*
     // -iteminvoicebuyers
     window.TPL.push("invoices/app/itemInvoiceBuyers/template.itemInvoiceBuyers.tpl");
