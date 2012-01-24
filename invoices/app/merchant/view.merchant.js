@@ -62,7 +62,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
                 
                 $('[name="is_vat_payer"]', this.el).trigger('change');
                 $('[name="to_notify"]', this.el).trigger('change');
-                $('[name="pref_payment"]', this.el).trigger('change');
+                $('[name="pref_payment_id"]', this.el).trigger('change');
                 
             },
             loader: function(progress) {
@@ -86,7 +86,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         
         $('[name="is_vat_payer"]', this.el).trigger('change');
         $('[name="to_notify"]', this.el).trigger('change');
-        $('[name="pref_payment"]', this.el).trigger('change');
+        $('[name="pref_payment_id"]', this.el).trigger('change');
         
         return this;
         
@@ -97,11 +97,10 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         'change [name="email"]': 'eventDOMChange',
         'change [name="addr"]': 'eventDOMChange',
         'change [name="card"]': 'eventDOMChange',
-        'change [name="notivy_via"]': 'eventDOMChange',
-        'change [name="pref_payment"]': 'eventDOMChange',
+        'change [name="to_sms"]': 'eventDOMChange',
         'change [name="is_vat_payer"]': 'eventDOMChangeCheckbox',
         'change [name="to_notify"]': 'eventDOMChangeCheckbox',
-        'change [name="pref_payment"]': 'eventDOMChangeSelect',
+        'change [name="pref_payment_id"]': 'eventDOMChangeSelect',
         'click #invoicesMerchantSave': 'eventDOMSave'
     },
     eventDOMDialogLogo: function(e) {

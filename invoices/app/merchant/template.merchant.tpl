@@ -28,9 +28,9 @@
                 </tr>
                 <tr>
                     <td><input type="checkbox" name="to_notify" value="1"<%= to_notify > 0?' checked="checked"':'' %> /></td>
-                    <td><span data-id="to_notify">Notification of change of the status of the invoice <select name="notivy_via">
-                        <option value="sms" selected>sms</option>
-                        <option value="email">email</option>
+                    <td><span data-id="to_notify">Notification of change of the status of the invoice <select name="to_sms">
+                        <option value="1"<%= to_sms==1?' selected="selected"':'' %>>sms</option>
+                        <option value="0"<%= to_sms==0?' selected="selected"':'' %>>email</option>
                     </select></span></td>
                 </tr>
             </tbody>
@@ -40,17 +40,13 @@
         <table>
             <tbody id="invoicesMerchantPayTable">
                 <tr><td>take on</td><td>
-                    <select name="pref_payment">
-                        <option value="liqpay" selected>liqpay</option>
-                        <option value="p24">p24</option>
-                        <option value="cash">cash</option>
+                    <select name="pref_payment_id">
+                        <option value="12"<%= pref_payment_id==12?' selected="selected"':'' %>>liqpay</option>
+                        <option value="11"<%= pref_payment_id==11?' selected="selected"':'' %>>privat24</option>
                     </select>
                 </td></tr>
-                <tr data-id="liqpay"><td>phone</td><td><%= phone %></td></tr>
-                <tr data-id="p24"><td>card</td><td><input type="text" name="card" value="<%= card %>" /></td></tr>
-                <tr data-id="cash"><td>mfo</td><td><%= mfo %></td></tr>
-                <tr data-id="cash"><td>okpo</td><td><%= okpo %></td></tr>
-                <tr data-id="cash"><td>score</td><td><input type="text" name="card" value="<%= card %>" /></td></tr>
+                <tr data-id="12"><td>phone</td><td><%= phone %></td></tr>
+                <tr data-id="11"><td>card</td><td><input type="text" name="card" value="<%= card %>" /></td></tr>
             </tbody>
         </table>
     </div>
