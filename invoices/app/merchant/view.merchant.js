@@ -129,7 +129,13 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
     },
     eventDOMSave: function(e) {
         
-        this.model.save(null, {
+        var arg = {};
+        
+        $('[name]',this.el).each(function() {
+            arg[$(this).attr('name')] = $(this).val();
+        });
+        
+        this.model.save(arg, {
             error: function(model, err) {
                 console.error('model: %o; err: %o', model, err);
             },

@@ -5,6 +5,6 @@
     <td class="center"><%= email %></td>
     <td class="center"><%= addr %></td>
     <td class="center"><%= comment %></td>
-    <td><input type="button" name="edit" value="e" data-id="<%= b_uid %>" /></td>
-    <td><input type="button" name="del" value="x" data-id="<%= b_uid %>" /></td>
+    <td><span data-name="edit" data-id="<%= b_uid %>" class="button">e</span></td>
+    <td><span data-name="del" data-id="<%= b_uid %>" class="button">x</span></td>
 </tr>

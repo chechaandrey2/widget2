@@ -53,8 +53,8 @@ window.Invoices.viewGoods = Backbone.View.extend({
         this.collection.fetch({
             data: {gr_id: group}, 
             add: true,
-            error: function(collection, response) {
-                //console.error('collection: %o; response: %o;', collection, response)
+            error: function(collection, err) {
+                if(err.msg) $.ierrorDialog('add', err.msg);
             },
             loader: function(progress) {
                 if(progress == 0) self.eventAddLoadre.call(self);
@@ -71,9 +71,9 @@ window.Invoices.viewGoods = Backbone.View.extend({
         return this;
     },
     events: {
-        'click [name="save"]':'eventSaveItem',
-        'click [name="del"]':'eventDeleteItem',
-        'click [name="edit"]':'eventEditItem',
+        'click [data-name="save"]':'eventSaveItem',
+        'click [data-name="del"]':'eventDeleteItem',
+        'click [data-name="edit"]':'eventEditItem',
         'change [name="title"]':'eventSaveItemModel',
         'change [name="units"]':'eventSaveItemModel',
         'change [name="price"]':'eventSaveItemModel',
@@ -92,7 +92,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
         
     },
     eventSaveItem: function(e) {
-        var model = this.collection.get($(e.target).attr('data-id'));
+        var self = this, model = this.collection.get($(e.target).attr('data-id'));
         
         if(model) {
         
@@ -104,13 +104,15 @@ window.Invoices.viewGoods = Backbone.View.extend({
             model.save(model.toJSON(), {
                 error: function(model, err, arg) {
                     if(err.attr) {// client
-                        $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
-                    } else {//server
-                        $('input[name="title"]', $c).ierror({wrap: true, msg: err.msg || err});
+                        $('input[name="'+err.attr+'"], textarea[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                     }
+                    
+                    if(err.msg) $.ierrorDialog('add', err.msg);
+                    
                     if(e.target.done) e.target.done = false;
                 },
-                success: function() {
+                success: function(model) {
+                    if($('[name="save"]', $c).size() > 0) model.change();
                     if(e.target.done) e.target.done = false;
                 },
                 loader: function(progress) {
@@ -133,17 +135,17 @@ window.Invoices.viewGoods = Backbone.View.extend({
         
     },
     eventSaveItemModel: function(e) {
-        var model = this.collection.get($(e.target).attr('data-id'));
+        var self = this, model = this.collection.get($(e.target).attr('data-id'));
         if(model) {
             // save to model
             var arg = model.attributes, $c = $('#invoicesGoodsTbody > [data-id="'+model.get('gds_uid')+'"]', this.el);
             arg[$(e.target).attr('name')] = $(e.target).val() || null;
             
-            if(arg['email'] === null && arg['phone_main'] == null) arg['phone_main'] = '';// hack
+            if(arg['title'] === null) arg['title'] = '';// hack
             
             model.set(arg, {
                 error: function(model, err) {
-                    $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
+                    $('input[name="'+err.attr+'"], textarea[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
             });
         } else {
@@ -168,6 +170,8 @@ window.Invoices.viewGoods = Backbone.View.extend({
             data[$(this).attr('name')] = $(this).val() || null;
         });
         
+        if(data['title'] === null) data['title'] = '';// hack
+        
         data['gr_id'] = this.helperGroup;
         
         var res = this.collection.create(data, {
@@ -175,14 +179,15 @@ window.Invoices.viewGoods = Backbone.View.extend({
                 $c.attr('data-state', 'new');
                 
                 if(err.attr) {// client
-                    $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
-                } else {//server
-                    $('input[name="title"]', $c).ierror({wrap: true, msg: err.msg || err});
+                    $('input[name="'+err.attr+'"], textarea[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
+                
+                if(err.msg) $.ierrorDialog('add', err.msg);
+                
             },
             success: function(model, res) {
                 $c.removeAttr('data-state');
-                $('input, textarea, [data-name^="err"]', $c).attr('data-id', model.get('gds_uid'));
+                $('input, textarea, [data-name]', $c).attr('data-id', model.get('gds_uid'));
                 $c.attr('data-id', model.get('gds_uid'));
                 self.eventNew.call(self);
             },
@@ -219,7 +224,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
 				    
 				    self.helperItemDelModel.destroy({
 				        error: function(model, err) {
-				            //console.error('model: %o, error: %o', model, err);
+				            if(err.msg) $.ierrorDialog('add', err.msg);
 				        },
 				        success: function(model) {
 				        
@@ -242,5 +247,13 @@ window.Invoices.viewGoods = Backbone.View.extend({
 				}
 			}
 		});
+    },
+    helperGetError: function(model, err) {
+        switch(err.attr) {
+            case 'title': return 'Goods title - incorrect';
+            case 'units': return 'Goods units - incorrect';
+            case 'price': return 'Goods price - incorrect';
+            case 'desc_url': return 'Goods desc_url - incorrect';
+        }
     }
 });

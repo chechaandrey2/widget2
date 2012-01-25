@@ -13,12 +13,13 @@ window.Invoices.ModelBuyersGroups = Backbone.Model.extend({
     syncFilter: {
         'create': {there: ['title']},
         'update': {there: ['gr_id', 'title']},
-        'delete': {there: ['gr_id']}
+        'delete': {there: ['gr_id', 'buyers']}
     },
     validate: function(attrs) {
         attrs = attrs || {};
-        if(!(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title', msg: 'Attribute "title" - incorrect'};
+        if(!(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title'};
         // client validate duplication
-        if(this.collection.get('title', attrs.title) && this.get('gr_id') === null) return {attr: 'title', msg: 'Duplicate model'};
+        var model = this.collection.get('title', attrs.title);
+        if(model && this.get('gr_id') != model.get('gr_id')) return {attr: 'title', arg: true};
     }
 });

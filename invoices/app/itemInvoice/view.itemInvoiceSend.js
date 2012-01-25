@@ -29,16 +29,22 @@ window.Invoices.ViewItemInvoiceSend = Backbone.View.extend({
                     goods.push(model.toJSONExt(model.syncFilter['item']));
             });
             
-            this.model.set({buyers: buyers, goods: goods}, {silent:true});
+            var res = this.model.set({buyers: buyers, goods: goods}, {error: function(model, err) {// handler validate error
+                console.error('model: %o; err: %o', model, err);
+            }});
             
-            this.model.save(null, {
-                error: function(model, err) {
-                    console.error('ERROR');
-                },
-                success: function(model) {
-                    console.error('SUCCESS');
-                }
-            });
+            if(res) {
+                this.model.save(null, {
+                    error: function(model, err) {
+                        console.error('ERROR');
+                    },
+                    success: function(model) {
+                        console.error('SUCCESS');
+                    }
+                });
+            }
+            
+            
         }
         
         return this;

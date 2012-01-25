@@ -53,8 +53,8 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         this.collection.fetch({
             data: {gr_id: group}, 
             add: true,
-            error: function(collection, response) {
-                //console.error('collection: %o; response: %o;', collection, response)
+            error: function(collection, err) {
+                if(err.msg) $.ierrorDialog('add', err.msg);
             },
             loader: function(progress) {
                 if(progress == 0) self.eventAddLoadre.call(self);
@@ -71,9 +71,9 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         return this;
     },
     events: {
-        'click [name="save"]':'eventSaveItem',
-        'click [name="del"]':'eventDeleteItem',
-        'click [name="edit"]':'eventEditItem',
+        'click [data-name="save"]':'eventSaveItem',
+        'click [data-name="del"]':'eventDeleteItem',
+        'click [data-name="edit"]':'eventEditItem',
         'change [name="name"]':'eventSaveItemModel',
         'change [name="email"]':'eventSaveItemModel',
         'change [name="phone_main"]':'eventSaveItemModel',
@@ -93,7 +93,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         
     },
     eventSaveItem: function(e) {
-        var model = this.collection.get($(e.target).attr('data-id'));
+        var self = this, model = this.collection.get($(e.target).attr('data-id'));
         
         if(model) {
         
@@ -103,15 +103,17 @@ window.Invoices.viewBuyers = Backbone.View.extend({
             var $c = $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el);
             
             model.save(model.toJSON(), {
-                error: function(model, err, arg) {
+                error: function(model, err) {
                     if(err.attr) {// client
-                        $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
-                    } else {//server
-                        $('input[name="name"]', $c).ierror({wrap: true, msg: err.msg || err});
+                        $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                     }
+                    
+                    if(err.msg) $.ierrorDialog('add', err.msg);
+                    
                     if(e.target.done) e.target.done = false;
                 },
                 success: function() {
+                    if($('[name="save"]', $c).size() > 0) model.change();
                     if(e.target.done) e.target.done = false;
                 },
                 loader: function(progress) {
@@ -134,7 +136,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         
     },
     eventSaveItemModel: function(e) {
-        var model = this.collection.get($(e.target).attr('data-id'));
+        var self = this, model = this.collection.get($(e.target).attr('data-id'));
         if(model) {
             // save to model
             var arg = model.attributes, $c = $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el);
@@ -144,7 +146,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
             
             model.set(arg, {
                 error: function(model, err) {
-                    $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
+                    $(e.target).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
             });
         } else {
@@ -176,14 +178,15 @@ window.Invoices.viewBuyers = Backbone.View.extend({
                 $c.attr('data-state', 'new');
                 
                 if(err.attr) {// client
-                    $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
-                } else {//server
-                    $('input[name="name"]', $c).ierror({wrap: true, msg: err.msg || err});
+                    $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
+                
+                if(err.msg) $.ierrorDialog('add', err.msg);
+                
             },
             success: function(model, res) {
                 $c.removeAttr('data-state');
-                $('input, textarea, [data-name^="err"]', $c).attr('data-id', model.get('b_uid'));
+                $('input, textarea, [data-name]', $c).attr('data-id', model.get('b_uid'));
                 $c.attr('data-id', model.get('b_uid'));
                 self.eventNew.call(self);
             },
@@ -220,7 +223,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
 				    
 				    self.helperItemDelModel.destroy({
 				        error: function(model, err) {
-				            //console.error('model: %o, error: %o', model, err);
+				            if(err.msg) $.ierrorDialog('add', err.msg);
 				        },
 				        success: function(model) {
 				        
@@ -243,5 +246,12 @@ window.Invoices.viewBuyers = Backbone.View.extend({
 				}
 			}
 		});
+    },
+    helperGetError: function(model, err) {
+        switch(err.attr) {
+            case 'name': return 'Buyer name - incorrect';
+            case 'email': return 'Buyer email - incorrect';
+            case 'phone_main': return 'Buyer phone - incorrect';
+        }
     }
 });

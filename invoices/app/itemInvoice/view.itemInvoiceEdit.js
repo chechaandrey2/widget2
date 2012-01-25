@@ -94,9 +94,16 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
     },
     eventAddLoaderGoodsGroup: function(id) {
         var el = $('#invoicesItemInvoiceItemGoods [data-nid="'+id+'"]', this.el).get(0);
-        $(el).hide().after($(this.statsTemplate['itemInvoiceEditLoaderGoodsGroup']()).attr('data-lid', $(el).attr('data-nid')));
+        if($(el).size() > 0) {
+            $(el).hide().after($(this.statsTemplate['itemInvoiceEditLoaderGoodsGroup'].call(this)).attr('data-lid', $(el).attr('data-nid')));
+        } else {
+            $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el)
+                .before($(this.statsTemplate['itemInvoiceEditLoaderGoodsGroup'].call(this)).attr('data-lid', 0));
+        }
+        
     },
     eventRemoveLoaderGoodsGroup: function(id) {
+        id = id || 0;
         $('#invoicesItemInvoiceItemGoods [data-lid="'+id+'"]', this.el).remove();
     },
     eventAssumeInvoice: function() {
@@ -457,7 +464,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                 } else if(role == 'group') {
                 
                     // add el
-                    self.eventDOMNewGoods.call(self);
+                    //self.eventDOMNewGoods.call(self);
                 
                     // fetch
                     self.model.get('_goods').fetch({
@@ -481,6 +488,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                             }
                         }
                     });
+                    
+                    $(this).val('').focus();
                         
                 }
                 

@@ -20,8 +20,10 @@ window.Invoices.ModelGoods = Backbone.Model.extend({
         'delete': {there: ['gds_uid']}
     },
     validate: function(attrs) {
-        if(attrs.title !== undefined && !(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title', msg: 'Attribute "title" - incorrect'};
-        if(attrs.units !== undefined && !(/^[a-zA-Z0-9а-яА-ЯёЁ\.,-_;:]{1,5}$/i.test(attrs.units || ''))) return {attr: 'units', msg: 'Attribute "units" - incorrect'};
-        if(attrs.price !== undefined && !(/^([0-9]+)|([0-9]+\.[0-9]{0,2})$/i.test(attrs.price))) return {attr: 'price', msg: 'Attribute "price" - incorrect'};
+        if(attrs.title !== undefined && !(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title'};
+        if(attrs.units !== undefined && !(/^[a-zA-Z0-9а-яА-ЯёЁ\.,-_;:]{1,5}$/i.test(attrs.units || ''))) return {attr: 'units'};
+        if(attrs.price !== undefined && !(/^([0-9]+|[0-9]+\.[0-9]{0,2})$/i.test(attrs.price+'')) || attrs.price == 0) return {attr: 'price'};
+        //if(attrs.desc_url && !(/^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/.test(attrs.desc_url))) return {attr: 'desc_url', msg: 'Attribute "desc_url" - incorrect'};
+        if(attrs.desc_url && !(/^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?$/.test(attrs.desc_url))) return {attr: 'desc_url'};
     }
 });

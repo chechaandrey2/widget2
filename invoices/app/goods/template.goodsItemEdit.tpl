@@ -4,6 +4,6 @@
     <td><input type="text" name="units" value="<%= units %>" placeholder="goods units" data-id="<%= gds_uid %>" /></td>
     <td><input type="text" name="price" value="<%= price %>" placeholder="goods price" data-id="<%= gds_uid %>" /></td>
     <td><textarea name="desc_url" placeholder="goods desc url" data-id="<%= gds_uid %>"><%= desc_url %></textarea></td>
-    <td><input type="button" name="save" value="s" data-id="<%= gds_uid %>" /></td>
-    <td><input type="button" name="del" value="x" data-id="<%= gds_uid %>" /></td>
+    <td><span data-name="save" data-id="<%= gds_uid %>" class="button">s</span></td>
+    <td><span data-name="del" data-id="<%= gds_uid %>" class="button">x</span></td>
 </tr>

@@ -4,6 +4,6 @@
     <td><%= units %></td>
     <td><%= sprintf('%01.2f', price) %></td>
     <td><a href="<%= desc_url %>"><%= desc_url %></a></td>
-    <td><input type="button" name="edit" value="e" data-id="<%= gds_uid %>" /></td>
-    <td><input type="button" name="del" value="x" data-id="<%= gds_uid %>" /></td>
+    <td><span data-name="edit" data-id="<%= gds_uid %>" class="button">e</span></td>
+    <td><span data-name="del" data-id="<%= gds_uid %>" class="button">x</span></td>
 </tr>

@@ -13,7 +13,7 @@ window.Invoices.ModelGoodsGroups = Backbone.Model.extend({
     syncFilter: {
         'create': {there: ['title']},
         'update': {there: ['gr_id', 'title']},
-        'delete': {there: ['gr_id']}
+        'delete': {there: ['gr_id', 'goods']}
     },
     validate: function(attrs) {
         attrs = attrs || {};

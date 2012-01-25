@@ -5,6 +5,6 @@
     <td class="center"><input style="text-align: center" type="text" name="email" value="" placeholder="buyer email" /></td>
     <td class="center"><textarea name="addr" placeholder="buyer address"></textarea></td>
     <td class="center"><textarea name="comment" placeholder="buyer comment"></textarea></td>
-    <td><input type="button" name="save" value="s" /></td>
-    <td><input type="button" name="del" value="x" /></td>
+    <td><span data-name="save" class="button">s</span></td>
+    <td><span data-name="del" class="button">x</span></td>
 </tr>

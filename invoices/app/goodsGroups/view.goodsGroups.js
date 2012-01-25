@@ -100,8 +100,8 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
     },
     events: {
         'click #invoicesGoodsGroupsAddGroup': 'eventGroupAdd',
-        'click #invoicesGoodsGroupsTabsList [name="edit"]': 'eventGroupEdit',
-        'click #invoicesGoodsGroupsTabsList [name="delete"]': 'eventGroupDel',
+        'click #invoicesGoodsGroupsTabsList [data-name="edit"]': 'eventGroupEdit',
+        'click #invoicesGoodsGroupsTabsList [data-name="delete"]': 'eventGroupDel',
         'blur #invoicesGoodsGroupsTabsList [name^="name-edit-"]':'eventGroupEditBlur',
         'keypress #invoicesGoodsGroupsTabsList [name^="name-edit-"]':'eventGroupEditEnter'
     },
@@ -232,7 +232,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
 				            // move to General & remove buyers current group at "del_force"
 				            if(self.helperSelectedNumber == model.id) {
 				                // remove "General" selection
-				                if(del_force) self.collectionGoodss.remove(self.collectionGoodss.get(1));
+				                if(!del_force) self.collectionGoodss.remove(self.collectionGoodss.get(1));
 				                self.router.navigate('goods/1/', true);				            
 				            }
 				        
