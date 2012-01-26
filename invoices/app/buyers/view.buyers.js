@@ -54,7 +54,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
             data: {gr_id: group}, 
             add: true,
             error: function(collection, err) {
-                if(err.msg) $.ierrorDialog('add', err.msg);
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
             },
             loader: function(progress) {
                 if(progress == 0) self.eventAddLoadre.call(self);
@@ -108,7 +108,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
                         $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                     }
                     
-                    if(err.msg) $.ierrorDialog('add', err.msg);
+                    if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
                     
                     if(e.target.done) e.target.done = false;
                 },
@@ -181,7 +181,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
                     $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
                 
-                if(err.msg) $.ierrorDialog('add', err.msg);
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
                 
             },
             success: function(model, res) {
@@ -223,7 +223,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
 				    
 				    self.helperItemDelModel.destroy({
 				        error: function(model, err) {
-				            if(err.msg) $.ierrorDialog('add', err.msg);
+				            if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
 				        },
 				        success: function(model) {
 				        

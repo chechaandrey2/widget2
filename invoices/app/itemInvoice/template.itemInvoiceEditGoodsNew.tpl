@@ -5,5 +5,5 @@
     <td><input type="text" name="quantity" value="1" placeholder="quantity goods" /></td>
     <td><input type="text" name="price" value="0.00" placeholder="price goods" /></td>
     <td><span data-name="total"></span></td>
-    <td><input type="button" name="remove" value="x" /></td>
+    <td><span data-name="remove" class="button">x</span></td>
 </tr>

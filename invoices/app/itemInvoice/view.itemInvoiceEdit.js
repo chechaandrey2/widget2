@@ -167,27 +167,59 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="price"]': 'eventDOMNewGoods',
         'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="quantity"]': 'eventDOMNewGoods',
         'change #invoicesItemInvoiceItemGoods [data-state="new"] [name="units"]': 'eventDOMNewGoods',
-        'click #invoicesItemInvoiceItemGoods [name="remove"]': 'eventDOMRemoveGoods',
+        'click #invoicesItemInvoiceItemGoods [data-name="remove"]': 'eventDOMRemoveGoods',
         'change #invoicesItemInvoiceItemGoods [name="price"]': 'eventDOMChangeGoods',
         'change #invoicesItemInvoiceItemGoods [name="quantity"]':'eventDOMChangeGoods',
         'change #invoicesItemInvoiceItemGoods [name="units"]':'eventDOMChangeGoods',
         'change #invoicesItemInvoiceItemGoods [name="title"]':'eventDOMChangeGoods',
-        'click #invoicesItemInvoiceItemBuyers [name="remove"]':'eventDOMRemoveBuyer',
-        'click [name="addbuyer"]': 'eventDOMOpenDialog',
+        'click #invoicesItemInvoiceItemBuyers [data-name="remove"]':'eventDOMRemoveBuyer',
+        'click [data-name="addbuyer"]': 'eventDOMOpenDialog',
         'change [name="descr"]': 'eventDOMChangeInvoice',
         'change [name="msg"]': 'eventDOMChangeInvoice',
-        'click [name="created"]': 'eventDOMSaveCreated',
-        'click [name="issued"]': 'eventDOMSaveIssued'
+        'click [data-name="created"]': 'eventDOMSaveCreated',
+        'click [data-name="issued"]': 'eventDOMSaveIssued'
     },
     eventDOMSaveCreated: function(e) {
         this.model.set({is_issued: 0, save: true});
-        var id = this.model.get('inv_uid');
-        this.router.navigate('invoice/send/'+(id?id+'/':''), true);
+        this.helperSaveInvoice.call(this);
     },
     eventDOMSaveIssued: function(e) {
         this.model.set({is_issued: 1, save: true});
-        var id = this.model.get('inv_uid');
-        this.router.navigate('invoice/send/'+(id?id+'/':''), true);
+        this.helperSaveInvoice.call(this);
+    },
+    helperSaveInvoice: function() {
+        
+        // prepare buyers, goods
+        var self = this, buyers = [], goods = [];
+            
+        this.model.get('_buyers').each(function(model) {
+            if(model.get('nid') > 0) 
+                buyers.push(model.toJSONExt(model.syncFilter['new'])); 
+            else
+                buyers.push(model.toJSONExt(model.syncFilter['item']));
+        });
+        
+        this.model.get('_goods').each(function(model) {
+            if(model.get('nid') > 0) 
+                goods.push(model.toJSONExt(model.syncFilter['new'])); 
+            else
+                goods.push(model.toJSONExt(model.syncFilter['item']));
+        });
+            
+        var res = this.model.set({buyers: buyers, goods: goods}, {error: function(model, err) {
+            if(err.attr == 'buyers') {
+                $('#invoicesItemInvoiceBuyersFind', self.el).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
+            } else if(err.attr == 'goods') {
+                $('#invoicesItemInvoiceItemGoods  [data-state] [name="title"]', self.el)
+                    .ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
+            }
+        }});
+        
+        if(res) {
+            var id = this.model.get('inv_uid');
+            this.router.navigate('invoice/send/'+(id?id+'/':''), true);
+        }
+        
     },
     eventDOMOpenDialog: function(e) {
         
@@ -195,7 +227,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         
     },
     eventDOMNewGoods: function(e) {
-        var data = {}, $c = $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el);
+        var data = {}, self = this, $c = $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el);
         
         $('input', $c).each(function() {
             data[$(this).attr('name')] = $(this).val();
@@ -207,13 +239,13 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         
         var model = new window.Invoices.ModelInvoiceGoods();
         var res = model.set(data, {error: function(model, err) {
-            $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: err.msg});
+            $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
         }});
         
         if(res) {
             this.model.get('_goods').add(model, {silent: true});
             $c.removeAttr('data-state');
-            $('input, textarea, [data-name="total"]', $c).attr('data-nid', model.get('nid'));
+            $('input, textarea, [data-name]', $c).attr('data-nid', model.get('nid'));
             $c.attr('data-nid', model.get('nid'));
             this.eventChangeGoods.call(this, model);
             this.eventNewGoods.call(this);
@@ -263,13 +295,13 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         if(model) this.model.get('_goods').remove(model);
     },
     helperDOMChangeGoods: function(model, el) {
-        var name = $(el).attr('name'), data = {};
+        var name = $(el).attr('name'), data = {}, self = this;
         
         data[name] = $(el).val();
         
         model.set(data, {
             error: function(model, err) {
-                $(el).ierror({wrap: true, msg: err.msg});
+                $(el).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
             }
         });
     },
@@ -540,10 +572,11 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
 				    self.model.get('_buyers').create(data, {
                         error: function(model, err) {
                             if(err.attr) {// client
-                                $('input[name="'+err.attr+'"]', dialog).ierror({wrap: true, msg: err.msg});
-                            } else {//server
-                                $('input[name="name"]', dialog).ierror({wrap: true, msg: err.msg || err});
+                                $('input[name="'+err.attr+'"]', dialog).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                             }
+                            
+                            if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+                            
                         },
                         success: function(model, res) {
                             
@@ -566,5 +599,18 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
 				}
 			}
 		});
+    },
+    helperGetError: function(model, err) {
+        switch(err.attr) {
+            case 'name': return 'Buyer name - incorrect';
+            case 'email': return 'Buyer email - incorrect';
+            case 'phone_main': return 'Buyer phone - incorrect';
+            case 'units': return 'Buyer units - incorrect';
+            case 'price': return 'Buyer price - incorrect';
+            case 'quantity': return 'Buyer quantity - incorrect';
+            case 'title': return 'Buyer title - incorrect';
+            case 'buyers': return 'You did not enter a single buyer';
+            case 'goods': return 'You did not enter a single goods';
+        }
     }
 });

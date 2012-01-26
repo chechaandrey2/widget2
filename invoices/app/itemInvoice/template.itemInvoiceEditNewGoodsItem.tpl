@@ -5,5 +5,5 @@
     <td><input type="text" name="quantity" value="<%= quantity %>" data-nid="<%= nid %>" placeholder="quantity goods" /></td>
     <td><input type="text" name="price" value="<%= sprintf('%01.2f', price) %>" data-nid="<%= nid %>" placeholder="price goods" /></td>
     <td><span data-name="total" data-nid="<%= nid %>" ><%= sprintf("%01.2f", total) %></span></td>
-    <td><input type="button" name="remove" value="x" data-nid="<%= nid %>" /></td>
+    <td><span data-name="remove" data-nid="<%= nid %>" class="button">x</span></td>
 </tr>

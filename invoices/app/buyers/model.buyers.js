@@ -16,7 +16,7 @@ window.Invoices.ModelBuyers = Backbone.Model.extend({
         'delete': 'del_buyers'
     },
     syncFilter: {
-        'create': {there: ['name', 'phone_main', 'email', 'addr', 'comment']},
+        'create': {there: ['name', 'phone_main', 'email', 'addr', 'comment', 'gr_id']},
         'update': {there: ['b_uid', 'name', 'phone_main', 'email', 'addr', 'comment']},
         'delete': {there: ['b_uid']}
     },

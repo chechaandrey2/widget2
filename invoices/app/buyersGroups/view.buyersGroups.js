@@ -57,7 +57,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         this.collection.fetch({
             add: true,
             error: function(collection, err) {
-                if(err.msg) $.ierrorDialog('add', err.msg);
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
             },
             success: function() {
                 self.helperSelected(group);
@@ -141,7 +141,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
                     $(e.target).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
                 
-                if(err.msg) $.ierrorDialog('add', err.msg);
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
 			    
 			    if(e.target) e.target.done = false;
             },
@@ -200,7 +200,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
                                 $e.ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                             }
                             
-                            if(err.msg) $.ierrorDialog('add', err.msg);
+                            if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
                             
 				        },
 				        success: function(model) {
@@ -237,7 +237,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
 				    self.helperGroupDelModel.destroy({
 				        error: function(model, err) {
 				            
-				            if(err.msg) $.ierrorDialog('add', err.msg);
+				            if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
 				            
 				        }, success: function(model) {
 				        
@@ -278,42 +278,47 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         this.el.append(this.statsTemplate['buyersDialogImport']());
         var self = this;
         
-        var $dialog = $('#invoicesBuyersImportDialog', this.el).dialog({
-            autoOpen:false,
-            resizable: false,
-			modal: true
-        });
-        
         var $form = $('#invoicesUpload').clone(true)
             .show().appendTo($('[data-id="form"]', $dialog)).attr('id', 'invoicesBuyersImportForm');
         
-        $('#invoicesBuyersImportSubmit', $dialog).bind('click', function(e) {
-            
-            // start loader
-            $form.addClass('upload');
-            
-            $.ajax({
-                url: 'https://pulyaev.test.liqpay.com/?do=invoices&act=ajax',
-                fileInput: $('[type="file"]', $form),
-                formData: [{name: 'json', value: JSON.stringify({subname: "import_buyers"})}],
-                paramName: 'file',
-                type: 'POST',
-                dataType: "iframe",
-                success: function(data) {
-                    console.warn('SUCCESS: %o', data);
-                    $dialog.dialog('close');
-                },
-                error: function(jqXHR) {
-                    console.error('ERROR: %o', jqXHR);
-                },
-                complete: function() {
-                    // end loader
-                    $('[type="file"]', $form).val('');
-                    $form.removeClass('upload');
-                }
-            });
-            
+        var $dialog = $('#invoicesBuyersImportDialog', this.el).dialog({
+            autoOpen:false,
+            resizable: false,
+			modal: true,
+			buttons: [
+			    {text: 'Import', click: function() {
+			        
+			        // start loader
+                    $form.addClass('upload');
+                    
+                    $.ajax({
+                        url: 'https://pulyaev.test.liqpay.com/?do=invoices&act=ajax',
+                        fileInput: $('[type="file"]', $form),
+                        formData: [{name: 'json', value: JSON.stringify({subname: "import_buyers"})}],
+                        paramName: 'file',
+                        type: 'POST',
+                        dataType: "iframe",
+                        success: function(data) {
+                            console.warn('SUCCESS: %o', data);
+                            $dialog.dialog('close');
+                        },
+                        error: function(jqXHR) {
+                            console.error('ERROR: %o', jqXHR);
+                        },
+                        complete: function() {
+                            // end loader
+                            $('[type="file"]', $form).val('');
+                            $form.removeClass('upload');
+                        }
+                    });
+			        
+			    }},
+			    {text: 'Cancel', click: function() {
+			        $dialog.dialog('close');
+			    }}
+			]
         });
+        
     },
     helperGetError: function(model, err) {
         if(err.attr == 'title') {

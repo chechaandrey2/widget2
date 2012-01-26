@@ -15,7 +15,7 @@
         </table>
         <div>
             <div id="invoicesMerchantLogo" style="background-image: url(<%= logo_url %>);"></div>
-            <input type="button" value="edit" id="invoicesMerchantEditLogo" />
+            <span id="invoicesMerchantEditLogo" class="button">edit</span>
         </div>
     </div>
     <div data-id="#merchant/general/">
@@ -46,11 +46,11 @@
                     </select>
                 </td></tr>
                 <tr data-id="12"><td>phone</td><td><%= phone %></td></tr>
-                <tr data-id="11"><td>card</td><td><input type="text" name="card" value="<%= card %>" /></td></tr>
+                <tr data-id="11"><td>card</td><td><input type="text" name="card" value="<%= card %>" placeholder="card" /></td></tr>
             </tbody>
         </table>
     </div>
     <div>
-        <input type="button" value="save" id="invoicesMerchantSave" />
+        <span id="invoicesMerchantSave" class="button">save</span>
     </div>
 </div>

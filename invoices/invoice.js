@@ -239,6 +239,8 @@ $(document).ready(function() {
     
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceViewBuyers.tpl');
     
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceSendLoader.tpl');
+    
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceSend.js');

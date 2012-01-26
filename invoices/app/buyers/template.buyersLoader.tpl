@@ -1,3 +1,3 @@
 <tr data-sync="buyers">
-    <td colspan="8"><h2 style="color: red">wait...</h2></td>
+    <td colspan="7"><h2 style="color: red">wait...</h2></td>
 </tr>

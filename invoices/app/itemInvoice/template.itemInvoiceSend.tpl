@@ -1,1 +1,3 @@
-<h2>send</h2>
+<div id="invoicesItemInvoiceSendBody">
+    <h1>Empty page</h1>
+</div>

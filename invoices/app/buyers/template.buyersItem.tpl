@@ -1,5 +1,4 @@
 <tr data-id="<%= b_uid %>">
-    <td class="center"><img src="<%= img_url %>"  /></td>
     <td class="center"><%= name %></td>
     <td class="center"><%= phone_main %></td>
     <td class="center"><%= email %></td>

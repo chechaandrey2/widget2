@@ -1,5 +1,4 @@
 <tr data-state="new">
-    <td class="center">&nbsp;</td>
     <td class="center"><input style="text-align: center" type="text" name="name" value="" placeholder="buyer name" /></td>
     <td class="center"><input style="text-align: center" type="text" name="phone_main" value="" placeholder="buyer phone" /></td>
     <td class="center"><input style="text-align: center" type="text" name="email" value="" placeholder="buyer email" /></td>

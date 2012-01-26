@@ -54,7 +54,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
             data: {gr_id: group}, 
             add: true,
             error: function(collection, err) {
-                if(err.msg) $.ierrorDialog('add', err.msg);
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
             },
             loader: function(progress) {
                 if(progress == 0) self.eventAddLoadre.call(self);
@@ -107,7 +107,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
                         $('input[name="'+err.attr+'"], textarea[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                     }
                     
-                    if(err.msg) $.ierrorDialog('add', err.msg);
+                    if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
                     
                     if(e.target.done) e.target.done = false;
                 },
@@ -182,13 +182,14 @@ window.Invoices.viewGoods = Backbone.View.extend({
                     $('input[name="'+err.attr+'"], textarea[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
                 
-                if(err.msg) $.ierrorDialog('add', err.msg);
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
                 
             },
             success: function(model, res) {
                 $c.removeAttr('data-state');
                 $('input, textarea, [data-name]', $c).attr('data-id', model.get('gds_uid'));
                 $c.attr('data-id', model.get('gds_uid'));
+                $('[data-name="id"]', $c).html(model.get('gds_uid'));
                 self.eventNew.call(self);
             },
             loader: function(progress) {
@@ -224,7 +225,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
 				    
 				    self.helperItemDelModel.destroy({
 				        error: function(model, err) {
-				            if(err.msg) $.ierrorDialog('add', err.msg);
+				            if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
 				        },
 				        success: function(model) {
 				        

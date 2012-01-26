@@ -68,7 +68,7 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
         
     },
     events: {
-        'click [name="issued"]': 'eventUpdateItem'
+        'click [data-name="issued"]': 'eventUpdateItem'
     },
     helperPrepareBinfo: function(model) {
         var binfo = model.get('b_info');

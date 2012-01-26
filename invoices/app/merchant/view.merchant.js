@@ -50,6 +50,9 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         if(_.indexOf(['contacts', 'pay', 'general'], tab) < 0) tab = 'contacts';
         
         this.render({
+            error: function(model, err) {
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+            },
             success: function(model) {
                 
                 self.eventChange.call(self, model);
@@ -107,10 +110,10 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         $('#invoicesMerchantDialogLogo').dialog('open');
     },
     eventDOMChange: function(e) {
-        var data = {};
+        var self = this, data = {};
         data[$(e.target).attr('name')] = $(e.target).val();
         this.model.set(data, {error: function(model, err) {
-            $(e.target).ierror({wrap: true, msg: err.msg});
+            $(e.target).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
         }});
     },
     eventDOMChangeCheckbox: function(e) {
@@ -129,7 +132,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
     },
     eventDOMSave: function(e) {
         
-        var arg = {};
+        var self = this, arg = {};
         
         $('[name]',this.el).each(function() {
             arg[$(this).attr('name')] = $(this).val();
@@ -137,10 +140,19 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         
         this.model.save(arg, {
             error: function(model, err) {
-                console.error('model: %o; err: %o', model, err);
+                if(err.attr) {
+                    $('[name="'+err.attr+'"]', self.el).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
+                }
+                
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+                
             },
             loader: function(progress) {
-                
+                if(progress == 0) {
+                    self.eventAddLoader.call(self);
+                } else if(progress == 1) {
+                    self.eventRemoveLoader.call(self);
+                }
             }
         });
         
@@ -159,10 +171,15 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
 			buttons: [
 			    {text: "Ok", click: function() {
 			        
-			        var value = $('[name="logo_url"]', this).val();
-			        self.model.set({logo_url: value});
-			        $('#invoicesMerchantLogo', self.el).css("background-image", "url("+value+")");
-			        $(this).dialog("close");
+			        var dialog = this, value = $('[name="logo_url"]', dialog).val() || null;
+			        var res = self.model.set({logo_url: value}, {error: function(model, err) {
+			            $('[name="logo_url"]', dialog).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
+			        }});
+			        
+			        if(res) {
+			            if(value) $('#invoicesMerchantLogo', self.el).css("background-image", "url("+value+")");
+			            $(this).dialog("close");
+			        }
 			        
 			    }},
 			    {text: "Cancel", click: function() { $(this).dialog("close"); }}
@@ -184,6 +201,14 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         } else if(!$(el).attr('checked')) {
             $('#invoicesMerchantGeneralTable [data-id="'+name+'"]', this.el).addClass('disabled');
             $(el).val(0);
+        }
+    },
+    helperGetError: function(model, err) {
+        switch(err.attr) {
+            case 'card': return 'Buyer card - incorrect';
+            case 'email': return 'Buyer email - incorrect';
+            case 'title': return 'Buyer title - incorrect';
+            case 'logo_url': return 'Buyer logo_url - incorrect';
         }
     }
 });

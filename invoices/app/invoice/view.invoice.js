@@ -51,8 +51,8 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                         }
                         
                     },
-                    error: function(collection, e) {
-                        //console.error(e);
+                    error: function(collection, err) {
+                        if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
                     },
                     loader: function(progress) {
                         if(progress == 0) self.eventAddLoadre.call(self);

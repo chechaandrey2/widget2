@@ -33,7 +33,7 @@ window.Invoices.ModelInvoice = Backbone.Model.extend({
         'update': {there: ['goods', 'buyers', 'total', 'currency', 'descr', 'msg', 'pref_system_id', 'created_at', 'expired_at', 'is_regular', 'is_issued']}
     },
     validate: function(attrs) {
-        if(attrs.goods && attrs.goods.length < 1) return {attr: 'goods', msg: 'Attribute "goods" - incorrect'};
-        if(attrs.buyers && attrs.buyers.length < 1) return {attr: 'buyers', msg: 'Attribute "buyers" - incorrect'};
+        if(attrs.goods && attrs.goods.length < 1) return {attr: 'goods'};
+        if(attrs.buyers && attrs.buyers.length < 1) return {attr: 'buyers'};
     }
 });

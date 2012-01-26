@@ -15,7 +15,7 @@ window.Invoices.ModelGoods = Backbone.Model.extend({
         'delete': 'del_goods'
     },
     syncFilter: {
-        'create': {there: ['title', 'price', 'units', 'desc_url']},
+        'create': {there: ['title', 'price', 'units', 'desc_url', 'gr_id']},
         'update': {there: ['gds_uid', 'title', 'price', 'units', 'desc_url']},
         'delete': {there: ['gds_uid']}
     },

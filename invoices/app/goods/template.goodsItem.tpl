@@ -1,5 +1,5 @@
 <tr data-id="<%= gds_uid %>">
-    <td><img src="<%= img_url %>"  /></td>
+    <td><span data-name="id"><%= gds_uid %></span></td>
     <td><%= title %></td>
     <td><%= units %></td>
     <td><%= sprintf('%01.2f', price) %></td>

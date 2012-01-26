@@ -17,8 +17,9 @@ window.Invoices.ModelGoodsGroups = Backbone.Model.extend({
     },
     validate: function(attrs) {
         attrs = attrs || {};
-        if(!(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title', msg: 'Attribute "title" - incorrect'};
+        if(!(/^[\w\sа-яА-ЯёЁ]+$/i.test(attrs.title))) return {attr: 'title'};
         // client validate duplication
-        if(this.collection.get('title', attrs.title) && this.get('gr_id') === null) return {attr: 'title', msg: 'Duplicate model'};
+        var model = this.collection.get('title', attrs.title);
+        if(model && this.get('gr_id') != model.get('gr_id')) return {attr: 'title', arg: true};
     }
 });

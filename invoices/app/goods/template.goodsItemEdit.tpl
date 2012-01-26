@@ -1,5 +1,5 @@
 <tr data-id="<%= gds_uid %>">
-    <td><img src="<%= img_url %>"  /></td>
+    <td><span data-name="id"><%= gds_uid %></span></td>
     <td><input type="text" name="title" value="<%= title %>" placeholder="goods title" data-id="<%= gds_uid %>" /></td>
     <td><input type="text" name="units" value="<%= units %>" placeholder="goods units" data-id="<%= gds_uid %>" /></td>
     <td><input type="text" name="price" value="<%= price %>" placeholder="goods price" data-id="<%= gds_uid %>" /></td>

@@ -54,7 +54,10 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
         this.el.html(this.statsTemplate['clients']());
         
         this.collection.fetch({
-            add: true, 
+            add: true,
+            error: function(collection, err) {
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+            },
             success: function() {
                 self.helperSelected(group);
             },
@@ -132,10 +135,10 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
             error: function(model, err) {
                 
                 if(err.attr) {// client
-                    $(e.target).ierror({wrap: true, msg: err.msg});
-                } else {//server
-                    $(e.target).ierror({wrap: true, msg: err.msg || err});
+                    $(e.target).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
+                
+                if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
 			    
 			    if(e.target) e.target.done = false;
             },
@@ -188,10 +191,11 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
 			            }, {
 			            error: function(model, err) {
 			                if(err.attr) {// client
-                                $($e.get(0)).ierror({wrap: true, msg: err.msg});
-                            } else {//server
-                                $($e.get(0)).ierror({wrap: true, msg: err.msg || err});
+                                $($e.get(0)).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                             }
+                            
+                            if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+                            
 				        },
 				        success: function(model) {
 				            $(dialog).dialog("close");
@@ -226,7 +230,9 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
 				    self.helperGroupDelModel.set({'goods': del_force});
 				    self.helperGroupDelModel.destroy({
 				        error: function(model, err) {
-				            //console.error('model: %o, error: %o', model, err);
+				        
+				            if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+				            
 				        }, success: function(model) {
 				        
 				            // move to General & remove buyers current group at "del_force"
@@ -261,5 +267,14 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
         $('#invoicesGoodsGroupsTabs', this.el).itabs('select', 'goods/'+id+'/');
         this.helperSelectedNumber = id;
     },
-    helperSelectedNumber: 0
+    helperSelectedNumber: 0,
+    helperGetError: function(model, err) {
+        if(err.attr == 'title') {
+            if(err.arg) {
+                return 'Goods group duplication';
+            } else {
+                return 'Goods group title - incorrect';
+            }
+        }
+    }
 });
