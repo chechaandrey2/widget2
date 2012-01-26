@@ -44,7 +44,7 @@ window.Invoices.ViewItemInvoiceView = Backbone.View.extend({
         
         // hack
         if(!this.router.collection.get('merchant')) {
-            this.router.helperRenderMerchant();
+            this.router.helperRenderMerchant.call(this.router);
 		    this.router.collection.get('merchant').get('view').render(opts);
         } else {
             this.router.collection.get('merchant').get('view').render(opts);

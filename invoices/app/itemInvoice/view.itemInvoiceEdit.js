@@ -221,9 +221,11 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         }
         
     },
-    eventDOMOpenDialog: function(e) {
+    eventDOMOpenDialog: function(e, value) {
         
-        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)).dialog('open');
+        var $dialog = $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0));
+        if(value) $('[name="name"]', $dialog).val(value);
+        $dialog.dialog('open');
         
     },
     eventDOMNewGoods: function(e) {
@@ -315,7 +317,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             el: $('#invoicesItemInvoiceBuyersHelp', this.el).get(0),
             selectorItem: '[data-id]',
             validate: function(value) {
-                if(!(/^[0-9a-zA-Zа-яА-ЯёЁ]+$/i.test(value))) return false;
+                if(!(/^[0-9a-zA-Zа-яА-ЯёЁ\s]+$/i.test(value))) return false;
                 return true;
             },
             render: function(opt, value) {
@@ -401,7 +403,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             },
             entered: function(el, opt) {
                 
-                self.eventDOMOpenDialog();
+                self.eventDOMOpenDialog(null, $(this).val());
                 
             }
         });
@@ -422,7 +424,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             el: $(elHelp, this.el).get(0),
             selectorItem: '[data-id]',
             validate: function(value) {
-                if(!(/^[0-9a-zA-Zа-яА-ЯёЁ]+$/i.test(value))) return false;
+                if(!(/^[0-9a-zA-Zа-яА-ЯёЁ\s]+$/i.test(value))) return false;
                 return true;
             },
             render: function(opt, value) {
@@ -582,6 +584,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                             
                             $('input[type="text"], textarea', dialog).val('');
                             $(dialog).dialog('close');
+                            
+                            $('#invoicesItemInvoiceBuyersFind', self.el).val('').focus();
                             
                         },
                         loader: function(progress) {

@@ -94,7 +94,11 @@ window.Invoices.Router = Backbone.Router.extend({
             this.helperRenderMerchant();
 		    this.collection.get('merchant').get('view').renderDisplay(tab);
         } else {
-            this.collection.get('merchant').get('view').renderDisplayItem(tab);
+            if(!this.collection.get('merchant').get('view').primeRender) {
+                this.collection.get('merchant').get('view').renderDisplay(tab);
+            } else {
+                this.collection.get('merchant').get('view').renderDisplayItem(tab);
+            }
         }
         
         this.helperShow('merchant');

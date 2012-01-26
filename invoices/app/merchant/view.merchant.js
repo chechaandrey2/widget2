@@ -44,6 +44,8 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         
     },
     renderDisplay: function(tab) {
+    
+        this.primeRender = true;// hack
         
         var self = this;
         
