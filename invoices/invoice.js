@@ -238,8 +238,12 @@ $(document).ready(function() {
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceEditAtcmpltEmpty.tpl');
     
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceViewBuyers.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceViewLoader.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceViewDialog.tpl');
     
     window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceSendLoader.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceSendSuccess.tpl');
+    window.TPL.push('invoices/app/itemInvoice/template.itemInvoiceSendError.tpl');
     
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceEdit.js');
     window.JS.push('invoices/app/itemInvoice/view.itemInvoiceView.js');

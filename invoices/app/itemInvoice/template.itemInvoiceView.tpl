@@ -12,6 +12,6 @@ var dates = {
     </thead>
     <tbody id="invoicesItemInvoiceViews"></tbody>
     <tfoot>
-        <tr><th><% if(inv_uid) { %><input type="button" name="created" value="create of current" /><input type="button" name="issued" value="issue of current" /><a href="#invoice/edit/<%= inv_uid %>/">edit</a><% } else { %><input type="button" name="created" value="create" /><input type="button" name="issued" value="issue" /><a href="#invoice/edit/">edit</a><% } %></th></tr>
+        <tr><th><% if(inv_uid) { %><span data-name="created" class="button">create of current</span><span data-name="issued" class="button">issue of current</span><a href="#invoice/edit/<%= inv_uid %>/">edit</a><% } else { %><span data-name="created" class="button">create</span><span data-name="issued" class="button">issue</span><a href="#invoice/edit/">edit</a><% } %></th></tr>
     </tfoot>
 </table>

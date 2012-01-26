@@ -258,7 +258,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         var id = $(e.target).attr('data-id'), nid = $(e.target).attr('data-nid'), model;
         
         if(id > 0) {
-            model = this.model.get('_buyers').get('b_uid', id);
+            model = this.model.get('_buyers').get(id);
         } else if(nid > 0) {
             model = this.model.get('_buyers').get('nid', nid);
         }
@@ -287,7 +287,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         var id = $(el).attr('data-id'), nid = $(el).attr('data-nid'), model;
         
         if(id > 0) {
-            model = this.model.get('_goods').get('gds_uid', id);
+            model = this.model.get('_goods').get(id);
         } else if(nid > 0) {
             model = this.model.get('_goods').get('nid', nid);
         }

@@ -90,23 +90,23 @@ window.Invoices.Router = Backbone.Router.extend({
         
         this.helperHide('globalmenu');
         
-        this.helperRenderMerchant(tab);
-        
-        this.helperShow('merchant');
-        
-    },
-    helperRenderMerchant: function(tab) {
         if(!this.collection.get('merchant')) {
-            var el = $('#invoicesMerchant');
-            this.collection.add({
-                id: 'merchant',
-                el: el,
-                view: new window.Invoices.ViewMerchant({router: this, el: el})
-            });
+            this.helperRenderMerchant();
 		    this.collection.get('merchant').get('view').renderDisplay(tab);
         } else {
             this.collection.get('merchant').get('view').renderDisplayItem(tab);
         }
+        
+        this.helperShow('merchant');
+        
+    },
+    helperRenderMerchant: function() {
+        var el = $('#invoicesMerchant');
+        this.collection.add({
+            id: 'merchant',
+            el: el,
+            view: new window.Invoices.ViewMerchant({router: this, el: el})
+        });
     },
     helperRenderGlobalMenu: function() {
         if(!this.collection.get('globalmenu')) {

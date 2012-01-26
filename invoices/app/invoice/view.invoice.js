@@ -41,9 +41,9 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                 this.collection.fetch({
                     data: {inv_uid: id}, 
                     add: true, 
-                    success: function(collection) {
+                    success: function() {
                         
-                        var model = collection.get(id);
+                        var model = self.collection.get(id);
                         if(!model) {
                             self.router.navigate('invoice/edit/', true);
                         } else {
@@ -86,6 +86,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
             binfo = JSON.parse(binfo) || [];
             if(!(binfo instanceof Array)) binfo = [binfo];
             model.get('_buyers').add(binfo);
+            model.set({b_info: null});
         }
         
         // add goodss
@@ -96,6 +97,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
             content = JSON.parse(content) || [];
             if(!(binfo instanceof Array)) content = [content];
             model.get('_goods').add(content);
+            model.set({content: null});
         }
         
         this.renderItemLoaded(model, id, mod);
