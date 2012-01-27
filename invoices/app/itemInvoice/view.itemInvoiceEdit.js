@@ -45,12 +45,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         
         var val = sprintf("%01.2f", model.get('total'));
         
-        if(model.get('gds_uid')>0 && model.get('nid')>0) {
-            $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"]', this.el)
-                .replaceWith($(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON())).iplaceholder());
-            
-            model.set({nid: 0}, {silent: true});// hack
-        } else if(model.get('nid')>0) {
+        if(model.get('nid')>0) {
             $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"] [data-name="total"]', this.el).html(val);
         } else {
             $('#invoicesItemInvoiceItemGoods [data-id="'+model.get('gds_uid')+'"] [data-name="total"]', this.el).html(val);
@@ -251,6 +246,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             $c.attr('data-nid', model.get('nid'));
             this.eventChangeGoods.call(this, model);
             this.eventNewGoods.call(this);
+            // hide error
+            $('input, textarea', $c).ierror('remove');
         }
     },
     eventDOMRemoveGoods: function(e) {
@@ -360,6 +357,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         self.model.get('_buyers').add(collectionBuyers.items.get('b_uid', $(item).attr('data-id')).toJSON(), {
                             expUnique: 'b_uid',
                             error: function(model, err) {
+                                // ERROR(expUnique) DUPLICATION IGNORE
                                 //console.error('%o; %o', model, err);
                             }
                         });
@@ -379,6 +377,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         add: true,
                         expUnique: 'b_uid',
                         error: function(collection, err) {
+                            // ERROR(expUnique) DUPLICATION IGNORE
                             //console.error('%o; %o', collection, err);
                         },
                         loader: function(progress) {
@@ -473,24 +472,26 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                             var helpModel = collectionGoodss.items.get('gds_uid', $(item).attr('data-id'));
                             
                             if(!self.model.get('_goods').get(helpModel.get('gds_uid'))) {
-                                model.set(helpModel.toJSON(), {
-                                    error: function(model, e) {
-                                        console.error('%o; %o', model, e);
-                                        // replace to ierror
-                                    }
-                                });
+                                model.collection.add(helpModel.toJSON());
+                                // remove
+                                model.collection.remove(model);
                             } else {
-                                console.error('Duplicate error %o; %o');
-                                // replace to ierror
+                                $(self1).ierror({wrap: true, msg: 'This goods has been selected'});
                             }
                         } else {
-                            self.model.get('_goods').add(collectionGoodss.items.get('gds_uid', $(item).attr('data-id')).toJSON(), {
+                            var res = false;
+                            self.model.get('_goods').add(collectionGoodss.items.get($(item).attr('data-id')).toJSON(), {
                                 expUnique: 'gds_uid',
                                 error: function(model, err) {
-                                    //console.error('%o; %o', model, err);
+                                    if(err.errno == 'add') {
+                                        res = true;
+                                        $(self1).ierror({wrap: true, msg: 'This goods has been selected'});
+                                    }
                                 }
                             });
-                            $(this).val('').focus();
+                            if(!res) {
+                                $(this).val('').focus();
+                            }
                         }
                     
                     }
@@ -506,6 +507,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         add: true,
                         expUnique: 'gds_uid',
                         error: function(collection, err) {
+                            // ERROR(expUnique) DUPLICATION IGNORE
                             //console.error('%o; %o', collection, err);
                         },
                         success: function(collection) {
@@ -527,7 +529,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         
                 }
                 
-                $('#invoicesItemInvoiceItemGoods [data-state="new"] [name="title"]', this.el).focus();
+                //$('#invoicesItemInvoiceItemGoods [data-state="new"] [name="title"]', this.el).focus(); // CALL CONFLICT
                 
             },
             hided: function(opt) {

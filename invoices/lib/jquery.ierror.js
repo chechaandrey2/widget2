@@ -57,6 +57,8 @@
         			});
         			
         			$(this).bind('change', function(e) {
+        			    $(this[uid].el).remove();
+        			    if(this[uid].wrap) $(this).unwrap();
         			    this[uid] = undefined;
         			    $(this).unbind('.'+uid);
         			});
@@ -69,6 +71,13 @@
         				
         				$(this[uid].el).hide();
         				
+        			} else if(options == 'remove') {
+        			    
+        			    $(this[uid].el).remove();
+        			    if(this[uid].wrap) $(this).unwrap();
+        			    this[uid] = undefined;
+        			    $(this).unbind('.'+uid);
+        			    
         			} else {
         				
         				this[uid] = $.extend({}, this[uid], options);

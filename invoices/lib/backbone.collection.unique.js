@@ -10,9 +10,9 @@ Backbone.Collection.prototype._add = function(model, options) {
         //if (already) throw new Error(["Can't add the same model to a set twice", already.id]);
         if(already) {
             if (options.error) {
-                options.error(model, "Can't add the same model to a set twice", options);
+                options.error(model, {errno: 'add', msg: "Can't add the same model to a set twice"}, options);
             } else {
-                this.trigger('error', model, "Can't add the same model to a set twice", options);
+                this.trigger('error', model, {errno: 'add', msg: "Can't add the same model to a set twice"}, options);
             }
             return false;
         }

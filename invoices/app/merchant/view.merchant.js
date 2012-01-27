@@ -44,8 +44,6 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         
     },
     renderDisplay: function(tab) {
-    
-        this.primeRender = true;// hack
         
         var self = this;
         
@@ -56,18 +54,25 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
                 if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
             },
             success: function(model) {
+            
+                if(!self.helperPrimeRender) {
+                    self.eventChange.call(self, model);
+                    
+                    $('#invoicesMerchantTabs', self.el).itabs({
+                        elTabs: $('#invoicesMerchantTabs #invoicesMerchantTabsList', self.el),
+                        selectorItem: '[data-id^="#"]'
+                    });
+                    
+                    self.helperDialogLogo();
+                }
                 
-                self.eventChange.call(self, model);
+                self.helperPrimeRender = true;
                 
-                $('#invoicesMerchantTabs', self.el).itabs({
-                    elTabs: $('#invoicesMerchantTabs #invoicesMerchantTabsList', self.el),
-                    selectorItem: '[data-id^="#"]',
-                    selected: 'merchant/'+tab+'/'
-                });
+                $('#invoicesMerchantTabs', self.el).itabs('select', 'merchant/'+tab+'/');
                 
-                $('[name="is_vat_payer"]', this.el).trigger('change');
-                $('[name="to_notify"]', this.el).trigger('change');
-                $('[name="pref_payment_id"]', this.el).trigger('change');
+                $('[name="is_vat_payer"]', self.el).trigger('change');
+                $('[name="to_notify"]', self.el).trigger('change');
+                $('[name="pref_payment_id"]', self.el).trigger('change');
                 
             },
             loader: function(progress) {
@@ -79,23 +84,10 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
             }
         });
         
-        this.helperDialogLogo();
-        
         return this;
         
     },
-    renderDisplayItem: function(tab) {
-        
-        if(_.indexOf(['contacts', 'pay', 'general'], tab) < 0) tab = 'contacts';
-        $('#invoicesMerchantTabs', self.el).itabs('select', 'merchant/'+tab+'/');
-        
-        $('[name="is_vat_payer"]', this.el).trigger('change');
-        $('[name="to_notify"]', this.el).trigger('change');
-        $('[name="pref_payment_id"]', this.el).trigger('change');
-        
-        return this;
-        
-    },
+    helperPrimeRender: false,
     events: {
         'click #invoicesMerchantEditLogo': 'eventDOMDialogLogo',
         'change [name="title"]': 'eventDOMChange',

@@ -10,14 +10,18 @@ window.Invoices.ViewItemInvoiceHelpBuyer = Backbone.View.extend({
     eventEndedRequest: undefined,
     render: function(key, loader) {
     
-        var lg = false, li = false;
+        var lg = false, li = false, lsi = false;
     
         var data = {groups: null, items: null}, self = this;
         
         if(this.collectionGroups.length < 1 && !this.collectionGroups.load) {
             this.collectionGroups.fetch({
+                error: function(model, err) {
+                    if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+                },
                 success: function() {
-                    if(typeof self.eventEndedRequest == 'function') self.eventEndedRequest.call(self, key);
+                    self.helperLSG = true;
+                    if(lsi && typeof self.eventEndedRequest == 'function') self.eventEndedRequest.call(self, key);
                 },
                 loader: function(progress) {
                     if(progress == 0) {
@@ -51,9 +55,13 @@ window.Invoices.ViewItemInvoiceHelpBuyer = Backbone.View.extend({
             var model = this.collectionItems.get(key);
             model.get('selection').fetch({
                 data: {all: key},
+                error: function(model, err) {
+                    if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+                },
                 success: function(collection) {
                     model.set({status: 'loaded'});
-                    if(typeof self.eventEndedRequest == 'function') self.eventEndedRequest.call(self, key);
+                    lsi = true;
+                    if(self.helperLSG && typeof self.eventEndedRequest == 'function') self.eventEndedRequest.call(self, key);
                 },
                 loader: function(progress) {
                     if(progress == 0) {
@@ -69,5 +77,6 @@ window.Invoices.ViewItemInvoiceHelpBuyer = Backbone.View.extend({
         }
         
         return data;
-    }
+    },
+    helperLSG: false
 });
