@@ -56,7 +56,7 @@
         			    $(this[uid].el).filter(':hidden').show();
         			});
         			
-        			$(this).bind('change', function(e) {
+        			$(this).bind('change.'+uid, function(e) {
         			    $(this[uid].el).remove();
         			    if(this[uid].wrap) $(this).unwrap();
         			    this[uid] = undefined;
