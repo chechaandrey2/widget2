@@ -27,6 +27,11 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         
         if(model.get('nid')>0) {
             $c.before($(this.statsTemplate['itemInvoiceEditNewGoodsItem'](model.toJSON())).iplaceholder());
+            var $c1 = $('#invoicesItemInvoiceItemGoods [data-nid="'+model.get('nid')+'"]', this.el);
+            this.helperGoodsAtcmplt(
+                $('[name="title"]', $c1).get(0),
+                $('[data-name="help"]', $c1).get(0)
+            );
         } else {
             $c.before($(this.statsTemplate['itemInvoiceEditGoodsItem'](model.toJSON())).iplaceholder());
         }
