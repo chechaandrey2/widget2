@@ -1,0 +1,1 @@
+<div><%= qwerty %></div>

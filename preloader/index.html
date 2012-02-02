@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<script type="text/javascript" src="preloader.js"></script>
+		<script type="text/javascript" src="path.js"></script>
+		<script type="text/javascript">
+			PreLoader.add(window.PATHS);
+			
+			PreLoader.on('successed', function(e) {
+				//console.log('data: %o, url: %o, name: %o', e.data, e.url, e.name);
+				var el = document.createElement('div');
+				el.innerHTML = 'status: '+e.status+'; data: '+e.data+'; url: '+e.url+'; name: '+e.name+'; length: '+e.length+';'
+				document.body.appendChild(el);
+			});
+			
+			PreLoader.on('errored', function(e) {
+				console.log(e);
+			});
+			
+			//PreLoader.set('policy', {ajax: {canceled: false}});
+			PreLoader.set('cache', false);
+			PreLoader.set('sync', false);
+			
+			PreLoader.load({
+				ready: true,
+				success: function(data) {
+					//console.log('End Loader: %o', data.length);
+					alert('End Loader: '+data.length+';');
+				},
+				error: function(data) {
+					//console.log('ErrorEnd Loader');
+					alert('ErrorEnd Loader');
+				}
+			});
+		</script>
+	</head>
+	<body></body>
+</html>
