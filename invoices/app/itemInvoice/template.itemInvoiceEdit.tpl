@@ -8,7 +8,7 @@ var dates = {
 };
 %><table>
     <tbody>
-        <tr><td colspan="2"><% if(status) { %><div><span><%= status %></span><span>(<%= date('H:i:s d.m.Y', new Date(dates[status])) %>)</span></div><% } %></td></tr>
+        <tr><td colspan="2"><% if(status) { %><div><span><%= status %></span><span>(<%= date('H:i:s d.m.Y', new Date(dates[status].replace(/-/g, '/'))) %>)</span></div><% } %></td></tr>
         <tr><td colspan="2"><strong>byers</strong></td></tr>
         <tr><td colspan="2">
             <div><span><input type="text" id="invoicesItemInvoiceBuyersFind" value="" placeholder="buyer, you want to add" /><span id="invoicesInvoiceBuyersGroupLoader"></span></span><span data-name="addbuyer" class="button">+</span></div>

@@ -8,7 +8,7 @@ var dates = {
 };
 %><table>
     <thead>
-        <tr><th><% if(status) { %><div><span><%= status %></span><span>(<%= date('H:i:s d.m.Y', new Date(dates[status])) %>)</span></div><% } %></th></tr>
+        <tr><th><% if(status) { %><div><span><%= status %></span><span>(<%= date('H:i:s d.m.Y', new Date(dates[status].replace(/-/g, '/'))) %>)</span></div><% } %></th></tr>
     </thead>
     <tbody id="invoicesItemInvoiceViews"></tbody>
     <tfoot>
