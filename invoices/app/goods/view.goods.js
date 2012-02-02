@@ -112,7 +112,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
                     if(e.target.done) e.target.done = false;
                 },
                 success: function(model) {
-                    if($('[name="save"]', $c).size() > 0) model.change();// bug redraw
+                    model.change();// may second draw!!!
                     if(e.target.done) e.target.done = false;
                 },
                 loader: function(progress) {

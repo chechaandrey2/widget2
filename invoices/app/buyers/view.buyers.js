@@ -113,7 +113,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
                     if(e.target.done) e.target.done = false;
                 },
                 success: function() {
-                    if($('[name="save"]', $c).size() > 0) model.change();
+                    model.change();
                     if(e.target.done) e.target.done = false;
                 },
                 loader: function(progress) {
