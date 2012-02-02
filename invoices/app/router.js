@@ -21,7 +21,7 @@ window.Invoices.Router = Backbone.Router.extend({
     invoices: function(query, status) {
         //console.log('QUERY: %o; STATUS: %o', query, status);
         
-        this.helperRenderGlobalMenu();
+        this.helperRenderGlobalMenu(query);
         
         this.helperHide('globalmenu');
         
@@ -33,7 +33,7 @@ window.Invoices.Router = Backbone.Router.extend({
     buyers: function(query, group) {
         //console.log('QUERY: %o; GROUP: %o', query, group);
         
-        this.helperRenderGlobalMenu();
+        this.helperRenderGlobalMenu(query);
         
         this.helperHide('globalmenu');
         
@@ -52,7 +52,7 @@ window.Invoices.Router = Backbone.Router.extend({
     goods: function(query, group) {
         //console.log('QUERY: %o; GROUP: %o', query, group);
         
-        this.helperRenderGlobalMenu();
+        this.helperRenderGlobalMenu(query);
         
         this.helperHide('globalmenu');
         
@@ -69,7 +69,7 @@ window.Invoices.Router = Backbone.Router.extend({
     iteminvoice: function(query, mod, id) {
         //console.warn('QUERY: %o; ID: %o; MOD: %o', query, id, mod);
         
-        this.helperRenderGlobalMenu();
+        this.helperRenderGlobalMenu(query);
         
         this.helperHide('globalmenu');
         
@@ -86,7 +86,7 @@ window.Invoices.Router = Backbone.Router.extend({
     },
     merchant: function(query, tab) {
         
-        this.helperRenderGlobalMenu();
+        this.helperRenderGlobalMenu(query);
         
         this.helperHide('globalmenu');
         
@@ -104,13 +104,16 @@ window.Invoices.Router = Backbone.Router.extend({
             view: new window.Invoices.ViewMerchant({router: this, el: el})
         });
     },
-    helperRenderGlobalMenu: function() {
+    helperRenderGlobalMenu: function(query) {
         if(!this.collection.get('globalmenu')) {
             this.collection.add({
                 id: 'globalmenu',
                 view: new window.Invoices.ViewGlobalMenu({router: this})
             });
 		    this.collection.get('globalmenu').get('view').render();
+		    this.collection.get('globalmenu').get('view').renderItem(query);
+        } else {
+            this.collection.get('globalmenu').get('view').renderItem(query);
         }
     },
     helperRenderBuyers: function(group) {

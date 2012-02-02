@@ -16,5 +16,18 @@ window.Invoices.ViewGlobalMenu = Backbone.View.extend({
         
         return this;
         
+    },
+    renderItem: function(query) {
+        
+        var q = query.replace(/^([a-zA-Z0-9_]+\/).*/, '$1');
+        
+        $('[data-id="item"]', this.el).each(function() {
+            $(this).removeClass('tab-item');
+            var $el = $('[href="#'+q+'"]', this);
+            if($el.size() > 0) $(this).addClass('tab-item');
+        });
+        
+        return this;
+        
     }
 });

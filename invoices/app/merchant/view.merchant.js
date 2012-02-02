@@ -31,7 +31,8 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
                 data: {filter: ["s","s_set"]},
                 error: opt.error,
                 success: function(model) {
-                    model.set(model.get('s')).set(model.get('s_set'));
+                    model.set(model.get('s'))
+                    model.set(model.get('s_set'));
                     if(typeof opt.success == 'function') opt.success.call(this, model);
                 },
                 loader: opt.loader
@@ -74,6 +75,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
                 $('[name="to_notify"]', self.el).trigger('change');
                 $('[name="pref_payment_id"]', self.el).trigger('change');
                 
+                self.helperTab = tab;
             },
             loader: function(progress) {
                 if(progress == 0) {
@@ -128,7 +130,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         
         var self = this, arg = {};
         
-        $('[name]',this.el).each(function() {
+        $('[data-id="#merchant/'+this.helperTab+'/"] [name]',this.el).each(function() {
             arg[$(this).attr('name')] = $(this).val();
         });
         
@@ -204,5 +206,6 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
             case 'title': return 'Buyer title - incorrect';
             case 'logo_url': return 'Buyer logo_url - incorrect';
         }
-    }
+    },
+    helperTab: undefined
 });

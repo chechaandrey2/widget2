@@ -177,7 +177,8 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         'change [name="descr"]': 'eventDOMChangeInvoice',
         'change [name="msg"]': 'eventDOMChangeInvoice',
         'click [data-name="created"]': 'eventDOMSaveCreated',
-        'click [data-name="issued"]': 'eventDOMSaveIssued'
+        'click [data-name="issued"]': 'eventDOMSaveIssued',
+        'click [data-name="view"]': 'eventDOMToView'
     },
     eventDOMSaveCreated: function(e) {
         this.model.set({is_issued: 0, save: true});
@@ -187,11 +188,31 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         this.model.set({is_issued: 1, save: true});
         this.helperSaveInvoice.call(this);
     },
-    helperSaveInvoice: function() {
+    eventDOMToView: function(e) {
         
-        // prepare buyers, goods
-        var self = this, buyers = [], goods = [];
-            
+        var self = this;
+        
+        var arg = this.helperGetItems();
+        
+        var res = this.model.set({buyers: arg.buyers, goods: arg.goods}, {error: function(model, err) {
+            if(err.attr == 'buyers') {
+                $('#invoicesItemInvoiceBuyersFind', self.el).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
+            } else if(err.attr == 'goods') {
+                $('#invoicesItemInvoiceItemGoods  [data-state] [name="title"]', self.el)
+                    .ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
+            }
+        }});
+        
+        if(res) {
+            var id = this.model.get('inv_uid');
+            this.router.navigate('invoice/view/'+(id?id+'/':''), true);
+        }
+        
+    },
+    helperGetItems: function() {
+    
+        var buyers = [], goods = [];
+        
         this.model.get('_buyers').each(function(model) {
             if(model.get('nid') > 0) 
                 buyers.push(model.toJSONExt(model.syncFilter['new'])); 
@@ -205,8 +226,18 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             else
                 goods.push(model.toJSONExt(model.syncFilter['item']));
         });
+        
+        return {buyers: buyers, goods: goods};
+        
+    },
+    helperSaveInvoice: function() {
+        
+        // prepare buyers, goods
+        var self = this;
+        
+        var arg = this.helperGetItems();
             
-        var res = this.model.set({buyers: buyers, goods: goods}, {error: function(model, err) {
+        var res = this.model.set({buyers: arg.buyers, goods: arg.goods}, {error: function(model, err) {
             if(err.attr == 'buyers') {
                 $('#invoicesItemInvoiceBuyersFind', self.el).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
             } else if(err.attr == 'goods') {

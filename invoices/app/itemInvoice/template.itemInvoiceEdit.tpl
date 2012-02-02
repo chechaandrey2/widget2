@@ -30,6 +30,6 @@ var dates = {
         <tr><td><strong>message</strong></td><td><textarea name="msg" placeholder="invoice message"><%= descr %></textarea></td></tr>
     </tbody>
     <tfoot>
-        <tr><th colspan="2"><% if(inv_uid) { %><span data-name="created" class="button">create of current</span><span data-name="issued" class="button">issue of current</span><a href="#invoice/view/<%= inv_uid %>/">view</a><% } else { %><span data-name="created" class="button">create</span><span data-name="issued" class="button">issue</span><a href="#invoice/view/">view</a><% } %></th></tr>
+        <tr><th colspan="2"><% if(inv_uid) { %><span data-name="created" class="button">create of current</span><span data-name="issued" class="button">issue of current</span><span data-name="view" class="button">view</span><% } else { %><span data-name="created" class="button">create</span><span data-name="issued" class="button">issue</span><span data-name="view" class="button">view</span><% } %></th></tr>
     </tfoot>
 </table>

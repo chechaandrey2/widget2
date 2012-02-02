@@ -29,10 +29,17 @@ window.Invoices.ViewItemInvoiceSend = Backbone.View.extend({
         this.el.html(this.statsTemplate['itemInvoiceSend'].call(this));
         
         if(this.model.get('save')) {
+        
+            if(this.model.get('saving')) return;
+            
+            this.model.set({saving: true}, {silent: true});
             
             this.model.save(null, {
                 error: function(model, err) {                
                     if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);
+                    
+                    model.unset('save', {silent: true});
+                    model.unset('saving', {silent: true});
                 },
                 success: function(model, res) {
                     
@@ -45,6 +52,9 @@ window.Invoices.ViewItemInvoiceSend = Backbone.View.extend({
                     } else {
                         console.error('"ok" & "errors" is not defined');
                     }
+                    
+                    model.unset('save', {silent: true});
+                    model.unset('saving', {silent: true});
                 },
                 loader: function(progress) {
                     if(progress == 0) {

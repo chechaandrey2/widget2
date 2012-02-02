@@ -112,7 +112,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
                     if(e.target.done) e.target.done = false;
                 },
                 success: function(model) {
-                    if($('[name="save"]', $c).size() > 0) model.change();
+                    if($('[name="save"]', $c).size() > 0) model.change();// bug redraw
                     if(e.target.done) e.target.done = false;
                 },
                 loader: function(progress) {
@@ -171,6 +171,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
         });
         
         if(data['title'] === null) data['title'] = '';// hack
+        if(data['units'] === null) data['units'] = 'pcs.';
         
         data['gr_id'] = this.helperGroup;
         
