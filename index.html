@@ -1,26 +1,11 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <script type="text/javascript" src="invoices/lib/json2.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.iframe-transport.js"></script>
-        <script type="text/javascript" src="invoices/lib/underscore.js"></script>
-        <script type="text/javascript" src="invoices/lib/backbone.js"></script>
-        <script type="text/javascript" src="invoices/lib/backbone.l10n.js"></script>
-        <script type="text/javascript" src="invoices/lib/backbone.collection.search.js"></script>
-        <script type="text/javascript" src="invoices/lib/backbone.collection.unique.js"></script>
-        <script type="text/javascript" src="invoices/lib/backbone.model.toJSONExt.js"></script>
-        <script type="text/javascript" src="invoices/lib/backbone.collection.toJSONExt.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.require.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.ui.min.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.iautocomplete.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.iplaceholder.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.ierror.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.ierrorDialog.js"></script>
-        <script type="text/javascript" src="invoices/lib/jquery.itabs.js"></script>
-        <script type="text/javascript" src="invoices/lib/date.js"></script>
-        <script type="text/javascript" src="invoices/lib/sprintf.js"></script>
+        
+        <script type="text/javascript" src="invoices/paths.js"></script>
+        <script type="text/javascript" src="invoices/lib/preloader.js"></script>
         <script type="text/javascript" src="invoices/invoice.js"></script>
+        
         <style type="text/css">
             .placeholder {
                 top: 0px; left: 4px;
@@ -67,6 +52,7 @@
         <div id="invoicesPs"></div>
         <div id="invoicesMerchant"></div>
         <form style="display: none;" id="invoicesUpload" method="post" enctype="multipart/form-data"><input type="file" name="file" /></form>
+        <div id="invoicePreLoader"></div>
         <!-- transport -->
         <iframe src="https://pulyaev.test.liqpay.com/?do=invoices" id="invoices_iframe" style="visibility: hidden; position: absolute; top: -500px; left: -500px;"></iframe>
         <!--

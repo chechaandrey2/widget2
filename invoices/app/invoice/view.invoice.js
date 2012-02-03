@@ -23,8 +23,8 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
         $('[data-sync="invoice"]', this.el).remove();
     },
     statsTemplate: {
-        'invoice': _.template(window.Invoices.TEMPLATE['invoices/app/invoice/template.invoice.tpl']),
-        'invoiceLoader': _.template(window.Invoices.TEMPLATE['invoices/app/invoice/template.invoiceLoader.tpl'])
+        'invoice': _.template(window.Invoices.TEMPLATE['invoice.invoice']),
+        'invoiceLoader': _.template(window.Invoices.TEMPLATE['invoice.invoiceLoader'])
     },
     render: function(id, mod) {
     
@@ -123,6 +123,7 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                     model: model,
                     router: self.router
                 });
+                
             } else if(mod == 'send') {
             
                 $('#invoicesInvoiceTabs', this.el).itabs('select', 'invoice/send/'+(id?id+'/':''));
@@ -132,15 +133,27 @@ window.Invoices.ViewInvoice = Backbone.View.extend({
                     model: model,
                     router: self.router
                 });
+                
             } else if(mod == 'edit') {
             
                 $('#invoicesInvoiceTabs', this.el).itabs('select', 'invoice/edit/'+(id?id+'/':''));
-            
+                
                 view = new window.Invoices.ViewItemInvoiceEdit({
                     el: $(el).undelegate(),// hack
                     model: model,
                     router: self.router
                 });
+                
+            } else if(mod == 'print') {
+                
+                $('#invoicesInvoiceTabs', this.el).itabs('select', 'invoice/print/'+(id?id+'/':''));
+                
+                view = new window.Invoices.ViewItemInvoicePrint({
+                    el: $(el).undelegate(),// hack
+                    model: model,
+                    router: self.router
+                });
+                
             }
         
             view.render();

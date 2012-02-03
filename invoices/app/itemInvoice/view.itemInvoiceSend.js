@@ -17,10 +17,10 @@ window.Invoices.ViewItemInvoiceSend = Backbone.View.extend({
         $('#invoicesItemInvoiceSendBody [data-sync="invoice"]', this.el).remove();
     },
     statsTemplate: {
-        'itemInvoiceSend': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceSend.tpl']),
-        'itemInvoiceSendLoader': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceSendLoader.tpl']),
-        'itemInvoiceSendSuccess': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceSendSuccess.tpl']),
-        'itemInvoiceSendError': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceSendError.tpl'])
+        'itemInvoiceSend': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceSend']),
+        'itemInvoiceSendLoader': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceSendLoader']),
+        'itemInvoiceSendSuccess': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceSendSuccess']),
+        'itemInvoiceSendError': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceSendError'])
     },
     render: function() {
         

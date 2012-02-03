@@ -1,0 +1,161 @@
+this.PATHS = [
+    // -system-
+    {type: 'js', url: "invoices/lib/json2.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.iframe-transport.js", sync: true},
+    {type: 'js', url: "invoices/lib/underscore.js", sync: true},
+    {type: 'js', url: "invoices/lib/backbone.js", sync: true},
+    {type: 'js', url: "invoices/lib/backbone.l10n.js", sync: true},
+    {type: 'js', url: "invoices/lib/backbone.collection.search.js", sync: true},
+    {type: 'js', url: "invoices/lib/backbone.collection.unique.js", sync: true},
+    {type: 'js', url: "invoices/lib/backbone.model.toJSONExt.js", sync: true},
+    {type: 'js', url: "invoices/lib/backbone.collection.toJSONExt.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.require.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.ui.min.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.iautocomplete.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.iplaceholder.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.ierror.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.ierrorDialog.js", sync: true},
+    {type: 'js', url: "invoices/lib/jquery.itabs.js", sync: true},
+    {type: 'js', url: "invoices/lib/date.js", sync: true},
+    {type: 'js', url: "invoices/lib/sprintf.js", sync: true},
+    
+    // -globalmenu-
+	{type: 'ajax', url: 'invoices/app/globalmenu/template.globalMenu.tpl', name: 'globalmenu.globalMenu', namespace: 'tpl', sync: true},
+	{type: 'js', url: 'invoices/app/globalmenu/model.globalMenuItem.js', sync: true},
+	{type: 'js', url: 'invoices/app/globalmenu/collection.globalMenu.js', sync: true},
+	{type: 'js', url: 'invoices/app/globalmenu/view.globalMenu.js', sync: true},
+	
+	// -buyersGroups-
+	{type: 'ajax', url: 'invoices/app/buyersGroups/template.buyersGroups.tpl', name: 'buyersGroups.buyersGroups', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyersGroups/template.buyersGroupsItem.tpl', name: 'buyersGroups.buyersGroupsItem', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyersGroups/template.buyersGroupsItemEdit.tpl', name: 'buyersGroups.buyersGroupsItemEdit', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyersGroups/template.buyersGroupsAdd.tpl', name: 'buyersGroups.buyersGroupsAdd', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyersGroups/template.buyersGroupsDel.tpl', name: 'buyersGroups.buyersGroupsDel', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyersGroups/template.buyersGroupsLoader.tpl', name: 'buyersGroups.buyersGroupsLoader', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyersGroups/template.buyersGroupsLoaderDialog.tpl', name: 'buyersGroups.buyersGroupsLoaderDialog', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyersGroups/template.buyersDialogImport.tpl', name: 'buyersGroups.buyersDialogImport', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyersGroups/l10n.ru.json', name: 'buyersGroups.ru', namespace: 'l10n', sync: true},
+	{type: 'js', url: 'invoices/app/buyersGroups/model.buyersGroups.js', sync: true},
+	{type: 'js', url: 'invoices/app/buyersGroups/collection.buyersGroups.js', sync: true},
+	{type: 'js', url: 'invoices/app/buyersGroups/view.buyersGroups.js', sync: true},
+	
+	// -buyers-
+	{type: 'ajax', url: 'invoices/app/buyers/template.buyers.tpl', name: 'buyers.buyers', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyers/template.buyersItem.tpl', name: 'buyers.buyersItem', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyers/template.buyersItemEdit.tpl', name: 'buyers.buyersItemEdit', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyers/template.buyersItemNew.tpl', name: 'buyers.buyersItemNew', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyers/template.buyersDel.tpl', name: 'buyers.buyersDel', namespace: 'tpl', sync: true},
+	{type: 'ajax', url: 'invoices/app/buyers/template.buyersLoader.tpl', name: 'buyers.buyersLoader', namespace: 'tpl', sync: true},
+	{type: 'js', url: 'invoices/app/buyers/model.buyers.js', sync: true},
+	{type: 'js', url: 'invoices/app/buyers/collection.buyers.js', sync: true},
+	{type: 'js', url: 'invoices/app/buyers/view.buyers.js', sync: true},
+	
+	// -goodsGroups-
+	{type: 'ajax', url: "invoices/app/goodsGroups/template.goodsGroups.tpl", name: 'goodsGroups.goodsGroups', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goodsGroups/template.goodsGroupsItem.tpl', name: 'goodsGroups.goodsGroupsItem', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goodsGroups/template.goodsGroupsItemEdit.tpl', name: 'goodsGroups.goodsGroupsItemEdit', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goodsGroups/template.goodsGroupsAdd.tpl', name: 'goodsGroups.goodsGroupsAdd', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goodsGroups/template.goodsGroupsDel.tpl', name: 'goodsGroups.goodsGroupsDel', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goodsGroups/template.goodsGroupsLoader.tpl', name: 'goodsGroups.goodsGroupsLoader', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goodsGroups/template.goodsGroupsLoaderDialog.tpl', name: 'goodsGroups.goodsGroupsLoaderDialog', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goodsGroups/l10n.ru.json', name: 'goodsGroups.ru', namespace: 'l10n', sync: true},
+    {type: 'js', url: "invoices/app/goodsGroups/model.goodsGroups.js", sync: true},
+    {type: 'js', url: "invoices/app/goodsGroups/collection.goodsGroups.js", sync: true},
+    {type: 'js', url: 'invoices/app/goodsGroups/view.goodsGroups.js', sync: true},
+    
+    // -goods-
+    {type: 'ajax', url: 'invoices/app/goods/template.goods.tpl', name: 'goods.goods', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goods/template.goodsItem.tpl', name: 'goods.goodsItem', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goods/template.goodsItemEdit.tpl', name: 'goods.goodsItemEdit', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goods/template.goodsItemNew.tpl', name: 'goods.goodsItemNew', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goods/template.goodsDel.tpl', name: 'goods.goodsDel', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/goods/template.goodsLoader.tpl', name: 'goods.goodsLoader', namespace: 'tpl', sync: true},
+    {type: 'js', url: 'invoices/app/goods/model.goods.js', sync: true},
+    {type: 'js', url: 'invoices/app/goods/collection.goods.js', sync: true},
+    {type: 'js', url: 'invoices/app/goods/view.goods.js', sync: true},
+    
+    // -invoicesStatus-
+    {type: 'ajax', url: "invoices/app/invoicesStatus/template.invoicesStatus.tpl", name: 'invoicesStatus.invoicesStatus', namespace: 'tpl', sync: true},
+    {type: 'js', url: "invoices/app/invoicesStatus/model.invoicesStatus.js", sync: true},
+    {type: 'js', url: "invoices/app/invoicesStatus/collection.invoicesStatus.js", sync: true},
+    {type: 'js', url: 'invoices/app/invoicesStatus/view.invoicesStatus.js', sync: true},
+    
+    // -invoices-
+    {type: 'ajax', url: "invoices/app/invoices/template.invoices.tpl", name: 'invoices.invoices', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: "invoices/app/invoices/template.invoicesItem.tpl", name: 'invoices.invoicesItem', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/invoices/template.invoicesLoader.tpl', name: 'invoices.invoicesLoader', namespace: 'tpl', sync: true},
+    {type: 'js', url: "invoices/app/invoices/model.invoices.js", sync: true},
+    {type: 'js', url: "invoices/app/invoices/collection.invoices.js", sync: true},
+    {type: 'js', url: 'invoices/app/invoices/view.invoices.js', sync: true},
+    
+    // -invoice-
+    {type: 'ajax', url: "invoices/app/invoice/template.invoice.tpl", name: 'invoice.invoice', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/invoice/template.invoiceLoader.tpl', name: 'invoice.invoiceLoader', namespace: 'tpl', sync: true},
+    {type: 'js', url: "invoices/app/invoice/model.invoiceBuyer.js", sync: true},
+    {type: 'js', url: "invoices/app/invoice/collection.invoiceBuyers.js", sync: true},
+    {type: 'js', url: "invoices/app/invoice/model.invoiceGoods.js", sync: true},
+    {type: 'js', url: "invoices/app/invoice/collection.invoiceGoodss.js", sync: true},
+    {type: 'js', url: "invoices/app/invoice/model.invoice.js", sync: true},
+    {type: 'js', url: "invoices/app/invoice/collection.invoice.js", sync: true},
+    {type: 'js', url: "invoices/app/invoice/view.invoice.js", sync: true},
+    
+    // -itemInvoice-
+    {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoiceEdit.tpl", name: 'itemInvoice.itemInvoiceEdit', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoiceView.tpl", name: 'itemInvoice.itemInvoiceView', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoiceSend.tpl", name: 'itemInvoice.itemInvoiceSend', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoiceEditGoodsItem.tpl", name: 'itemInvoice.itemInvoiceEditGoodsItem', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoiceEditBuyerItem.tpl", name: 'itemInvoice.itemInvoiceEditBuyerItem', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditGoodsNew.tpl', name: 'itemInvoice.itemInvoiceEditGoodsNew', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpGroup.tpl', name: 'itemInvoice.itemInvoiceEditBuyerHelpGroup', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpItem.tpl', name: 'itemInvoice.itemInvoiceEditBuyerHelpItem', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpGroup.tpl', name: 'itemInvoice.itemInvoiceEditGoodsHelpGroup', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl', name: 'itemInvoice.itemInvoiceEditGoodsHelpItem', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditNewGoodsItem.tpl', name: 'itemInvoice.itemInvoiceEditNewGoodsItem', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditDialog.tpl', name: 'itemInvoice.itemInvoiceEditDialog', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditDialogLoader.tpl', name: 'itemInvoice.itemInvoiceEditDialogLoader', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditLoaderGoodsGroup.tpl', name: 'itemInvoice.itemInvoiceEditLoaderGoodsGroup', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditLoaderBuyersGroup.tpl', name: 'itemInvoice.itemInvoiceEditLoaderBuyersGroup', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditLoaderAtcmplt.tpl', name: 'itemInvoice.itemInvoiceEditLoaderAtcmplt', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceEditAtcmpltEmpty.tpl', name: 'itemInvoice.itemInvoiceEditAtcmpltEmpty', namespace: 'tpl', sync: true},
+    
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceViewBuyers.tpl', name: 'itemInvoice.itemInvoiceViewBuyers', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceViewLoader.tpl', name: 'itemInvoice.itemInvoiceViewLoader', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceViewDialog.tpl', name: 'itemInvoice.itemInvoiceViewDialog', namespace: 'tpl', sync: true},
+    
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceSendLoader.tpl', name: 'itemInvoice.itemInvoiceSendLoader', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceSendSuccess.tpl', name: 'itemInvoice.itemInvoiceSendSuccess', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceSendError.tpl', name: 'itemInvoice.itemInvoiceSendError', namespace: 'tpl', sync: true},
+    
+    {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoicePrint.tpl", name: 'itemInvoice.itemInvoicePrint', namespace: 'tpl', sync: true},
+    
+    {type: 'js', url: 'invoices/app/itemInvoice/view.itemInvoiceEdit.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoice/view.itemInvoiceView.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoice/view.itemInvoiceSend.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoice/view.itemInvoicePrint.js', sync: true},
+    
+    // -itemInvoiceBuyerHelp-
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/model.itemInvoiceHelpItem.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpItem.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/model.itemInvoiceHelpGroupBuyer.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpGroupBuyer.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/model.itemInvoiceHelpGroupGoods.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpGroupGoods.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/model.itemInvoiceHelpSelectionGoods.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpSelectionGoods.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/model.itemInvoiceHelpSelectionBuyer.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/collection.itemInvoiceHelpSelectionBuyer.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/view.itemInvoiceHelpBuyer.js', sync: true},
+    {type: 'js', url: 'invoices/app/itemInvoiceHelp/view.itemInvoiceHelpGoods.js', sync: true},
+    
+    // -merchant-
+    {type: 'ajax', url: 'invoices/app/merchant/template.merchant.tpl', name: 'merchant.merchant', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/merchant/template.merchantLoader.tpl', name: 'merchant.merchantLoader', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: 'invoices/app/merchant/template.merchantDialogLogo.tpl', name: 'merchant.merchantDialogLogo', namespace: 'tpl', sync: true},
+    {type: 'js', url: 'invoices/app/merchant/model.merchant.js', sync: true},
+    {type: 'js', url: 'invoices/app/merchant/view.merchant.js', sync: true},
+    
+    {type: 'js', url: "invoices/app/model.router.js", sync: true},
+    {type: 'js', url: "invoices/app/collection.routers.js", sync: true},
+    {type: 'js', url: "invoices/app/router.js", sync: true}
+];

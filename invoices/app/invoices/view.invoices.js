@@ -35,9 +35,9 @@ window.Invoices.ViewInvoices = Backbone.View.extend({
         $('#invoicesInvoicesTbody [data-sync="invoices"]', this.el).remove();
     },
     statsTemplate: {
-        'invoices': _.template(window.Invoices.TEMPLATE['invoices/app/invoices/template.invoices.tpl']),
-        'invoicesItem': _.template(window.Invoices.TEMPLATE['invoices/app/invoices/template.invoicesItem.tpl']),
-        'invoicesLoader': _.template(window.Invoices.TEMPLATE['invoices/app/invoices/template.invoicesLoader.tpl'])
+        'invoices': _.template(window.Invoices.TEMPLATE['invoices.invoices']),
+        'invoicesItem': _.template(window.Invoices.TEMPLATE['invoices.invoicesItem']),
+        'invoicesLoader': _.template(window.Invoices.TEMPLATE['invoices.invoicesLoader'])
     },
     render: function(st, status) {
         

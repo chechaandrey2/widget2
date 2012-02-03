@@ -18,9 +18,9 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         $('[data-sync="merchant"]', this.el).remove();
     },
     statsTemplate: {
-        'merchant': _.template(window.Invoices.TEMPLATE['invoices/app/merchant/template.merchant.tpl']),
-        'merchantLoader': _.template(window.Invoices.TEMPLATE['invoices/app/merchant/template.merchantLoader.tpl']),
-        'merchantDialogLogo': _.template(window.Invoices.TEMPLATE['invoices/app/merchant/template.merchantDialogLogo.tpl'])
+        'merchant': _.template(window.Invoices.TEMPLATE['merchant.merchant']),
+        'merchantLoader': _.template(window.Invoices.TEMPLATE['merchant.merchantLoader']),
+        'merchantDialogLogo': _.template(window.Invoices.TEMPLATE['merchant.merchantDialogLogo'])
     },
     render: function(opt) {// loader, success, error
     

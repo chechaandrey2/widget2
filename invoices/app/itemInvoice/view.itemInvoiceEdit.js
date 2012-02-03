@@ -115,27 +115,27 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         $('#invoicesInvoiceGoodsTotal', this.el).html(sprintf('%01.2f', total));
     },
     eventAddLoaderDialog: function() {
-        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)).append(this.statsTemplate['itemInvoiceEditDialogLoader']());
+        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)).append(this.statsTemplate['itemInvoiceEditDialogLoader'].call(this));
     },
     eventRemoveLoaderDialog: function() {
         $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)+' [data-sync="buyers"]').remove();
     },
     statsTemplate: {
-        'itemInvoiceEdit': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEdit.tpl']),
-        'itemInvoiceEditBuyerItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerItem.tpl']),
-        'itemInvoiceEditGoodsItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsItem.tpl']),
-        'itemInvoiceEditGoodsNew': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsNew.tpl']),
-        'itemInvoiceEditNewGoodsItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditNewGoodsItem.tpl']),
-        'itemInvoiceEditBuyerHelpGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpGroup.tpl']),
-        'itemInvoiceEditBuyerHelpItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditBuyerHelpItem.tpl']),
-        'itemInvoiceEditGoodsHelpGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpGroup.tpl']),
-        'itemInvoiceEditGoodsHelpItem': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditGoodsHelpItem.tpl']),
-        'itemInvoiceEditDialog': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditDialog.tpl']),
-        'itemInvoiceEditLoaderBuyersGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditLoaderBuyersGroup.tpl']),
-        'itemInvoiceEditLoaderGoodsGroup': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditLoaderGoodsGroup.tpl']),
-        'itemInvoiceEditLoaderAtcmplt': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditLoaderAtcmplt.tpl']),
-        'itemInvoiceEditAtcmpltEmpty': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditAtcmpltEmpty.tpl']),
-        'itemInvoiceEditDialogLoader': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceEditDialogLoader.tpl'])
+        'itemInvoiceEdit': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEdit']),
+        'itemInvoiceEditBuyerItem': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditBuyerItem']),
+        'itemInvoiceEditGoodsItem': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditGoodsItem']),
+        'itemInvoiceEditGoodsNew': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditGoodsNew']),
+        'itemInvoiceEditNewGoodsItem': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditNewGoodsItem']),
+        'itemInvoiceEditBuyerHelpGroup': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditBuyerHelpGroup']),
+        'itemInvoiceEditBuyerHelpItem': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditBuyerHelpItem']),
+        'itemInvoiceEditGoodsHelpGroup': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditGoodsHelpGroup']),
+        'itemInvoiceEditGoodsHelpItem': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditGoodsHelpItem']),
+        'itemInvoiceEditDialog': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditDialog']),
+        'itemInvoiceEditLoaderBuyersGroup': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditLoaderBuyersGroup']),
+        'itemInvoiceEditLoaderGoodsGroup': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditLoaderGoodsGroup']),
+        'itemInvoiceEditLoaderAtcmplt': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditLoaderAtcmplt']),
+        'itemInvoiceEditAtcmpltEmpty': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditAtcmpltEmpty']),
+        'itemInvoiceEditDialogLoader': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEditDialogLoader'])
     },
     render: function() {
         

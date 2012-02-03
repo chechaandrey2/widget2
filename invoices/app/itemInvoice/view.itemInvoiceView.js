@@ -11,10 +11,10 @@ window.Invoices.ViewItemInvoiceView = Backbone.View.extend({
         $('#invoicesItemInvoiceViews [data-sync="invoiceView"]', this.el).remove();
     },
     statsTemplate: {
-        'itemInvoiceView': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceView.tpl']),
-        'itemInvoiceViewBuyers': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceViewBuyers.tpl']),
-        'itemInvoiceViewLoader': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceViewLoader.tpl']),
-        'itemInvoiceViewDialog': _.template(window.Invoices.TEMPLATE['invoices/app/itemInvoice/template.itemInvoiceViewDialog.tpl'])
+        'itemInvoiceView': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceView']),
+        'itemInvoiceViewBuyers': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceViewBuyers']),
+        'itemInvoiceViewLoader': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceViewLoader']),
+        'itemInvoiceViewDialog': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceViewDialog'])
     },
     render: function() {
         var self = this;

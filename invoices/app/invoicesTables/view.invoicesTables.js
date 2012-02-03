@@ -19,9 +19,9 @@ window.Invoices.ViewInvoicesTables = Backbone.View.extend({
             .replaceWith(this.statsTemplate['invoicesTablesItem'](model.toJSON()));
     },
     statsTemplate: {
-        'invoicesTables': _.template(window.Invoices.TEMPLATE['invoices/app/invoicesTables/template.invoicesTables.tpl']),
-        'invoicesTablesItem': _.template(window.Invoices.TEMPLATE['invoices/app/invoicesTables/template.invoicesTablesItem.tpl']),
-        'invoicesTablesItemDel': _.template(window.Invoices.TEMPLATE['invoices/app/invoicesTables/template.invoicesTablesItemDel.tpl'])
+        'invoicesTables': _.template(window.Invoices.TEMPLATE['invoicesTables.invoicesTables']),
+        'invoicesTablesItem': _.template(window.Invoices.TEMPLATE['invoicesTables.invoicesTablesItem']),
+        'invoicesTablesItemDel': _.template(window.Invoices.TEMPLATE['invoicesTables.invoicesTablesItemDel'])
     },
     render: function(st) {
         

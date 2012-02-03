@@ -37,16 +37,16 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
         $('#invoicesGoodsGroupsDialogAdd [data-sync="goodsGroups"]').remove();
     },
     statsTemplate: {
-        'clients': _.template(window.Invoices.TEMPLATE['invoices/app/goodsGroups/template.goodsGroups.tpl']),
-        'clientsItemGroup': _.template(window.Invoices.TEMPLATE['invoices/app/goodsGroups/template.goodsGroupsItem.tpl']),
-        'clientsItemGroupEdit': _.template(window.Invoices.TEMPLATE['invoices/app/goodsGroups/template.goodsGroupsItemEdit.tpl']),
-        'clientsAddGroup': _.template(window.Invoices.TEMPLATE['invoices/app/goodsGroups/template.goodsGroupsAdd.tpl']),
-        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['invoices/app/goodsGroups/template.goodsGroupsDel.tpl']),
-        'goodsGroupsLoader': _.template(window.Invoices.TEMPLATE['invoices/app/goodsGroups/template.goodsGroupsLoader.tpl']),
-        'goodsGroupsLoaderDialog': _.template(window.Invoices.TEMPLATE['invoices/app/goodsGroups/template.goodsGroupsLoaderDialog.tpl'])
+        'clients': _.template(window.Invoices.TEMPLATE['goodsGroups.goodsGroups']),
+        'clientsItemGroup': _.template(window.Invoices.TEMPLATE['goodsGroups.goodsGroupsItem']),
+        'clientsItemGroupEdit': _.template(window.Invoices.TEMPLATE['goodsGroups.goodsGroupsItemEdit']),
+        'clientsAddGroup': _.template(window.Invoices.TEMPLATE['goodsGroups.goodsGroupsAdd']),
+        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['goodsGroups.goodsGroupsDel']),
+        'goodsGroupsLoader': _.template(window.Invoices.TEMPLATE['goodsGroups.goodsGroupsLoader']),
+        'goodsGroupsLoaderDialog': _.template(window.Invoices.TEMPLATE['goodsGroups.goodsGroupsLoaderDialog'])
     },
     l10nHash: {
-        'ru':JSON.parse(window.Invoices.L10N['invoices/app/goodsGroups/l10n.ru.json'])
+        'ru':JSON.parse(window.Invoices.L10N['goodsGroups.ru'])
     },
     render: function(group) {
         var self = this;

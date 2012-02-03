@@ -37,17 +37,17 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         $('#invoicesClientsDialogAdd [data-sync="buyersGroups"]').remove();
     },
     statsTemplate: {
-        'clients': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroups.tpl']),
-        'clientsItemGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsItem.tpl']),
-        'clientsItemGroupEdit': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsItemEdit.tpl']),
-        'clientsAddGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsAdd.tpl']),
-        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsDel.tpl']),
-        'buyersGroupsLoader': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsLoader.tpl']),
-        'buyersGroupsLoaderDialog': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersGroupsLoaderDialog.tpl']),
-        'buyersDialogImport': _.template(window.Invoices.TEMPLATE['invoices/app/buyersGroups/template.buyersDialogImport.tpl'])
+        'clients': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersGroups']),
+        'clientsItemGroup': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersGroupsItem']),
+        'clientsItemGroupEdit': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersGroupsItemEdit']),
+        'clientsAddGroup': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersGroupsAdd']),
+        'clientsDelGroup': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersGroupsDel']),
+        'buyersGroupsLoader': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersGroupsLoader']),
+        'buyersGroupsLoaderDialog': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersGroupsLoaderDialog']),
+        'buyersDialogImport': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersDialogImport'])
     },
     l10nHash: {
-        'ru':JSON.parse(window.Invoices.L10N['invoices/app/buyersGroups/l10n.ru.json'])
+        'ru':JSON.parse(window.Invoices.L10N['buyersGroups.ru'])
     },
     render: function(group) {
         var self = this;

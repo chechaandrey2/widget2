@@ -7,7 +7,7 @@ window.Invoices.ViewInvoicesStatus = Backbone.View.extend({
         
     },
     statsTemplate: {
-        'invoicesStatus': _.template(window.Invoices.TEMPLATE['invoices/app/invoicesStatus/template.invoicesStatus.tpl'])
+        'invoicesStatus': _.template(window.Invoices.TEMPLATE['invoicesStatus.invoicesStatus'])
     },
     render: function() {
     

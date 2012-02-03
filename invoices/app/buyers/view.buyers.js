@@ -37,12 +37,12 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         $('#invoicesClientsTbody [data-sync="buyers"]', this.el).remove();
     },
     statsTemplate: {
-        'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyers.tpl']),
-        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItem.tpl']),
-        'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItemEdit.tpl']),
-        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersItemNew.tpl']),
-        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersDel.tpl']),
-        'buyersLoader': _.template(window.Invoices.TEMPLATE['invoices/app/buyers/template.buyersLoader.tpl'])
+        'clientsContacts': _.template(window.Invoices.TEMPLATE['buyers.buyers']),
+        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['buyers.buyersItem']),
+        'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['buyers.buyersItemEdit']),
+        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['buyers.buyersItemNew']),
+        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['buyers.buyersDel']),
+        'buyersLoader': _.template(window.Invoices.TEMPLATE['buyers.buyersLoader'])
     },
     render: function(group) {
         

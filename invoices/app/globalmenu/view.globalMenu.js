@@ -8,7 +8,7 @@ window.Invoices.ViewGlobalMenu = Backbone.View.extend({
     },
     el: $('#invoicesGlobalMenu'),
     statsTemplate: {
-        'globalmenu': _.template(window.Invoices.TEMPLATE['invoices/app/globalmenu/template.globalMenu.tpl'])
+        'globalmenu': _.template(window.Invoices.TEMPLATE['globalmenu.globalMenu'])
     },
     render: function() {
         
@@ -19,7 +19,7 @@ window.Invoices.ViewGlobalMenu = Backbone.View.extend({
     },
     renderItem: function(query) {
         
-        var q = query.replace(/^([a-zA-Z0-9_]+\/).*/, '$1');
+        var q = (query || '').replace(/^([a-zA-Z0-9_]+\/).*/, '$1');
         
         $('[data-id="item"]', this.el).each(function() {
             $(this).removeClass('tab-item');

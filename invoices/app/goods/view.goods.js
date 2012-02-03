@@ -37,12 +37,12 @@ window.Invoices.viewGoods = Backbone.View.extend({
         $('#invoicesGoodsTbody [data-sync="goods"]', this.el).remove();
     },
     statsTemplate: {
-        'clientsContacts': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goods.tpl']),
-        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsItem.tpl']),
-        'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsItemEdit.tpl']),
-        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsItemNew.tpl']),
-        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsDel.tpl']),
-        'goodsLoader': _.template(window.Invoices.TEMPLATE['invoices/app/goods/template.goodsLoader.tpl'])
+        'clientsContacts': _.template(window.Invoices.TEMPLATE['goods.goods']),
+        'clientsContactsItem': _.template(window.Invoices.TEMPLATE['goods.goodsItem']),
+        'clientsContactsItemEdit': _.template(window.Invoices.TEMPLATE['goods.goodsItemEdit']),
+        'clientsContactsItemNew': _.template(window.Invoices.TEMPLATE['goods.goodsItemNew']),
+        'clientsContactsDel': _.template(window.Invoices.TEMPLATE['goods.goodsDel']),
+        'goodsLoader': _.template(window.Invoices.TEMPLATE['goods.goodsLoader'])
     },
     render: function(group) {
         
