@@ -131,7 +131,7 @@ if(location.host == 'localhost:8000') {
         
         if(typeof options.loader == 'function') options.loader.call(this, 0);// progress
         
-        if(window.console) console.warn('Backbone.sync REQUEST: %o', data);
+        if(window.console) console.log('Backbone.sync REQUEST: %o', JSON.stringify(data));
         
         $.ajax({
             url: 'https://pulyaev.test.liqpay.com/?do=invoices&act=ajax',
@@ -149,7 +149,7 @@ if(location.host == 'localhost:8000') {
                     if(typeof(options.success) == 'function') options.success.call(this, data.data);
                 }
                 
-                if(window.console) console.warn('Backbone.sync RESPONCE: %o', data);
+                if(window.console) console.log('Backbone.sync RESPONCE: %o', JSON.stringify(data));
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 $.ierrorDialog('add', 'Backbone.sync($.ajax) error: textStatus: '+textStatus+'; responseText: '+jqXHR.responseText);
