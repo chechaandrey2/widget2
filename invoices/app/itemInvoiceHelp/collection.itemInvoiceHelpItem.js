@@ -10,5 +10,5 @@ window.Invoices.CollectionItemInvoiceHelpItem = Backbone.Collection.extend({
             if(exp.test(arg)) { m = model; return false; }
         });
         return m;
-    },
+    }
 });

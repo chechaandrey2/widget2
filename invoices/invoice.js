@@ -25,7 +25,6 @@ PreLoader.on('successed', function(e) {
 PreLoader.load({
     ready: true,
     success: function(data) {
-		//console.log('End Loader: %o', data.length);
 		sync();
 		endPreloaded();
 		var el = document.getElementById('invoicePreLoader');

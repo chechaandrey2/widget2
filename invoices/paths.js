@@ -10,7 +10,6 @@ this.PATHS = [
     {type: 'js', url: "invoices/lib/backbone.collection.unique.js", sync: true},
     {type: 'js', url: "invoices/lib/backbone.model.toJSONExt.js", sync: true},
     {type: 'js', url: "invoices/lib/backbone.collection.toJSONExt.js", sync: true},
-    {type: 'js', url: "invoices/lib/jquery.require.js", sync: true},
     {type: 'js', url: "invoices/lib/jquery.ui.min.js", sync: true},
     {type: 'js', url: "invoices/lib/jquery.iautocomplete.js", sync: true},
     {type: 'js', url: "invoices/lib/jquery.iplaceholder.js", sync: true},

@@ -23,7 +23,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         'merchantDialogLogo': _.template(window.Invoices.TEMPLATE['merchant.merchantDialogLogo'])
     },
     render: function(opt) {// loader, success, error
-    
+        
         opt = opt || {};
     
         if(!this.model.get('id')) {
@@ -31,8 +31,10 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
                 data: {filter: ["s","s_set"]},
                 error: opt.error,
                 success: function(model) {
-                    model.set(model.get('s'))
+                    
+                    model.set(model.get('s'));
                     model.set(model.get('s_set'));
+                    
                     if(typeof opt.success == 'function') opt.success.call(this, model);
                 },
                 loader: opt.loader
