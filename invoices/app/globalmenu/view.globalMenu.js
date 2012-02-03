@@ -21,8 +21,6 @@ window.Invoices.ViewGlobalMenu = Backbone.View.extend({
         
         var q = (query || 'invoice/').replace(/^([a-zA-Z0-9_]+\/).*/, '$1');
         
-        console.warn(q);
-        
         $('[data-id="item"]', this.el).each(function() {
             $(this).removeClass('tab-item');
             var $el = $('[href="#'+q+'"]', this);
