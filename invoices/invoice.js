@@ -26,13 +26,10 @@ PreLoader.load({
     ready: true,
     success: function(data) {
 		//console.log('End Loader: %o', data.length);
-		
-		setTimeout(function() {
-		    var el = document.getElementById('invoicePreLoader');
-	        if(el) el.style.display = 'none';
-		}, 500);
 		sync();
 		endPreloaded();
+		var el = document.getElementById('invoicePreLoader');
+	    if(el) el.style.display = 'none';
 	},
 	error: function(data) {
 		//console.log('ErrorEnd Loader');
