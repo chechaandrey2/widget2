@@ -23,7 +23,7 @@ function getContent(content) {
     <td class="center"><%= status %></td>
     <td class="date"><%= date('H:i:s d.m.Y', new Date(dates[status].replace(/-/g, '/'))) %></td>
     <td class="center"><div><%= total %></div><div><%= currency %></div></td>
-    <td class="center"><% if(status == 'created') { %><span data-name="issued" data-id="<%= inv_uid %>" class="button">i</span><% } %></td>
-    <td class="center"><a href="#invoice/view/<%= inv_uid %>/">v</a></td>
+    <td class="center"><% if(status == 'created') { %><a href="javascript:void(0)" data-name="issued" data-id="<%= inv_uid %>" class="button">i</a><% } %></td>
+    <td class="center"><a href="#invoice/print/<%= inv_uid %>/">p</a></td>
     <td class="center"><a href="#invoice/edit/<%= inv_uid %>/">+-></a></td>
 </tr>

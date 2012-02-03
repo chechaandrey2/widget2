@@ -128,6 +128,8 @@ this.PATHS = [
     {type: 'ajax', url: 'invoices/app/itemInvoice/template.itemInvoiceSendError.tpl', name: 'itemInvoice.itemInvoiceSendError', namespace: 'tpl', sync: true},
     
     {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoicePrint.tpl", name: 'itemInvoice.itemInvoicePrint', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoicePrintLoader.tpl", name: 'itemInvoice.itemInvoicePrintLoader', namespace: 'tpl', sync: true},
+    {type: 'ajax', url: "invoices/app/itemInvoice/template.itemInvoicePrintInvoice.tpl", name: 'itemInvoice.itemInvoicePrintInvoice', namespace: 'tpl', sync: true},
     
     {type: 'js', url: 'invoices/app/itemInvoice/view.itemInvoiceEdit.js', sync: true},
     {type: 'js', url: 'invoices/app/itemInvoice/view.itemInvoiceView.js', sync: true},

@@ -266,8 +266,9 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             data[$(this).attr('name')] = $(this).val();
         });
         
-        data['quantity'] = data['quantity'] || 0;
+        data['quantity'] = data['quantity'] || 1;
         data['price'] = data['price'] || 0;
+        data['units'] = data['units'] || 'pcs.';
         data['nid'] = _.uniqueId();
         
         var model = new window.Invoices.ModelInvoiceGoods();
@@ -279,6 +280,10 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             this.model.get('_goods').add(model, {silent: true});
             $c.removeAttr('data-state');
             $('input, textarea, [data-name]', $c).attr('data-nid', model.get('nid'));
+            // hack
+            $('input[name="quantity"]', $c).val(model.get('quantity'));
+            $c.iplaceholder();
+            // hack
             $c.attr('data-nid', model.get('nid'));
             this.eventChangeGoods.call(this, model);
             this.eventNewGoods.call(this);

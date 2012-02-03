@@ -4,6 +4,6 @@
     <td class="center"><input style="text-align: center" type="text" name="email" value="<%= email %>" data-id="<%= b_uid %>" placeholder="buyer email" /></td>
     <td class="center"><textarea name="addr" data-id="<%= b_uid %>" placeholder="buyer address"><%= addr %></textarea></td>
     <td class="center"><textarea name="comment" data-id="<%= b_uid %>" placeholder="buyer comment"><%= comment %></textarea></td>
-    <td><span data-name="save" data-id="<%= b_uid %>" class="button">s</span></td>
-    <td><span data-name="del" data-id="<%= b_uid %>" class="button">x</span></td>
+    <td><a href="javascript:void(0)" data-name="save" data-id="<%= b_uid %>" class="button">s</a></td>
+    <td><a href="javascript:void(0)" data-name="del" data-id="<%= b_uid %>" class="button">x</a></td>
 </tr>

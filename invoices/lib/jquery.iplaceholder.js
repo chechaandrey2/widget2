@@ -48,10 +48,14 @@
         				
         					var val = $(this).val();
         					if(!val || (val+'').length < 1) $e.show();
+        					
+        					this[uid]['$e'] = $e;
         				
         				} else {
         				
         					// cmd
+        					var val = $(this).val();
+        					if(!val || (val+'').length < 1) this[uid]['$e'].show(); else this[uid]['$e'].hide();
         				
         				}
         			

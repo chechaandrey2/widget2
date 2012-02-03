@@ -15,7 +15,7 @@
         </table>
         <div>
             <div id="invoicesMerchantLogo" style="background-image: url(<%= logo_url %>);"></div>
-            <span id="invoicesMerchantEditLogo" class="button">edit</span>
+            <a href="javascript:void(0)" id="invoicesMerchantEditLogo" class="button">edit</a>
         </div>
     </div>
     <div data-id="#merchant/general/">
@@ -51,6 +51,6 @@
         </table>
     </div>
     <div>
-        <span id="invoicesMerchantSave" class="button">save</span>
+        <a href="javascript:void(0)" id="invoicesMerchantSave" class="button">save</a>
     </div>
 </div>

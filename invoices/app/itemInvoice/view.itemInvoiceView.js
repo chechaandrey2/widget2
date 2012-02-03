@@ -10,6 +10,9 @@ window.Invoices.ViewItemInvoiceView = Backbone.View.extend({
     eventRemoveLoader: function() {
         $('#invoicesItemInvoiceViews [data-sync="invoiceView"]', this.el).remove();
     },
+    eventAddInvoice: function(data) {
+        $('#invoicesItemInvoiceViews', this.el).append(this.statsTemplate['itemInvoiceViewBuyers'].call(this, data));
+    },
     statsTemplate: {
         'itemInvoiceView': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceView']),
         'itemInvoiceViewBuyers': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceViewBuyers']),
@@ -23,12 +26,16 @@ window.Invoices.ViewItemInvoiceView = Backbone.View.extend({
         
         var opts = {
             success: function(model) {
-                $('#invoicesItemInvoiceViews', self.el).html(self.statsTemplate['itemInvoiceViewBuyers'].call(self, {
-                    buyers: self.model.get('_buyers').toJSON(), 
-                    goods: self.model.get('_goods').toJSON(), 
-                    merchant: model.toJSON(), 
-                    invoice: self.model.toJSON()
-                }));
+                var mmerchant = model;
+                
+                self.model.get('_buyers').each(function(model) {
+                    self.eventAddInvoice.call(self, {
+                        buyer: model.toJSON(), 
+                        goods: self.model.get('_goods').toJSON(), 
+                        merchant: mmerchant.toJSON(), 
+                        invoice: self.model.toJSON()
+                    });
+                });
             },
             error: function(model, err) {
                 if(err.error == 1 || err.msg) $.ierrorDialog('add', err.msg);

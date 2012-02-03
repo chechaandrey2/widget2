@@ -1,1 +1,1 @@
-<div><span><%= inv_uid %></span><span><a href="#invoice/view/<%= inv_uid %>/">v</a></span><span><a href="#invoice/edit/<%= inv_uid %>/">+-></a></span></div>
+<div><span><%= inv_uid %></span><span><a href="#invoice/print/<%= inv_uid %>/">p</a></span><span><a href="#invoice/edit/<%= inv_uid %>/">+-></a></span></div>

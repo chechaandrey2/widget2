@@ -4,6 +4,6 @@
     <td class="center"><%= email %></td>
     <td class="center"><%= addr %></td>
     <td class="center"><%= comment %></td>
-    <td><span data-name="edit" data-id="<%= b_uid %>" class="button">e</span></td>
-    <td><span data-name="del" data-id="<%= b_uid %>" class="button">x</span></td>
+    <td><a href="javascript:void(0)" data-name="edit" data-id="<%= b_uid %>" class="button">e</a></td>
+    <td><a href="javascript:void(0)" data-name="del" data-id="<%= b_uid %>" class="button">x</a></td>
 </tr>

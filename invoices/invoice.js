@@ -11,7 +11,7 @@ PreLoader.set('sync', false);
 var I = 0;
 
 PreLoader.on('successed', function(e) {
-	if(window.console && console.log) console.log('status: %o, type: %o, url: %o, name: %o', e.status, e.type, e.url, e.name);
+	if(window.console) console.log('status: %o, type: %o, url: %o, name: %o', e.status, e.type, e.url, e.name);
 	if(e.namespace == 'tpl') window.Invoices.TEMPLATE[e.name] = e.data;
 	if(e.namespace == 'l10n') window.Invoices.L10N[e.name] = e.data;
 	// draw indicator
@@ -46,7 +46,7 @@ function sync() {
 if(location.host == 'localhost:8000') {
     
     // Backbone.sync local
-    console.warn('LOCALHOST DEVELOPER: %o', true);
+    if(window.console) console.warn('LOCALHOST DEVELOPER: %o', true);
     
     // Backbone.sync
     window.bridge;
@@ -82,7 +82,7 @@ if(location.host == 'localhost:8000') {
         if(typeof options.loader == 'function') options.loader.call(this, 0);// progress
     
         if(model.syncArg[method] && (model.syncArg[method]+'').length > 0) {
-            console.log('Backbone.sync SEND: %o', JSON.stringify(window.bridgeObjects[id0]['data']));
+            if(window.console) console.log('Backbone.sync SEND: %o', JSON.stringify(window.bridgeObjects[id0]['data']));
             window.bridge.postMessage(JSON.stringify({id: id0, data: window.bridgeObjects[id0]['data']}), '*');
         } else {
             //console.error('Backbone.sync ERROR');
@@ -131,7 +131,7 @@ if(location.host == 'localhost:8000') {
         
         if(typeof options.loader == 'function') options.loader.call(this, 0);// progress
         
-        console.warn('Backbone.sync REQUEST: %o', data);
+        if(window.console) console.warn('Backbone.sync REQUEST: %o', data);
         
         $.ajax({
             url: 'https://pulyaev.test.liqpay.com/?do=invoices&act=ajax',
@@ -149,7 +149,7 @@ if(location.host == 'localhost:8000') {
                     if(typeof(options.success) == 'function') options.success.call(this, data.data);
                 }
                 
-                console.warn('Backbone.sync RESPONCE: %o', data);
+                if(window.console) console.warn('Backbone.sync RESPONCE: %o', data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 $.ierrorDialog('add', 'Backbone.sync($.ajax) error: textStatus: '+textStatus+'; responseText: '+jqXHR.responseText);

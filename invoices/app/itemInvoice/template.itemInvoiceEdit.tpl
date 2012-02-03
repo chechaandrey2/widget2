@@ -11,7 +11,7 @@ var dates = {
         <tr><td colspan="2"><% if(status) { %><div><span><%= status %></span><span>(<%= date('H:i:s d.m.Y', new Date(dates[status].replace(/-/g, '/'))) %>)</span></div><% } %></td></tr>
         <tr><td colspan="2"><strong>byers</strong></td></tr>
         <tr><td colspan="2">
-            <div><span><input type="text" id="invoicesItemInvoiceBuyersFind" value="" placeholder="buyer, you want to add" /><span id="invoicesInvoiceBuyersGroupLoader"></span></span><span data-name="addbuyer" class="button">+</span></div>
+            <div><span><input type="text" id="invoicesItemInvoiceBuyersFind" value="" placeholder="buyer, you want to add" /><span id="invoicesInvoiceBuyersGroupLoader"></span></span><a href="javascript:void(0)" data-name="addbuyer" class="button">+</a></div>
             <div id="invoicesItemInvoiceItemBuyers"></div>
             <div id="invoicesItemInvoiceBuyersHelp"></div>
         </td></tr>
@@ -30,6 +30,6 @@ var dates = {
         <tr><td><strong>message</strong></td><td><textarea name="msg" placeholder="invoice message"><%= descr %></textarea></td></tr>
     </tbody>
     <tfoot>
-        <tr><th colspan="2"><% if(inv_uid) { %><span data-name="created" class="button">create of current</span><span data-name="issued" class="button">issue of current</span><span data-name="view" class="button">view</span><% } else { %><span data-name="created" class="button">create</span><span data-name="issued" class="button">issue</span><span data-name="view" class="button">view</span><% } %></th></tr>
+        <tr><th colspan="2"><% if(inv_uid) { %><a href="javascript:void(0)" data-name="created" class="button">create of current</a><a href="javascript:void(0)" data-name="issued" class="button">issue of current</a><a href="javascript:void(0)" data-name="view" class="button">view</a><% } else { %><a href="javascript:void(0)" data-name="created" class="button">create</a><a href="javascript:void(0)" data-name="issued" class="button">issue</a><a href="javascript:void(0)" data-name="view" class="button">view</a><% } %></th></tr>
     </tfoot>
 </table>
