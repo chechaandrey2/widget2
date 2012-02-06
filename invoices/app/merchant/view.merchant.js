@@ -3,6 +3,11 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
     
         this.router = opt.router;
         
+        // set lang
+        //this.l10nLang = opt.l10nLang;
+        // test
+        this.l10nLang = 'ua';
+        
         this.model = new window.Invoices.ModelMerchant();
         
     },
@@ -21,6 +26,10 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         'merchant': _.template(window.Invoices.TEMPLATE['merchant.merchant']),
         'merchantLoader': _.template(window.Invoices.TEMPLATE['merchant.merchantLoader']),
         'merchantDialogLogo': _.template(window.Invoices.TEMPLATE['merchant.merchantDialogLogo'])
+    },
+    l10nHash: {
+        'ru': JSON.parse(window.Invoices.L10N['merchant.ru']),
+        'ua': JSON.parse(window.Invoices.L10N['merchant.ua'])
     },
     render: function(opt) {// loader, success, error
         
@@ -63,7 +72,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
                     
                     $('#invoicesMerchantTabs', self.el).itabs({
                         elTabs: $('#invoicesMerchantTabs #invoicesMerchantTabsList', self.el),
-                        selectorItem: '[data-id^="#"]'
+                        selectorItem: '[data-id]'
                     });
                     
                     self.helperDialogLogo();
@@ -203,10 +212,10 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
     },
     helperGetError: function(model, err) {
         switch(err.attr) {
-            case 'card': return 'Buyer card - incorrect';
-            case 'email': return 'Buyer email - incorrect';
-            case 'title': return 'Buyer title - incorrect';
-            case 'logo_url': return 'Buyer logo_url - incorrect';
+            case 'card': return this.l10n("Merchant card - incorrect");
+            case 'email': return this.l10n("Merchant email - incorrect");
+            case 'title': return this.l10n("Merchant title - incorrect");
+            case 'logo_url': return this.l10n("Merchant logo_url - incorrect");
         }
     },
     helperTab: undefined

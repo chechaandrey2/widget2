@@ -12,26 +12,26 @@ window.Invoices.viewBuyers = Backbone.View.extend({
     },
     eventAdd: function(model) {
         // fix bug data-state in collection.create
-        $('#invoicesClientsTbody [data-state="new"]', this.el).before(this.statsTemplate['clientsContactsItem'](model.toJSON()));
+        $('#invoicesClientsTbody [data-state="new"]', this.el).before(this.statsTemplate['clientsContactsItem'].call(this, model.toJSON()));
     },
     eventRemove: function(model) {
         $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el).remove();
     },
     eventChange: function(model) {
         $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el)
-            .replaceWith(this.statsTemplate['clientsContactsItem'](model.toJSON()));
+            .replaceWith(this.statsTemplate['clientsContactsItem'].call(this, model.toJSON()));
     },
     eventChangeEdit: function(model) {
         $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el)
-            .replaceWith(this.statsTemplate['clientsContactsItemEdit'](model.toJSON()));
+            .replaceWith(this.statsTemplate['clientsContactsItemEdit'].call(this, model.toJSON()));
             
         $('#invoicesClientsTbody > [data-id="'+model.get('b_uid')+'"]', this.el).iplaceholder();
     },
     eventNew: function() {
-        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['clientsContactsItemNew']()).iplaceholder();
+        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['clientsContactsItemNew'].call(this)).iplaceholder();
     },
     eventAddLoadre: function() {
-        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['buyersLoader']())
+        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['buyersLoader'].call(this))
     },
     eventRemoveLoadre: function() {
         $('#invoicesClientsTbody [data-sync="buyers"]', this.el).remove();
@@ -48,7 +48,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         
         var self = this;
         
-        this.el.html(this.statsTemplate['clientsContacts']());
+        this.el.html(this.statsTemplate['clientsContacts'].call(this));
         
         this.collection.fetch({
             data: {gr_id: group}, 
@@ -208,7 +208,7 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         if(el.attr('data-state')) return el; else return this.helperSearchNewModel(el.parent(), i);
     },
     helperDialogDel: function() {
-        this.el.append(this.statsTemplate['clientsContactsDel']({id: this.helperGroup}));
+        this.el.append(this.statsTemplate['clientsContactsDel'].call(this, {id: this.helperGroup}));
         var collection = this.collection;
         var self = this;
         $('#invoicesClientsContactsDialogDel-'+this.helperGroup, this.el).dialog({

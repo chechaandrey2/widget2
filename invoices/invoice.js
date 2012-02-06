@@ -13,7 +13,7 @@ var I = 0;
 PreLoader.on('successed', function(e) {
 	if(window.console) console.log('status: %o, type: %o, url: %o, name: %o', e.status, e.type, e.url, e.name);
 	if(e.namespace == 'tpl') window.Invoices.TEMPLATE[e.name] = e.data;
-	if(e.namespace == 'l10n') window.Invoices.L10N[e.name] = e.data;
+	if(e.namespace && e.namespace.indexOf('l10n') == 0) window.Invoices.L10N[e.name] = e.data;
 	// draw indicator
 	var el = document.getElementById('invoicePreLoader');
 	if(el) {

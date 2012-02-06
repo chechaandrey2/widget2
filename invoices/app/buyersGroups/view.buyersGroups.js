@@ -14,7 +14,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
     },
     eventAdd: function(model) {
         $('#invoicesClientsTabsList #invoicesClientsNewGroup', this.el)
-            .before(this.statsTemplate['clientsItemGroup'](model.toJSON()));
+            .before(this.statsTemplate['clientsItemGroup'].call(this, model.toJSON()));
     },
     eventRemove: function(model) {
         $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]', this.el).remove();
@@ -22,16 +22,16 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
     },
     eventChange: function(model) {
         $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
-            .replaceWith(this.statsTemplate['clientsItemGroup'](model.toJSON()));
+            .replaceWith(this.statsTemplate['clientsItemGroup'].call(this, model.toJSON()));
     },
     eventAddLoadre: function() {
-        $('#invoicesClientsTabsList', this.el).prepend(this.statsTemplate['buyersGroupsLoader']())
+        $('#invoicesClientsTabsList', this.el).prepend(this.statsTemplate['buyersGroupsLoader'].call(this))
     },
     eventRemoveLoadre: function() {
         $('#invoicesClientsTabsList [data-sync="buyersGroups"]', this.el).remove();
     },
     eventAddLoaderDialog: function() {
-        $('#invoicesClientsDialogAdd').append(this.statsTemplate['buyersGroupsLoaderDialog']());
+        $('#invoicesClientsDialogAdd').append(this.statsTemplate['buyersGroupsLoaderDialog'].call(this));
     },
     eventRemoveLoaderDialog: function() {
         $('#invoicesClientsDialogAdd [data-sync="buyersGroups"]').remove();
@@ -52,7 +52,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
     render: function(group) {
         var self = this;
         
-        this.el.html(this.statsTemplate['clients']());
+        this.el.html(this.statsTemplate['clients'].call(this));
         
         this.collection.fetch({
             add: true,
@@ -119,7 +119,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         if($(e.target).attr('data-id') == 1) return;// General NOT EDITOR
         var model = this.collection.get('gr_id', $(e.target).attr('data-id'));
         $('#invoicesClientsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
-            .replaceWith(this.statsTemplate['clientsItemGroupEdit'](model.toJSON()));
+            .replaceWith(this.statsTemplate['clientsItemGroupEdit'].call(this, model.toJSON()));
         $('#invoicesClientsTabsList [data-id="'+model.get('gr_id')+'"]').focus();
     },
     eventGroupEditBlur: function(e) {
@@ -178,7 +178,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         $('#invoicesBuyersImportDialog').dialog('open');
     },
     helperDialogAdd: function() {
-        this.el.append(this.statsTemplate['clientsAddGroup']());
+        this.el.append(this.statsTemplate['clientsAddGroup'].call(this));
         var self = this;
         
         var $e = $('#invoicesClientsDialogAdd [name="groupName"]');
@@ -219,7 +219,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         });
     },
     helperDialogDel: function() {
-        this.el.append(this.statsTemplate['clientsDelGroup']());
+        this.el.append(this.statsTemplate['clientsDelGroup'].call(this));
         var collection = this.collection;
         var self = this;
         $('#invoicesClientsDialogDel', this.el).dialog({
@@ -275,7 +275,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
     },
     helperSelectedNumber: 0,
     helperDialogImport: function() {
-        this.el.append(this.statsTemplate['buyersDialogImport']());
+        this.el.append(this.statsTemplate['buyersDialogImport'].call(this));
         var self = this;
         
         var $form = $('#invoicesUpload').clone(true)
@@ -288,13 +288,27 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
 			buttons: [
 			    {text: 'Import', click: function() {
 			        
+			        var dialog = this;
+			        
+			        // check exp file
+			        var ftype = (($('[type="file"]', $form).val() || '').substr(-4) || '').toLowerCase();
+			        
+			        if(ftype != '.csv' && ftype != '.vcf') {
+			            $('[type="file"]', $form).ierror({wrap: true, msg: self.helperGetError.call(self, null, {attr: 'import'})});
+			            return;
+			        }
+			        
 			        // start loader
                     $form.addClass('upload');
                     
                     $.ajax({
                         url: 'https://pulyaev.test.liqpay.com/?do=invoices&act=ajax',
                         fileInput: $('[type="file"]', $form),
-                        formData: [{name: 'json', value: JSON.stringify({subname: "import_buyers"})}],
+                        formData: [{name: 'json', value: JSON.stringify({
+                            subname: "import_buyers",
+                            encoding: $('[name="encoding"]', dialog).val(),
+                            filetype: ftype.substr(-3)
+                        })}],
                         paramName: 'file',
                         type: 'POST',
                         dataType: "iframe",
@@ -327,6 +341,8 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
             } else {
                 return 'Buyer group title - incorrect';
             }
+        } else if(err.attr == 'import') {
+            return 'File import buyers - incorrect';
         }
     }
 });

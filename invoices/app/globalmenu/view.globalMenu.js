@@ -12,7 +12,7 @@ window.Invoices.ViewGlobalMenu = Backbone.View.extend({
     },
     render: function() {
         
-        this.el.html(this.statsTemplate['globalmenu'](this.collection));
+        this.el.html(this.statsTemplate['globalmenu'].call(this, this.collection));
         
         return this;
         

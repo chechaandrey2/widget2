@@ -14,7 +14,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
     },
     eventAdd: function(model) {
         $('#invoicesGoodsGroupsTabsList #invoicesGoodsGroupsNewGroup', this.el)
-            .before(this.statsTemplate['clientsItemGroup'](model.toJSON()));
+            .before(this.statsTemplate['clientsItemGroup'].call(this, model.toJSON()));
     },
     eventRemove: function(model) {
         $('#invoicesGoodsGroupsTabsList > [data-id="item-'+model.get('gr_id')+'"]', this.el).remove();
@@ -22,16 +22,16 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
     },
     eventChange: function(model) {
         $('#invoicesGoodsGroupsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
-            .replaceWith(this.statsTemplate['clientsItemGroup'](model.toJSON()));
+            .replaceWith(this.statsTemplate['clientsItemGroup'].call(this, model.toJSON()));
     },
     eventAddLoadre: function() {
-        $('#invoicesGoodsGroupsTabsList', this.el).prepend(this.statsTemplate['goodsGroupsLoader']())
+        $('#invoicesGoodsGroupsTabsList', this.el).prepend(this.statsTemplate['goodsGroupsLoader'].call(this))
     },
     eventRemoveLoadre: function() {
         $('#invoicesGoodsGroupsTabsList [data-sync="goodsGroups"]', this.el).remove();
     },
     eventAddLoaderDialog: function() {
-        $('#invoicesGoodsGroupsDialogAdd').append(this.statsTemplate['goodsGroupsLoaderDialog']());
+        $('#invoicesGoodsGroupsDialogAdd').append(this.statsTemplate['goodsGroupsLoaderDialog'].call(this));
     },
     eventRemoveLoaderDialog: function() {
         $('#invoicesGoodsGroupsDialogAdd [data-sync="goodsGroups"]').remove();
@@ -51,7 +51,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
     render: function(group) {
         var self = this;
         
-        this.el.html(this.statsTemplate['clients']());
+        this.el.html(this.statsTemplate['clients'].call(this));
         
         this.collection.fetch({
             add: true,
@@ -116,7 +116,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
         if($(e.target).attr('data-id') == 1) return;// General NOT EDITOR
         var model = this.collection.get('gr_id', $(e.target).attr('data-id'));
         $('#invoicesGoodsGroupsTabsList > [data-id="item-'+model.get('gr_id')+'"]')
-            .replaceWith(this.statsTemplate['clientsItemGroupEdit'](model.toJSON()));
+            .replaceWith(this.statsTemplate['clientsItemGroupEdit'].call(this, model.toJSON()));
         $('#invoicesGoodsGroupsTabsList [data-id="'+model.get('gr_id')+'"]').focus();
     },
     eventGroupEditBlur: function(e) {
@@ -172,7 +172,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
         $('#invoicesGoodsGroupsDialogDel').dialog("open");
     },
     helperDialogAdd: function() {
-        this.el.append(this.statsTemplate['clientsAddGroup']());
+        this.el.append(this.statsTemplate['clientsAddGroup'].call(this));
         var self = this;
         
         var $e = $('#invoicesGoodsGroupsDialogAdd [name="groupName"]');
@@ -213,7 +213,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
         });
     },
     helperDialogDel: function() {
-        this.el.append(this.statsTemplate['clientsDelGroup']());
+        this.el.append(this.statsTemplate['clientsDelGroup'].call(this));
         var collection = this.collection;
         var self = this;
         $('#invoicesGoodsGroupsDialogDel', this.el).dialog({
