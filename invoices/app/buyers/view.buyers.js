@@ -31,10 +31,12 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         $('#invoicesClientsTbody', this.el).append(this.statsTemplate['clientsContactsItemNew'].call(this)).iplaceholder();
     },
     eventAddLoadre: function() {
-        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['buyersLoader'].call(this))
+        $('#invoicesClientsTbody', this.el).append(this.statsTemplate['buyersLoader'].call(this));
+        $('#invoicesClientsTbody [data-state="new"]', this.el).hide();
     },
     eventRemoveLoadre: function() {
         $('#invoicesClientsTbody [data-sync="buyers"]', this.el).remove();
+        $('#invoicesClientsTbody [data-state="new"]', this.el).show();
     },
     statsTemplate: {
         'clientsContacts': _.template(window.Invoices.TEMPLATE['buyers.buyers']),
@@ -50,6 +52,8 @@ window.Invoices.viewBuyers = Backbone.View.extend({
         
         this.el.html(this.statsTemplate['clientsContacts'].call(this));
         
+        this.eventNew.call(this);
+        
         this.collection.fetch({
             data: {gr_id: group}, 
             add: true,
@@ -61,8 +65,6 @@ window.Invoices.viewBuyers = Backbone.View.extend({
                 else if(progress == 1) self.eventRemoveLoadre.call(self);
             }
         });
-        
-        this.eventNew.call(this);
         
         this.helperGroup = group;
         
@@ -199,7 +201,13 @@ window.Invoices.viewBuyers = Backbone.View.extend({
             }
         });
         
-        if(!res) $c.attr('data-state', 'new');
+        if(!res) {
+            $c.attr('data-state', 'new');
+        } else {
+            // fix bugs
+            var $el = $('[name="phone_main"]', $c);
+            if(!$el.val()) $el.ierror('remove');
+        }
         
     },
     helperSearchNewModel: function(el, i) {

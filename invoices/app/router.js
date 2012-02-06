@@ -1,5 +1,8 @@
 window.Invoices.Router = Backbone.Router.extend({
-    initialize: function() {
+    initialize: function(opt) {
+    
+        this.l10nLang = opt.l10nLang || 'en';
+        
         this.route(/^(invoice\/).*$/i, 'iteminvoice', this.iteminvoice);// general page
         this.route(/^(invoice\/(view|edit|send|print)\/).*$/i, 'iteminvoice', this.iteminvoice);
         this.route(/^(invoice\/(view|edit|send|print)\/([0-9]+)\/).*$/i, 'iteminvoice', this.iteminvoice);

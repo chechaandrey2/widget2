@@ -3,7 +3,6 @@ window.Invoices.TEMPLATE = {};
 window.Invoices.L10N = {};
 
 
-
 PreLoader.add(window.PATHS);
 PreLoader.set('cache', false);
 PreLoader.set('sync', false);
@@ -140,7 +139,7 @@ if(location.host == 'localhost:8000') {
                 data.data = data.data || [];
                 
                 if((!(data.data instanceof Object) && !(data.data instanceof Array)) || data.data.error > 0) {
-                    if(typeof(options.error) == 'function') options.error.call(this, jqXHR);
+                    if(typeof(options.error) == 'function') options.error.call(this, data.data);
                 } else {
                     if(typeof(options.success) == 'function') options.success.call(this, data.data);
                 }
@@ -203,8 +202,8 @@ if(location.host == 'localhost:8000') {
 	    	textTitle: 'Server Error'
         });
     
-        window.Invoices.router = new window.Invoices.Router();
-    
+        window.Invoices.router = new window.Invoices.Router({l10nLang: 'ua'});
+        
         Backbone.history.start();
     }
     // Backbone.sync local
@@ -241,7 +240,8 @@ if(location.host == 'localhost:8000') {
 		textTitle: 'Server Error'
     });
     
-    window.Invoices.router = new window.Invoices.Router();
+    window.Invoices.router = new window.Invoices.Router({l10nLang: 'ua'});
+    
     Backbone.history.start();
 }
     

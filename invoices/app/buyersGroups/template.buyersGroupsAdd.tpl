@@ -1,3 +1,3 @@
-<div id="invoicesClientsDialogAdd" title="Please enter the name">
-    <div style="text-align: center; padding-top: 31px;"><input type="text" name="groupName" value="" placeholder="group name" /></div>
+<div id="invoicesClientsDialogAdd" title="Please enter the name" style="text-align: center;">
+    <div style="display: inline-block; padding-top: 15px;"><input type="text" name="groupName" value="" placeholder="group name" /></div>
 </div>

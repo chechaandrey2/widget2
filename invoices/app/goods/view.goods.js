@@ -31,10 +31,12 @@ window.Invoices.viewGoods = Backbone.View.extend({
         $('#invoicesGoodsTbody', this.el).append(this.statsTemplate['clientsContactsItemNew'].call(this)).iplaceholder();
     },
     eventAddLoadre: function() {
-        $('#invoicesGoodsTbody', this.el).append(this.statsTemplate['goodsLoader'].call(this))
+        $('#invoicesGoodsTbody', this.el).append(this.statsTemplate['goodsLoader'].call(this));
+        $('#invoicesGoodsTbody [data-state="new"]', this.el).hide();
     },
     eventRemoveLoadre: function() {
         $('#invoicesGoodsTbody [data-sync="goods"]', this.el).remove();
+        $('#invoicesGoodsTbody [data-state="new"]', this.el).show();
     },
     statsTemplate: {
         'clientsContacts': _.template(window.Invoices.TEMPLATE['goods.goods']),
@@ -50,6 +52,8 @@ window.Invoices.viewGoods = Backbone.View.extend({
         
         this.el.html(this.statsTemplate['clientsContacts'].call(this));
         
+        this.eventNew.call(this);
+        
         this.collection.fetch({
             data: {gr_id: group}, 
             add: true,
@@ -61,8 +65,6 @@ window.Invoices.viewGoods = Backbone.View.extend({
                 else if(progress == 1) self.eventRemoveLoadre.call(self);
             }
         });
-        
-        this.eventNew.call(this);
         
         this.helperGroup = group;
         

@@ -25,16 +25,19 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
             .replaceWith(this.statsTemplate['clientsItemGroup'].call(this, model.toJSON()));
     },
     eventAddLoadre: function() {
-        $('#invoicesGoodsGroupsTabsList', this.el).prepend(this.statsTemplate['goodsGroupsLoader'].call(this))
+        $('#invoicesGoodsGroupsTabsList', this.el).prepend(this.statsTemplate['goodsGroupsLoader'].call(this));
+        $('#invoicesGoodsGroupsTabsList #invoicesGoodsGroupsNewGroup', this.el).hide();
     },
     eventRemoveLoadre: function() {
         $('#invoicesGoodsGroupsTabsList [data-sync="goodsGroups"]', this.el).remove();
+        $('#invoicesGoodsGroupsTabsList #invoicesGoodsGroupsNewGroup', this.el).show();
     },
     eventAddLoaderDialog: function() {
-        $('#invoicesGoodsGroupsDialogAdd').append(this.statsTemplate['goodsGroupsLoaderDialog'].call(this));
+        $('#invoicesGoodsGroupsDialogAdd').addClass('creating').append(this.statsTemplate['goodsGroupsLoaderDialog'].call(this));
     },
     eventRemoveLoaderDialog: function() {
         $('#invoicesGoodsGroupsDialogAdd [data-sync="goodsGroups"]').remove();
+        $('#invoicesGoodsGroupsDialogAdd').removeClass('creating');
     },
     statsTemplate: {
         'clients': _.template(window.Invoices.TEMPLATE['goodsGroups.goodsGroups']),

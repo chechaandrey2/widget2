@@ -3,11 +3,6 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
     
         this.router = opt.router;
         
-        // set lang
-        //this.l10nLang = opt.l10nLang;
-        // test
-        this.l10nLang = 'ua';
-        
         this.model = new window.Invoices.ModelMerchant();
         
     },

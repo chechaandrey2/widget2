@@ -25,16 +25,28 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
             .replaceWith(this.statsTemplate['clientsItemGroup'].call(this, model.toJSON()));
     },
     eventAddLoadre: function() {
-        $('#invoicesClientsTabsList', this.el).prepend(this.statsTemplate['buyersGroupsLoader'].call(this))
+        $('#invoicesClientsTabsList', this.el).prepend(this.statsTemplate['buyersGroupsLoader'].call(this));
+        $('#invoicesClientsTabsList #invoicesClientsNewGroup', this.el).hide();
+        $('#invoicesClientsTabsList #invoicesClientsImportBuyers', this.el).hide();
     },
     eventRemoveLoadre: function() {
         $('#invoicesClientsTabsList [data-sync="buyersGroups"]', this.el).remove();
+        $('#invoicesClientsTabsList #invoicesClientsNewGroup', this.el).show();
+        $('#invoicesClientsTabsList #invoicesClientsImportBuyers', this.el).show();
     },
     eventAddLoaderDialog: function() {
-        $('#invoicesClientsDialogAdd').append(this.statsTemplate['buyersGroupsLoaderDialog'].call(this));
+        $('#invoicesClientsDialogAdd').addClass('creating').append(this.statsTemplate['buyersGroupsLoaderDialog'].call(this));
     },
     eventRemoveLoaderDialog: function() {
         $('#invoicesClientsDialogAdd [data-sync="buyersGroups"]').remove();
+        $('#invoicesClientsDialogAdd').removeClass('creating');
+    },
+    eventAddLoaderImport: function() {
+        $('#invoicesBuyersImportDialog').addClass('upload').append(this.statsTemplate['buyersGroupsLoaderDialog'].call(this));
+    },
+    eventRemoveLoaderImport: function() {
+        $('#invoicesBuyersImportDialog [data-sync="buyersGroups"]').remove();
+        $('#invoicesBuyersImportDialog').removeClass('upload');
     },
     statsTemplate: {
         'clients': _.template(window.Invoices.TEMPLATE['buyersGroups.buyersGroups']),
@@ -175,6 +187,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
         $('#invoicesClientsDialogDel').dialog("open");
     },
     eventDOMImport: function(e) {
+        $('#invoicesBuyersImportDialog [type="file"]').ierror('remove').val('');
         $('#invoicesBuyersImportDialog').dialog('open');
     },
     helperDialogAdd: function() {
@@ -288,10 +301,12 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
 			buttons: [
 			    {text: 'Import', click: function() {
 			        
+			        // --async upload--
+			        
 			        var dialog = this;
 			        
 			        // check exp file
-			        var ftype = (($('[type="file"]', $form).val() || '').substr(-4) || '').toLowerCase();
+			        var val = $('[type="file"]', $form).val(), ftype = ((val || '').substr(val.length-4, 4) || '').toLowerCase();
 			        
 			        if(ftype != '.csv' && ftype != '.vcf') {
 			            $('[type="file"]', $form).ierror({wrap: true, msg: self.helperGetError.call(self, null, {attr: 'import'})});
@@ -299,22 +314,42 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
 			        }
 			        
 			        // start loader
-                    $form.addClass('upload');
+                    self.eventAddLoaderImport.call(self);
                     
                     $.ajax({
                         url: 'https://pulyaev.test.liqpay.com/?do=invoices&act=ajax',
                         fileInput: $('[type="file"]', $form),
                         formData: [{name: 'json', value: JSON.stringify({
                             subname: "import_buyers",
-                            encoding: $('[name="encoding"]', dialog).val(),
-                            filetype: ftype.substr(-3)
+                            inputfile: $('[type="file"]', $form).attr('name'),
+                            data: {
+                                encoding: $('[name="encoding"]', dialog).val(),
+                                filetype: ftype.substr(ftype.length-3, 3)
+                            }
                         })}],
                         paramName: 'file',
                         type: 'POST',
                         dataType: "iframe",
                         success: function(data) {
-                            console.warn('SUCCESS: %o', data);
-                            $dialog.dialog('close');
+                        
+                            try {
+                                data = JSON.parse($(data).text()) || {};
+                            } catch(E) {
+                                alert(E);
+                                return;
+                            }
+                            
+                            data.data = data.data || {};
+                            if(data.data.error || data.data.errors) {
+                                // error
+                                $('[type="file"]', $form).ierror({wrap: true, msg: data.data.msg || data.data.errors});
+                            } else {
+                                // success
+                                // reload & redirect buyers group General(1)
+                                self.collectionBuyers.remove(self.collectionBuyers.get(1));
+                                self.router.navigate('buyers/1/', true);
+                            }
+                            
                         },
                         error: function(jqXHR) {
                             console.error('ERROR: %o', jqXHR);
@@ -322,9 +357,11 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
                         complete: function() {
                             // end loader
                             $('[type="file"]', $form).val('');
-                            $form.removeClass('upload');
+                            self.eventRemoveLoaderImport.call(self);
                         }
                     });
+                    
+                    // --async upload--
 			        
 			    }},
 			    {text: 'Cancel', click: function() {

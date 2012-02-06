@@ -71,6 +71,10 @@
         				
         				$(this[uid].el).hide();
         				
+        			} else if(options == 'show') {
+        				
+        				$(this[uid].el).show();
+        				
         			} else if(options == 'remove') {
         			    
         			    $(this[uid].el).remove();

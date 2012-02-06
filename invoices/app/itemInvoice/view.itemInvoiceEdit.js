@@ -92,19 +92,19 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
     eventAddEmpty: function(arg) {
         $(arg).html(this.statsTemplate['itemInvoiceEditAtcmpltEmpty'].call(this));
     },
-    eventAddLoaderGoodsGroup: function(id) {
-        var el = $('#invoicesItemInvoiceItemGoods [data-nid="'+id+'"]', this.el).get(0);
+    eventAddLoaderGoodsGroup: function(arg) {// id, group
+        var el = $('#invoicesItemInvoiceItemGoods [data-nid="'+arg.id+'"]', this.el).get(0);
         if($(el).size() > 0) {
-            $(el).hide().after($(this.statsTemplate['itemInvoiceEditLoaderGoodsGroup'].call(this)).attr('data-lid', $(el).attr('data-nid')));
+            $(el).hide().after($(this.statsTemplate['itemInvoiceEditLoaderGoodsGroup'].call(this, arg)).attr('data-lid', $(el).attr('data-nid')));
         } else {
             $('#invoicesItemInvoiceItemGoods [data-state="new"]', this.el)
-                .before($(this.statsTemplate['itemInvoiceEditLoaderGoodsGroup'].call(this)).attr('data-lid', 0));
+                .before($(this.statsTemplate['itemInvoiceEditLoaderGoodsGroup'].call(this, arg)).attr('data-lid', 0));
         }
         
     },
-    eventRemoveLoaderGoodsGroup: function(id) {
-        id = id || 0;
-        $('#invoicesItemInvoiceItemGoods [data-lid="'+id+'"]', this.el).remove();
+    eventRemoveLoaderGoodsGroup: function(arg) {
+        arg.id = arg.id || 0;
+        $('#invoicesItemInvoiceItemGoods [data-lid="'+arg.id+'"]', this.el).remove();
     },
     eventAssumeInvoice: function() {
         var total = 0;
@@ -275,20 +275,23 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         var res = model.set(data, {error: function(model, err) {
             $('input[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
         }});
-        
+                
         if(res) {
-            this.model.get('_goods').add(model, {silent: true});
-            $c.removeAttr('data-state');
-            $('input, textarea, [data-name]', $c).attr('data-nid', model.get('nid'));
-            // hack
-            $('input[name="quantity"]', $c).val(model.get('quantity'));
-            $c.iplaceholder();
-            // hack
-            $c.attr('data-nid', model.get('nid'));
-            this.eventChangeGoods.call(this, model);
-            this.eventNewGoods.call(this);
-            // hide error
-            $('input, textarea', $c).ierror('remove');
+            var res0 = false;
+            
+            this.model.get('_goods').add(model, {
+                expUnique: 'title',
+                error: function(model, err) {
+                    res0 = true;
+                    $('[name="title"]', $c).ierror({wrap: true, msg: 'This goods has been selected 1'});
+                }
+            });
+            
+            if(!res0) {
+                $c.remove();
+                this.eventNewGoods.call(this);
+                $('#invoicesItemInvoiceItemGoods [data-state="new"] [name="title"]', this.el).focus();
+            }
         }
     },
     eventDOMRemoveGoods: function(e) {
@@ -538,7 +541,14 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                     }
                     
                 } else if(role == 'group') {
-                
+                    
+                    var id = $(item).attr('data-id'), group;
+                    
+                    if(collectionGoodss.groups) {
+                        model = collectionGoodss.groups.get(id);
+                        if(model) group = model.get('title');
+                    }
+                    
                     // add el
                     //self.eventDOMNewGoods.call(self);
                 
@@ -559,15 +569,14 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
                         loader: function(progress) {
                             var id = $(self1).attr('data-nid');
                             if(progress == 0) {
-                                self.eventAddLoaderGoodsGroup.call(self, id);
+                                self.eventAddLoaderGoodsGroup.call(self, {id: id, group: group});
                             } else if(progress == 1) {
-                                self.eventRemoveLoaderGoodsGroup.call(self, id);
+                                self.eventRemoveLoaderGoodsGroup.call(self, {id: id, group: group});
                             }
                         }
                     });
                     
                     $(this).val('').focus();
-                        
                 }
                 
                 //$('#invoicesItemInvoiceItemGoods [data-state="new"] [name="title"]', this.el).focus(); // CALL CONFLICT

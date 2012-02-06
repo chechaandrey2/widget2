@@ -17,7 +17,7 @@ var dates = {
         </td></tr>
         <tr><td colspan="2"><strong>goods</strong></td></tr>
         <tr><td colspan="2">
-            <table>
+            <table class="info_table">
                 <thead>
                     <tr><th>#</th><th>title</th><th>units</th><th>count</th><th>price</th><th>total</th><th></th></tr>
                 </thead>
