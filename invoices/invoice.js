@@ -5,7 +5,7 @@ window.Invoices.L10N = {};
 
 PreLoader.add(window.PATHS);
 PreLoader.set('cache', false);
-PreLoader.set('sync', false);
+PreLoader.set('sync', true);
 
 var I = 0;
 

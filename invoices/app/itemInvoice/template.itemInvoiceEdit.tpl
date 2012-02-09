@@ -25,9 +25,9 @@ var dates = {
             </table>
         </td></tr>
         <tr><td colspan="2"><div><span id="invoicesInvoiceGoodsTotal"><%= sprintf('%01.2f', total) %></span><span>(<%= currency %>)</span></div></td><td></td></tr>
-        <tr><td colspan="2"><span>additional fields</span></td></tr>
-        <tr><td><strong>description</strong></td><td><textarea name="descr" placeholder="invoice description"><%= descr %></textarea></td></tr>
-        <tr><td><strong>message</strong></td><td><textarea name="msg" placeholder="invoice message"><%= descr %></textarea></td></tr>
+        <tr><td colspan="2"><div id="invoicesItemInvoiceAddSwitch">additional fields</div></td></tr>
+        <tr data-style="add" style="display: none;"><td><strong>description</strong></td><td><textarea name="descr" placeholder="invoice description"><%= descr %></textarea></td></tr>
+        <tr data-style="add" style="display: none;"><td><strong>message</strong></td><td><textarea name="msg" placeholder="invoice message"><%= descr %></textarea></td></tr>
     </tbody>
     <tfoot>
         <tr><th colspan="2"><% if(inv_uid) { %><a href="javascript:void(0)" data-name="created" class="button">create of current</a><a href="javascript:void(0)" data-name="issued" class="button">issue of current</a><a href="javascript:void(0)" data-name="view" class="button">view</a><% } else { %><a href="javascript:void(0)" data-name="created" class="button">create</a><a href="javascript:void(0)" data-name="issued" class="button">issue</a><a href="javascript:void(0)" data-name="view" class="button">view</a><% } %></th></tr>

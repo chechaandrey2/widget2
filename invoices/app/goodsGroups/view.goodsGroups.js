@@ -149,6 +149,8 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
                 
                 self.eventChange.call(self, model);
                 
+                self.helperSelected.call(self, self.helperSelectedNumber);// fix bug
+                
                 if(e.target) e.target.done = false;
                 
             },
@@ -186,6 +188,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
 			buttons: {
 				Add: function() {
 				    var dialog = this;
@@ -223,6 +226,7 @@ window.Invoices.ViewGoodsGroups = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
 			buttons: {
 				Remove: function() {
 				    var del_force = $('#invoicesGoodsGroupsDialogDel [name="groupDelForce"]:checked').size();

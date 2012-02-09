@@ -120,6 +120,7 @@ window.Invoices.ViewItemInvoiceView = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
             buttons: [
                 {text: 'Ok', click: function() {$(this).dialog('close');}}
             ]

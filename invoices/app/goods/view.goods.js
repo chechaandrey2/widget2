@@ -126,7 +126,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
                 }
             });
         } else {
-            this.helperNewModel.call(this, e.target);
+            this.helperNewModel.call(this, e.target, false);
         }
         
     },
@@ -152,14 +152,14 @@ window.Invoices.viewGoods = Backbone.View.extend({
             });
         } else {
             // new
-            this.helperNewModel.call(this, e.target);
+            this.helperNewModel.call(this, e.target, true);
         }
     },
     eventSaveItemModelEnter: function(e) {
         if(e.which != 13) return;
         this.eventSaveItemModel.call(this,e);
     },
-    helperNewModel: function(el) {
+    helperNewModel: function(el, change) {
         var data = {}, self = this, $c = this.helperSearchNewModel($(el), 0);
         
         if(!$c || $c.attr('data-state') != 'new') {
@@ -181,7 +181,9 @@ window.Invoices.viewGoods = Backbone.View.extend({
             error: function(model, err) {
                 $c.attr('data-state', 'new');
                 
-                if(err.attr) {// client
+                if(err.attr
+                 && !change// fix bug
+                 ) {// client
                     $('input[name="'+err.attr+'"], textarea[name="'+err.attr+'"]', $c).ierror({wrap: true, msg: self.helperGetError.call(self, model, err)});
                 }
                 
@@ -220,6 +222,7 @@ window.Invoices.viewGoods = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
 			buttons: {
 				Remove: function() {
 				    var dialog = this;

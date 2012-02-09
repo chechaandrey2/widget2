@@ -161,6 +161,8 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
                 
                 self.eventChange.call(self, model);
                 
+                self.helperSelected.call(self, self.helperSelectedNumber);// fix bug
+                
                 if(e.target) e.target.done = false;
                 
             },
@@ -202,6 +204,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
 			buttons: {
 				Add: function() {
 				    var dialog = this;
@@ -239,6 +242,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
 			buttons: {
 				Remove: function() {
 				    var del_force = $('#invoicesClientsDialogDel [name="groupDelForce"]:checked').size();
@@ -298,6 +302,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
 			buttons: [
 			    {text: 'Import', click: function() {
 			        

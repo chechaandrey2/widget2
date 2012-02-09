@@ -106,7 +106,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
         'change [name="is_vat_payer"]': 'eventDOMChangeCheckbox',
         'change [name="to_notify"]': 'eventDOMChangeCheckbox',
         'change [name="pref_payment_id"]': 'eventDOMChangeSelect',
-        'click #invoicesMerchantSave': 'eventDOMSave'
+        'click [id^="invoicesMerchantSave"]': 'eventDOMSave'
     },
     eventDOMDialogLogo: function(e) {
         $('#invoicesMerchantDialogLogo').dialog('open');
@@ -170,6 +170,7 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
 			buttons: [
 			    {text: "Ok", click: function() {
 			        

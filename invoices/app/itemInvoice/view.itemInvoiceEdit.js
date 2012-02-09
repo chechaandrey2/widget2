@@ -115,10 +115,11 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         $('#invoicesInvoiceGoodsTotal', this.el).html(sprintf('%01.2f', total));
     },
     eventAddLoaderDialog: function() {
-        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)).append(this.statsTemplate['itemInvoiceEditDialogLoader'].call(this));
+        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)).addClass('creating').append(this.statsTemplate['itemInvoiceEditDialogLoader'].call(this));
     },
     eventRemoveLoaderDialog: function() {
         $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)+' [data-sync="buyers"]').remove();
+        $('#invoicesItemInvoiceEditDialog-'+(this.model.get('inv_uid') || 0)).removeClass('creating');
     },
     statsTemplate: {
         'itemInvoiceEdit': _.template(window.Invoices.TEMPLATE['itemInvoice.itemInvoiceEdit']),
@@ -178,7 +179,17 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
         'change [name="msg"]': 'eventDOMChangeInvoice',
         'click [data-name="created"]': 'eventDOMSaveCreated',
         'click [data-name="issued"]': 'eventDOMSaveIssued',
-        'click [data-name="view"]': 'eventDOMToView'
+        'click [data-name="view"]': 'eventDOMToView',
+        'click #invoicesItemInvoiceAddSwitch': 'eventSwitchAdd'
+    },
+    eventSwitchAdd: function(e) {
+        if(e.target.sw) {
+            e.target.sw = false;
+            $('[data-style="add"]', this.el).hide();
+        } else {
+            e.target.sw = true;
+            $('[data-style="add"]', this.el).show();
+        }
     },
     eventDOMSaveCreated: function(e) {
         this.model.set({is_issued: 0, save: true});
@@ -612,6 +623,7 @@ window.Invoices.ViewItemInvoiceEdit = Backbone.View.extend({
             autoOpen:false,
             resizable: false,
 			modal: true,
+			draggable: false,
 			buttons: {
 				Create: function() {
 				    var dialog = this, data = {};
