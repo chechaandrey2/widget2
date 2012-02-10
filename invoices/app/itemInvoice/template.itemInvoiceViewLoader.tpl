@@ -1,1 +1,3 @@
-<tr data-sync="invoiceView"><td><h2 style="color: red">wait...</h2><td></tr>
+<tr data-sync="invoiceView"><td><div style="position: relative; display: block; min-height: 400px;">
+    <div  class="main_preloader"></div>
+</div><td></tr>

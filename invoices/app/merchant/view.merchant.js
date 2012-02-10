@@ -17,9 +17,23 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
     eventRemoveLoader: function() {
         $('[data-sync="merchant"]', this.el).remove();
     },
+    eventAddSaveLoader: function() {
+        var self = this;
+        $('#invoicesMerchantTabs', this.el).itabs('get', 'merchant/'+this.helperTab+'/', function(el) {
+            $(el).addClass('saving').append(self.statsTemplate['merchantSaveLoader'].call(self));
+        });
+    },
+    eventRemoveSaveLoader: function() {
+        var self = this;
+        $('#invoicesMerchantTabs', this.el).itabs('get', 'merchant/'+this.helperTab+'/', function(el) {
+            $('[data-sync="merchantSave"]', el).remove();
+            $(el).removeClass('saving');
+        });
+    },
     statsTemplate: {
         'merchant': _.template(window.Invoices.TEMPLATE['merchant.merchant']),
         'merchantLoader': _.template(window.Invoices.TEMPLATE['merchant.merchantLoader']),
+         'merchantSaveLoader': _.template(window.Invoices.TEMPLATE['merchant.merchantSaveLoader']),
         'merchantDialogLogo': _.template(window.Invoices.TEMPLATE['merchant.merchantDialogLogo'])
     },
     l10nHash: {
@@ -151,9 +165,9 @@ window.Invoices.ViewMerchant = Backbone.View.extend({
             },
             loader: function(progress) {
                 if(progress == 0) {
-                    self.eventAddLoader.call(self);
+                    self.eventAddSaveLoader.call(self);
                 } else if(progress == 1) {
-                    self.eventRemoveLoader.call(self);
+                    self.eventRemoveSaveLoader.call(self);
                 }
             }
         });

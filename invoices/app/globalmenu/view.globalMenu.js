@@ -6,7 +6,6 @@ window.Invoices.ViewGlobalMenu = Backbone.View.extend({
         this.collection = new window.Invoices.CollectionGlobalMenu();
         
     },
-    el: $('#invoicesGlobalMenu'),
     statsTemplate: {
         'globalmenu': _.template(window.Invoices.TEMPLATE['globalmenu.globalMenu'])
     },

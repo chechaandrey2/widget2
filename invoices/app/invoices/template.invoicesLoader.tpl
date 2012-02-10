@@ -1,3 +1,3 @@
 <tr data-sync="invoices">
-    <td colspan="9"><h2 style="color: red">wait...</h2></td>
+    <td colspan="9"><div  style="position: relative; display: block; min-height: 50px;"><div  class="main_preloader"></div></div></td>
 </tr>

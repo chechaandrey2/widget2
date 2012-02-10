@@ -311,7 +311,7 @@ window.Invoices.ViewBuyersGroups = Backbone.View.extend({
 			        var dialog = this;
 			        
 			        // check exp file
-			        var val = $('[type="file"]', $form).val(), ftype = ((val || '').substr(val.length-4, 4) || '').toLowerCase();
+			        var val = $('[type="file"]', $form).val() || '', ftype = (val.substr(val.length-4, 4) || '').toLowerCase();
 			        
 			        if(ftype != '.csv' && ftype != '.vcf') {
 			            $('[type="file"]', $form).ierror({wrap: true, msg: self.helperGetError.call(self, null, {attr: 'import'})});

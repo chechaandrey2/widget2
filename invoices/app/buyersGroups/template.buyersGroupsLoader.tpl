@@ -1,1 +1,1 @@
-<span data-sync="buyersGroups"><h2 style="color: red">wait...</h2></span>
+<span data-sync="buyersGroups" class="main_preloader"></span>

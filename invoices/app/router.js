@@ -30,7 +30,7 @@ window.Invoices.Router = Backbone.Router.extend({
         
         this.helperRenderInvoices(status);
         
-        this.helperShow('invoicesStatus');
+        this.helperShow(['invoicesStatus', 'globalmenu']);
         
     },
     buyers: function(query, group) {
@@ -49,7 +49,7 @@ window.Invoices.Router = Backbone.Router.extend({
         // help
         this.helperRemove('invoiceHelpBuyer');
 		
-		this.helperShow('buyers');
+		this.helperShow(['buyers', 'globalmenu']);
         
     },
     goods: function(query, group) {
@@ -66,7 +66,7 @@ window.Invoices.Router = Backbone.Router.extend({
         // help
         this.helperRemove('invoiceHelpGoods');
         
-        this.helperShow('goods');
+        this.helperShow(['goods', 'globalmenu']);
         
     },
     iteminvoice: function(query, mod, id) {
@@ -84,7 +84,7 @@ window.Invoices.Router = Backbone.Router.extend({
         
         this.helperRenderInvoice(id, mod);
 		
-		this.helperShow('invoice');
+		this.helperShow(['invoice', 'globalmenu']);
         
     },
     merchant: function(query, tab) {
@@ -96,7 +96,7 @@ window.Invoices.Router = Backbone.Router.extend({
         if(!this.collection.get('merchant')) this.helperRenderMerchant();
         this.collection.get('merchant').get('view').renderDisplay(tab);
         
-        this.helperShow('merchant');
+        this.helperShow(['merchant', 'globalmenu']);
         
     },
     helperRenderMerchant: function() {
@@ -109,9 +109,11 @@ window.Invoices.Router = Backbone.Router.extend({
     },
     helperRenderGlobalMenu: function(query) {
         if(!this.collection.get('globalmenu')) {
+            var el = $('#invoicesGlobalMenu');
             this.collection.add({
                 id: 'globalmenu',
-                view: new window.Invoices.ViewGlobalMenu({router: this})
+                el: el,
+                view: new window.Invoices.ViewGlobalMenu({router: this, el: el})
             });
 		    this.collection.get('globalmenu').get('view').render();
 		    this.collection.get('globalmenu').get('view').renderItem(query);

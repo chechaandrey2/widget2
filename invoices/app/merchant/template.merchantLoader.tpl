@@ -1,1 +1,1 @@
-<span data-sync="merchant"><h2 style="color: red"><%= this.l10n("wait") %>...</h2></span>
+<div data-sync="merchant" style="position: relative; display: block; min-height: 400px;"><div class="main_preloader"></div></div>
